@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Create Seller Account — APEX GEAR</title>
+  <meta name="description" content="Register as a seller on Apex Gear and launch your own store portal."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600;700&family=Montserrat:wght@700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #07070f;
+      --card-bg: #f8f8f8;
+      --purple: #5a31f4;
+      --purple-dark: #4621d4;
+      --purple-glow: rgba(90,49,244,.35);
+      --text: #1a1a1a;
+      --muted: #6b6b6b;
+      --border: #d4d4d4;
+      --success: #16a34a;
+      --mono: 'Source Code Pro', monospace;
+      --sans: 'Montserrat', sans-serif;
+      --body: 'Inter', sans-serif;
+      --t: 0.22s ease;
+    }
+    html, body { min-height: 100vh; background: var(--bg); font-family: var(--body); color: var(--text); }
+
+    .orb { position: fixed; border-radius: 50%; filter: blur(100px); pointer-events: none; z-index: 0; }
+    .orb-1 { width: 520px; height: 520px; background: radial-gradient(circle, rgba(90,49,244,.22) 0%, transparent 70%); top: -120px; left: -120px; animation: orbFloat 12s ease-in-out infinite alternate; }
+    .orb-2 { width: 400px; height: 400px; background: radial-gradient(circle, rgba(139,92,246,.18) 0%, transparent 70%); bottom: -80px; right: -80px; animation: orbFloat 16s ease-in-out infinite alternate-reverse; }
+    @keyframes orbFloat { from { transform: translate(0,0); } to { transform: translate(40px,30px); } }
+
+    .page-wrap {
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 40px 16px 72px;
+      position: relative; z-index: 1;
+    }
+
+    .brand-strip { display: flex; align-items: center; gap: 10px; margin-bottom: 32px; text-decoration: none; }
+    .brand-strip .tri { font-size: 22px; color: var(--purple); }
+    .brand-strip .wordmark { font-family: var(--sans); font-size: 18px; font-weight: 900; color: #fff; letter-spacing: 0.12em; text-transform: uppercase; }
+    .brand-strip .badge { font-family: var(--mono); font-size: 9px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--purple); background: rgba(90,49,244,.16); border: 1px solid rgba(90,49,244,.35); padding: 3px 9px; border-radius: 20px; }
+
+    .auth-card {
+      background: var(--card-bg); border-radius: 14px;
+      padding: 44px 42px 40px; width: 100%; max-width: 500px;
+      box-shadow: 0 0 0 1px rgba(255,255,255,.05), 0 24px 80px rgba(0,0,0,.7);
+      animation: cardIn .45s cubic-bezier(.22,.9,.36,1) both;
+      position: relative;
+    }
+    @keyframes cardIn { from { opacity:0; transform:translateY(28px) scale(.97); } to { opacity:1; transform:translateY(0) scale(1); } }
+    .auth-card::before { content:''; position:absolute; top:0; left:42px; right:42px; height:3px; background:linear-gradient(90deg, var(--purple), #a78bfa); border-radius:0 0 4px 4px; }
+
+    .card-header { text-align: center; margin-bottom: 28px; }
+    .card-logo { display:inline-flex; align-items:center; justify-content:center; width:54px; height:54px; background:linear-gradient(135deg,#1a1a1a 60%,#2a2a2a); border-radius:12px; margin-bottom:16px; }
+    .card-header h1 { font-family: var(--mono); font-size: 21px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+    .card-header p { font-size: 13px; color: var(--muted); }
+
+    .steps-bar { display: flex; align-items: center; gap: 0; margin-bottom: 28px; }
+    .step { flex: 1; text-align: center; }
+    .step-circle { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--border); display: inline-flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--muted); background: #fff; transition: all var(--t); }
+    .step.active .step-circle { background: var(--purple); border-color: var(--purple); color: #fff; }
+    .step.done .step-circle { background: var(--success); border-color: var(--success); color: #fff; }
+    .step-label { font-family: var(--mono); font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 5px; }
+    .step.active .step-label { color: var(--purple); }
+    .step-line { flex: 1; height: 2px; background: var(--border); margin: 0 4px; margin-bottom: 18px; transition: background var(--t); }
+    .step-line.done { background: var(--success); }
+
+    .form-group { margin-bottom: 18px; }
+    .form-group label { display: block; font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text); margin-bottom: 7px; }
+    .form-control { width: 100%; padding: 12px 14px; background: #fff; border: 1.5px solid var(--border); border-radius: 9px; font-family: var(--body); font-size: 14px; color: var(--text); outline: none; transition: border-color var(--t), box-shadow var(--t); }
+    .form-control::placeholder { color: #b0b0b0; }
+    .form-control:focus { border-color: var(--purple); box-shadow: 0 0 0 3px rgba(90,49,244,.12); }
+
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    .pw-wrap { position: relative; }
+    .pw-toggle { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--muted); padding: 4px; display: flex; align-items: center; transition: color var(--t); }
+    .pw-toggle:hover { color: var(--text); }
+
+    .strength-bar { height: 4px; border-radius: 2px; background: var(--border); margin-top: 8px; overflow: hidden; }
+    .strength-fill { height: 100%; border-radius: 2px; width: 0%; transition: width .4s ease, background .4s ease; }
+
+    .msg { display: none; padding: 11px 14px; border-radius: 8px; font-size: 12.5px; font-weight: 500; margin-bottom: 16px; }
+    .msg.error { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; display: block; }
+    .msg.success { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; display: block; }
+
+    .btn-primary { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 13px 20px; background: var(--purple); color: #fff; border: none; border-radius: 9px; font-family: var(--mono); font-size: 14px; font-weight: 600; letter-spacing: 0.03em; cursor: pointer; transition: background var(--t), transform var(--t), box-shadow var(--t); margin-top: 4px; }
+    .btn-primary:hover { background: var(--purple-dark); transform: translateY(-1px); box-shadow: 0 8px 24px var(--purple-glow); }
+    .btn-primary .spinner { display: none; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,.3); border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite; }
+    .btn-primary.loading .btn-label { display: none; }
+    .btn-primary.loading .spinner { display: block; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .back-link { display: flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 11px; color: var(--muted); text-decoration: none; margin-bottom: 10px; transition: color var(--t); }
+    .back-link:hover { color: var(--purple); }
+
+    .bottom-divider { height: 1px; background: var(--border); margin: 22px 0; }
+    .signin-row { text-align: center; font-size: 13px; color: var(--muted); }
+    .signin-row a { color: var(--purple); font-weight: 600; text-decoration: none; }
+    .signin-row a:hover { text-decoration: underline; }
+
+    /* Step panels */
+    .step-panel { display: none; }
+    .step-panel.active { display: block; }
+
+    /* Success screen */
+    .success-screen { text-align: center; padding: 20px 0; }
+    .success-icon { width: 72px; height: 72px; background: linear-gradient(135deg, #16a34a, #22c55e); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+    .success-screen h2 { font-family: var(--mono); font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .success-screen p { font-size: 13px; color: var(--muted); margin-bottom: 24px; line-height: 1.6; }
+    .portal-preview { background: linear-gradient(135deg, #f3f0ff, #ede9fe); border: 1px solid rgba(90,49,244,.22); border-radius: 10px; padding: 16px; margin-bottom: 24px; text-align: left; }
+    .portal-preview-label { font-family: var(--mono); font-size: 9px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--purple); margin-bottom: 10px; }
+    .portal-detail { display: flex; justify-content: space-between; font-size: 12px; padding: 5px 0; border-bottom: 1px solid rgba(90,49,244,.1); }
+    .portal-detail:last-child { border-bottom: none; }
+    .portal-detail span:first-child { color: var(--muted); }
+    .portal-detail span:last-child { font-weight: 600; color: var(--text); }
+
+    .auth-footer { margin-top: 28px; text-align: center; }
+    .auth-footer p { font-size: 11px; color: rgba(255,255,255,.28); line-height: 1.7; }
+    .auth-footer a { color: rgba(255,255,255,.45); text-decoration: underline; }
+    .auth-footer a:hover { color: var(--purple); }
+
+    @media (max-width: 520px) {
+      .auth-card { padding: 36px 22px 32px; }
+      .two-col { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<div class="page-wrap">
+
+  <!-- Brand -->
+  <a href="index.html" class="brand-strip">
+    <span class="tri">▲</span>
+    <span class="wordmark">Apex Gear</span>
+    <span class="badge">Seller Portal</span>
+  </a>
+
+  <div class="auth-card" role="main">
+
+    <!-- Header -->
+    <div class="card-header">
+      <div class="card-logo">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <polygon points="14,3 27,25 1,25" fill="#ffffff" opacity=".9"/>
+          <polygon points="14,9 22,23 6,23" fill="#1a1a1a"/>
+        </svg>
+      </div>
+      <h1>Create Seller Account</h1>
+      <p>Launch your store on Apex Gear in minutes</p>
+    </div>
+
+    <!-- Steps bar -->
+    <div class="steps-bar" id="stepsBar">
+      <div class="step active" id="step1Ind">
+        <div class="step-circle">1</div>
+        <div class="step-label">Account</div>
+      </div>
+      <div class="step-line" id="line1"></div>
+      <div class="step" id="step2Ind">
+        <div class="step-circle">2</div>
+        <div class="step-label">Store</div>
+      </div>
+      <div class="step-line" id="line2"></div>
+      <div class="step" id="step3Ind">
+        <div class="step-circle">3</div>
+        <div class="step-label">Done</div>
+      </div>
+    </div>
+
+    <!-- Message slot -->
+    <div class="msg" id="regMsg"></div>
+
+    <form id="sellerRegisterForm" novalidate>
+    <!-- STEP 1: Personal Info -->
+    <div class="step-panel active" id="panel1">
+      <div class="two-col">
+        <div class="form-group">
+          <label for="regFirstName">First Name</label>
+          <input type="text" id="regFirstName" class="form-control" placeholder="John" required/>
+        </div>
+        <div class="form-group">
+          <label for="regLastName">Last Name</label>
+          <input type="text" id="regLastName" class="form-control" placeholder="Doe" required/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="regEmail">Email Address</label>
+        <input type="email" id="regEmail" class="form-control" placeholder="you@example.com" required/>
+      </div>
+      <div class="form-group">
+        <label for="regPhone">Phone Number</label>
+        <input type="tel" id="regPhone" class="form-control" placeholder="+91 98765 43210"/>
+      </div>
+      <div class="form-group">
+        <label for="regPassword">Create Password</label>
+        <div class="pw-wrap">
+          <input type="password" id="regPassword" class="form-control" placeholder="Min. 8 characters" style="padding-right:44px;" required/>
+          <button class="pw-toggle" type="button" id="pwToggle1" aria-label="Toggle password">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="eye1">
+              <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        </div>
+        <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+      </div>
+      <button class="btn-primary" id="nextBtn1" type="button" onclick="goStep2()">
+        <span class="btn-label">Continue →</span>
+        <span class="spinner"></span>
+      </button>
+      <div class="bottom-divider"></div>
+      <div class="signin-row">Already have a seller account? <a href="seller-login.html">Sign in</a></div>
+    </div>
+
+    <!-- STEP 2: Store Info -->
+    <div class="step-panel" id="panel2">
+      <a href="#" class="back-link" onclick="goStep1(); return false;">← Back</a>
+      <div class="form-group">
+        <label for="regStoreName">Store Name</label>
+        <input type="text" id="regStoreName" class="form-control" placeholder="e.g. John's Sports Hub" required/>
+      </div>
+      <div class="form-group">
+        <label for="regCategory">Primary Category</label>
+        <select id="regCategory" class="form-control">
+          <option value="" disabled selected>Select a category</option>
+          <option value="shoes">Shoes</option>
+          <option value="clothing">Clothing</option>
+          <option value="watches">Watches</option>
+          <option value="specs">Specs / Eyewear</option>
+          <option value="mixed">Mixed / All</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="regGST">GST Number (optional)</label>
+        <input type="text" id="regGST" class="form-control" placeholder="22AAAAA0000A1Z5"/>
+      </div>
+      <div class="form-group">
+        <label for="regAddress">Business Address</label>
+        <input type="text" id="regAddress" class="form-control" placeholder="Street, City, State, PIN"/>
+      </div>
+      <div class="form-group">
+        <label for="regAbout">About Your Store (optional)</label>
+        <textarea id="regAbout" class="form-control" rows="3" placeholder="Describe what you sell…"></textarea>
+      </div>
+      <button class="btn-primary" id="createBtn" type="button" onclick="createAccount()">
+        <span class="btn-label">Create My Portal</span>
+        <span class="spinner"></span>
+      </button>
+    </div>
+
+    <!-- STEP 3: Success -->
+    <div class="step-panel" id="panel3">
+      <div class="success-screen">
+        <div class="success-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </div>
+        <h2>Portal Created! 🎉</h2>
+        <p>Welcome to Apex Gear! Your seller portal is ready.<br/>Here's a summary of your new account:</p>
+        <div class="portal-preview" id="portalPreview"></div>
+        <button class="btn-primary" onclick="window.location.href='seller-dashboard.html'">
+          <span class="btn-label">Go to My Dashboard →</span>
+        </button>
+      </div>
+    </div>
+
+    </form>
+  </div><!-- /.auth-card -->
+
+  <footer class="auth-footer">
+    <p>By creating an account, you agree to Apex Gear's <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</p>
+  </footer>
+
+</div>
+
+<script>
+  /* ── Step navigation ── */
+  function goStep1() {
+    setPanel(1);
+    document.getElementById('step1Ind').classList.add('active');
+    document.getElementById('step2Ind').classList.remove('active','done');
+    document.getElementById('line1').classList.remove('done');
+  }
+
+  function goStep2() {
+    const fn = document.getElementById('regFirstName').value.trim();
+    const ln = document.getElementById('regLastName').value.trim();
+    const em = document.getElementById('regEmail').value.trim();
+    const pw = document.getElementById('regPassword').value;
+    if (!fn || !ln || !em || !pw) { showMsg('Please fill all required fields.','error'); return; }
+    if (!/\S+@\S+\.\S+/.test(em)) { showMsg('Enter a valid email address.','error'); return; }
+    if (pw.length < 8) { showMsg('Password must be at least 8 characters.','error'); return; }
+    clearMsg();
+    setPanel(2);
+    document.getElementById('step1Ind').classList.remove('active');
+    document.getElementById('step1Ind').classList.add('done');
+    document.getElementById('step1Ind').querySelector('.step-circle').textContent = '✓';
+    document.getElementById('line1').classList.add('done');
+    document.getElementById('step2Ind').classList.add('active');
+  }
+
+  async function createAccount() {
+    const storeName = document.getElementById('regStoreName').value.trim();
+    const category  = document.getElementById('regCategory').value;
+    if (!storeName || !category) { showMsg('Please fill Store Name and Category.','error'); return; }
+    clearMsg();
+    const btn = document.getElementById('createBtn');
+    btn.classList.add('loading');
+    await delay(1800);
+    btn.classList.remove('loading');
+
+    // Save to localStorage
+    const seller = {
+      name:      document.getElementById('regFirstName').value.trim() + ' ' + document.getElementById('regLastName').value.trim(),
+      email:     document.getElementById('regEmail').value.trim(),
+      password:  document.getElementById('regPassword').value,
+      phone:     document.getElementById('regPhone').value.trim(),
+      storeName, category,
+      gst:       document.getElementById('regGST').value.trim(),
+      address:   document.getElementById('regAddress').value.trim(),
+      about:     document.getElementById('regAbout').value.trim(),
+      joinedAt:  new Date().toLocaleDateString('en-IN', {year:'numeric',month:'short',day:'numeric'}),
+      sellerId:  'SEL-' + Math.random().toString(36).substring(2,8).toUpperCase()
+    };
+    const sellers = JSON.parse(localStorage.getItem('apexSellers') || '[]');
+    sellers.push(seller);
+    localStorage.setItem('apexSellers', JSON.stringify(sellers));
+
+    // Set session
+    sessionStorage.setItem('apexSellerAuth','true');
+    sessionStorage.setItem('apexSellerEmail', seller.email);
+    sessionStorage.setItem('apexSellerName', seller.storeName);
+    sessionStorage.setItem('apexSellerId', seller.sellerId);
+
+    // Update steps
+    document.getElementById('step2Ind').classList.remove('active');
+    document.getElementById('step2Ind').classList.add('done');
+    document.getElementById('step2Ind').querySelector('.step-circle').textContent = '✓';
+    document.getElementById('line2').classList.add('done');
+    document.getElementById('step3Ind').classList.add('active');
+
+    // Portal preview
+    document.getElementById('portalPreview').innerHTML = `
+      <div class="portal-preview-label">Your Seller Account</div>
+      <div class="portal-detail"><span>Seller ID</span><span>${seller.sellerId}</span></div>
+      <div class="portal-detail"><span>Name</span><span>${seller.name}</span></div>
+      <div class="portal-detail"><span>Store</span><span>${seller.storeName}</span></div>
+      <div class="portal-detail"><span>Category</span><span>${capitalize(seller.category)}</span></div>
+      <div class="portal-detail"><span>Email</span><span>${seller.email}</span></div>
+      <div class="portal-detail"><span>Joined</span><span>${seller.joinedAt}</span></div>
+    `;
+    setPanel(3);
+  }
+
+  function setPanel(n) {
+    document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel' + n).classList.add('active');
+  }
+
+  /* ── Password strength ── */
+  document.getElementById('regPassword').addEventListener('input', function() {
+    const v = this.value;
+    const fill = document.getElementById('strengthFill');
+    let score = 0;
+    if (v.length >= 8) score++;
+    if (/[A-Z]/.test(v)) score++;
+    if (/[0-9]/.test(v)) score++;
+    if (/[^A-Za-z0-9]/.test(v)) score++;
+    const colors = ['#ef4444','#f97316','#eab308','#22c55e'];
+    fill.style.width = (score * 25) + '%';
+    fill.style.background = colors[score - 1] || '#d1d5db';
+  });
+
+  /* ── Password toggle ── */
+  document.getElementById('pwToggle1').addEventListener('click', function() {
+    const inp = document.getElementById('regPassword');
+    inp.type = inp.type === 'password' ? 'text' : 'password';
+  });
+
+  /* ── Helpers ── */
+  function showMsg(text, type) {
+    const m = document.getElementById('regMsg');
+    m.textContent = text;
+    m.className = 'msg ' + type;
+  }
+  function clearMsg() {
+    const m = document.getElementById('regMsg');
+    m.className = 'msg';
+    m.textContent = '';
+  }
+  function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+  function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+</script>
+</body>
+</html>

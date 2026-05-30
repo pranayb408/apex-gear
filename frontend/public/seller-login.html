@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Seller Login — APEX GEAR</title>
+  <meta name="description" content="Sign in to the Apex Gear Seller Portal to manage your products, orders, and analytics."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Montserrat:wght@700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:          #07070f;
+      --card-bg:     #f8f8f8;
+      --card-radius: 14px;
+      --purple:      #5a31f4;
+      --purple-dark: #4621d4;
+      --purple-glow: rgba(90,49,244,.35);
+      --charcoal:    #464646;
+      --charcoal-dk: #333333;
+      --text:        #1a1a1a;
+      --muted:       #6b6b6b;
+      --border:      #d4d4d4;
+      --input-bg:    #ffffff;
+      --mono:        'Source Code Pro', 'Courier New', monospace;
+      --sans:        'Montserrat', sans-serif;
+      --body:        'Inter', sans-serif;
+      --t:           0.22s ease;
+    }
+
+    html, body {
+      min-height: 100vh;
+      background: var(--bg);
+      font-family: var(--body);
+      color: var(--text);
+    }
+
+    /* ── Animated gradient orbs ── */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(100px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .orb-1 {
+      width: 520px; height: 520px;
+      background: radial-gradient(circle, rgba(90,49,244,.22) 0%, transparent 70%);
+      top: -120px; left: -120px;
+      animation: orbFloat 12s ease-in-out infinite alternate;
+    }
+    .orb-2 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(139,92,246,.18) 0%, transparent 70%);
+      bottom: -80px; right: -80px;
+      animation: orbFloat 16s ease-in-out infinite alternate-reverse;
+    }
+    @keyframes orbFloat {
+      from { transform: translate(0,0); }
+      to   { transform: translate(40px, 30px); }
+    }
+
+    /* subtle grid background */
+    .page-wrap::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+      background-size: 44px 44px;
+      pointer-events: none;
+    }
+
+    /* ── Page layout ── */
+    .page-wrap {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 16px 72px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── Top brand strip ── */
+    .brand-strip {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 36px;
+      text-decoration: none;
+    }
+
+    .brand-strip .tri { font-size: 22px; color: var(--purple); }
+
+    .brand-strip .wordmark {
+      font-family: var(--sans);
+      font-size: 18px;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .brand-strip .badge {
+      font-family: var(--mono);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--purple);
+      background: rgba(90,49,244,.16);
+      border: 1px solid rgba(90,49,244,.35);
+      padding: 3px 9px;
+      border-radius: 20px;
+    }
+
+    /* ── Auth Card ── */
+    .auth-card {
+      background: var(--card-bg);
+      border-radius: var(--card-radius);
+      padding: 44px 42px 40px;
+      width: 100%;
+      max-width: 450px;
+      position: relative;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.05),
+        0 24px 80px rgba(0,0,0,.7),
+        0 0 60px rgba(90,49,244,.08);
+      animation: cardIn .45s cubic-bezier(.22,.9,.36,1) both;
+    }
+
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(28px) scale(.97); }
+      to   { opacity: 1; transform: translateY(0)    scale(1);   }
+    }
+
+    /* top purple accent line */
+    .auth-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 42px; right: 42px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--purple), #a78bfa);
+      border-radius: 0 0 4px 4px;
+    }
+
+    /* ── Card header ── */
+    .card-header { text-align: center; margin-bottom: 30px; }
+
+    .card-logo {
+      display: inline-flex;
+      align-items: center; justify-content: center;
+      width: 54px; height: 54px;
+      background: linear-gradient(135deg, #1a1a1a 60%, #2a2a2a);
+      border-radius: 12px;
+      margin-bottom: 18px;
+      box-shadow: 0 4px 20px rgba(0,0,0,.25);
+    }
+    .card-logo svg { display: block; }
+
+    .card-header h1 {
+      font-family: var(--mono);
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.01em;
+      margin-bottom: 6px;
+    }
+
+    .card-header p {
+      font-family: var(--body);
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    /* ── Demo credentials hint ── */
+    .demo-hint {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: linear-gradient(135deg, #f3f0ff, #ede9fe);
+      border: 1px solid rgba(90,49,244,.22);
+      border-radius: 9px;
+      padding: 12px 14px;
+      margin-bottom: 22px;
+    }
+    .demo-hint-icon {
+      flex-shrink: 0;
+      width: 28px; height: 28px;
+      background: var(--purple);
+      border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 13px; font-weight: 900;
+    }
+    .demo-hint-body { flex: 1; }
+    .demo-hint-title {
+      font-family: var(--mono);
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--purple); margin-bottom: 5px;
+    }
+    .demo-hint-creds {
+      display: flex; flex-direction: column; gap: 3px;
+    }
+    .demo-hint-creds span {
+      font-family: var(--mono);
+      font-size: 12px; color: #3730a3;
+      cursor: pointer; transition: opacity var(--t);
+    }
+    .demo-hint-creds span:hover { opacity: .72; }
+    .demo-hint-creds strong { color: #1e1b4b; }
+    .demo-note {
+      font-size: 10px; color: var(--muted); margin-top: 5px; font-family: var(--body);
+    }
+
+    /* ── Social/SSO button ── */
+    .btn-shop {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%; padding: 13px 20px;
+      background: var(--purple);
+      color: #fff; border: none; border-radius: 9px;
+      font-family: var(--mono); font-size: 14px; font-weight: 600;
+      letter-spacing: 0.03em; cursor: pointer;
+      transition: background var(--t), transform var(--t), box-shadow var(--t);
+      text-decoration: none;
+      margin-bottom: 20px;
+    }
+    .btn-shop:hover {
+      background: var(--purple-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px var(--purple-glow);
+    }
+    .btn-shop:active { transform: translateY(0); }
+
+    /* ── Divider ── */
+    .divider {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 20px;
+    }
+    .divider::before, .divider::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
+    }
+    .divider span {
+      font-family: var(--mono); font-size: 11px;
+      color: var(--muted); font-weight: 600;
+    }
+
+    /* ── Form ── */
+    .form-group { margin-bottom: 18px; }
+
+    .form-group label {
+      display: block;
+      font-family: var(--mono);
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text); margin-bottom: 7px;
+    }
+
+    .form-control {
+      width: 100%; padding: 13px 14px;
+      background: var(--input-bg);
+      border: 1.5px solid var(--border); border-radius: 9px;
+      font-family: var(--body); font-size: 14px; color: var(--text);
+      outline: none;
+      transition: border-color var(--t), box-shadow var(--t);
+    }
+    .form-control::placeholder { color: #b0b0b0; }
+    .form-control:focus {
+      border-color: var(--purple);
+      box-shadow: 0 0 0 3px rgba(90,49,244,.12);
+    }
+    .form-control:focus-visible { outline: none; }
+
+    /* password wrapper */
+    .pw-wrap { position: relative; }
+    .pw-toggle {
+      position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; cursor: pointer;
+      color: var(--muted); padding: 4px;
+      display: flex; align-items: center;
+      transition: color var(--t);
+    }
+    .pw-toggle:hover { color: var(--text); }
+
+    /* forgot link */
+    .forgot-row { display: flex; justify-content: flex-end; margin-top: 7px; }
+    .forgot-link {
+      font-family: var(--body); font-size: 12px;
+      color: var(--purple); text-decoration: none;
+      transition: opacity var(--t); font-weight: 500;
+    }
+    .forgot-link:hover { opacity: .72; text-decoration: underline; }
+
+    /* ── Continue button ── */
+    .btn-continue {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; padding: 13px 20px;
+      background: var(--charcoal); color: #fff; border: none; border-radius: 9px;
+      font-family: var(--mono); font-size: 14px; font-weight: 600;
+      letter-spacing: 0.03em; cursor: pointer;
+      transition: background var(--t), transform var(--t), box-shadow var(--t);
+      margin-top: 4px;
+    }
+    .btn-continue:hover {
+      background: var(--charcoal-dk);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(0,0,0,.22);
+    }
+    .btn-continue:active { transform: translateY(0); }
+
+    /* spinner */
+    .btn-continue .spinner {
+      display: none; width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,.3); border-top-color: #fff;
+      border-radius: 50%; animation: spin .7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .btn-continue.loading .btn-label { display: none; }
+    .btn-continue.loading .spinner   { display: block; }
+
+    /* ── Checkbox ── */
+    .check-row {
+      display: flex; align-items: flex-start; gap: 10px; margin-bottom: 22px;
+    }
+    .check-row input[type="checkbox"] {
+      width: 16px; height: 16px; flex-shrink: 0; margin-top: 1px;
+      accent-color: var(--purple); cursor: pointer;
+    }
+    .check-row label {
+      font-family: var(--body); font-size: 12px; color: var(--muted);
+      cursor: pointer; line-height: 1.5;
+    }
+
+    /* ── Divider bottom ── */
+    .bottom-divider { height: 1px; background: var(--border); margin: 24px 0; }
+
+    /* ── Create account link ── */
+    .create-row { text-align: center; }
+    .create-row p { font-family: var(--body); font-size: 13px; color: var(--muted); margin-bottom: 12px; }
+
+    .btn-outline-dark {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; padding: 13px 20px;
+      border: 1.5px solid #1a1a1a; border-radius: 9px;
+      background: transparent; color: var(--text);
+      font-family: var(--mono); font-size: 14px; font-weight: 600;
+      letter-spacing: 0.03em; text-decoration: none;
+      transition: background var(--t), color var(--t), border-color var(--t);
+    }
+    .btn-outline-dark:hover {
+      background: #1a1a1a; color: #fff; border-color: #1a1a1a;
+    }
+    .btn-outline-dark svg { transition: transform var(--t); }
+    .btn-outline-dark:hover svg { transform: translateX(3px); }
+
+    /* ── Footer text ── */
+    .auth-footer { margin-top: 28px; text-align: center; }
+    .auth-footer p {
+      font-family: var(--body); font-size: 11px;
+      color: rgba(255,255,255,.28); line-height: 1.7;
+    }
+    .auth-footer a { color: rgba(255,255,255,.45); text-decoration: underline; transition: color var(--t); }
+    .auth-footer a:hover { color: var(--purple); }
+
+    /* ── Error / success messages ── */
+    .msg {
+      display: none; padding: 11px 14px; border-radius: 8px;
+      font-family: var(--body); font-size: 12.5px; font-weight: 500;
+      margin-bottom: 16px;
+    }
+    .msg.error   { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; display: block; }
+    .msg.success { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; display: block; }
+
+    /* ── Responsive ── */
+    @media (max-width: 480px) {
+      .auth-card { padding: 36px 24px 32px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Ambient orbs -->
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<div class="page-wrap">
+
+  <!-- Brand strip -->
+  <a href="index.html" class="brand-strip">
+    <span class="tri">▲</span>
+    <span class="wordmark">Apex Gear</span>
+    <span class="badge">Seller Portal</span>
+  </a>
+
+  <!-- Auth card -->
+  <div class="auth-card" role="main">
+
+    <!-- Header -->
+    <div class="card-header">
+      <div class="card-logo">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="14,3 27,25 1,25" fill="#ffffff" opacity=".9"/>
+          <polygon points="14,9 22,23 6,23" fill="#1a1a1a"/>
+        </svg>
+      </div>
+      <h1>Seller Sign In</h1>
+      <p>Access your Apex Gear seller dashboard</p>
+    </div>
+
+    <!-- Demo credentials hint -->
+    <div class="demo-hint">
+      <div class="demo-hint-icon">i</div>
+      <div class="demo-hint-body">
+        <div class="demo-hint-title">Demo Credentials</div>
+        <div class="demo-hint-creds">
+          <span onclick="fillDemo('email')">📧 <strong>Email:</strong> seller@apexgear.com</span>
+          <span onclick="fillDemo('password')">🔑 <strong>Password:</strong> apex2026</span>
+        </div>
+        <div class="demo-note">Click any line to auto-fill • These are demo credentials only</div>
+      </div>
+    </div>
+
+    <!-- Error / success slot -->
+    <div class="msg" id="authMsg"></div>
+
+    <!-- Continue with Shop (SSO) -->
+    <button class="btn-shop" id="shopBtn" type="button" onclick="handleShopSSO()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M19.2 4H4.8C3.81 4 3 4.81 3 5.8v12.4C3 19.19 3.81 20 4.8 20h14.4c.99 0 1.8-.81 1.8-1.8V5.8C21 4.81 20.19 4 19.2 4z" fill="white" opacity=".9"/>
+        <path d="M8 12l2.5 2.5L16 9" stroke="#5a31f4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Continue with Shop SSO
+    </button>
+
+    <!-- Divider -->
+    <div class="divider"><span>or sign in with email</span></div>
+
+    <!-- Email / password form -->
+    <form id="loginForm" novalidate>
+
+      <div class="form-group">
+        <label for="sellerEmail">Email Address</label>
+        <input
+          type="email"
+          id="sellerEmail"
+          class="form-control"
+          placeholder="seller@apexgear.com"
+          autocomplete="email"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="sellerPassword">Password</label>
+        <div class="pw-wrap">
+          <input
+            type="password"
+            id="sellerPassword"
+            class="form-control"
+            placeholder="••••••••"
+            autocomplete="current-password"
+            style="padding-right: 44px;"
+            required
+          />
+          <button class="pw-toggle" type="button" id="pwToggle" aria-label="Toggle password visibility">
+            <svg id="eyeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        </div>
+        <div class="forgot-row">
+          <a href="#" class="forgot-link" id="forgotLink">Forgot password?</a>
+        </div>
+      </div>
+
+      <!-- Keep me posted checkbox -->
+      <div class="check-row">
+        <input type="checkbox" id="emailUpdates" name="emailUpdates"/>
+        <label for="emailUpdates">Email me with news and seller offers from Apex Gear</label>
+      </div>
+
+      <button type="submit" class="btn-continue" id="continueBtn">
+        <span class="btn-label">Sign In to Seller Portal</span>
+        <span class="spinner"></span>
+      </button>
+
+    </form>
+
+    <!-- Divider -->
+    <div class="bottom-divider"></div>
+
+    <!-- Create account -->
+    <div class="create-row">
+      <p>New to Apex Gear Seller? Create your portal for free.</p>
+      <a href="seller-register.html" class="btn-outline-dark" id="createAccountBtn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 1 0-16 0"/><line x1="19" y1="11" x2="19" y2="17"/><line x1="16" y1="14" x2="22" y2="14"/></svg>
+        Create Seller Account →
+      </a>
+    </div>
+
+  </div><!-- /.auth-card -->
+
+  <!-- Footer -->
+  <footer class="auth-footer">
+    <p>
+      By continuing, you agree to Apex Gear's
+      <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.<br/>
+      Protected by reCAPTCHA — <a href="#">Privacy</a> · <a href="#">Terms</a>
+    </p>
+  </footer>
+
+</div><!-- /.page-wrap -->
+
+<script>
+  /* ── Auto-fill demo credentials on click ── */
+  function fillDemo(field) {
+    if (field === 'email') {
+      document.getElementById('sellerEmail').value = 'seller@apexgear.com';
+    } else {
+      document.getElementById('sellerPassword').value = 'apex2026';
+    }
+  }
+
+  /* ── Password toggle ── */
+  const pwInput  = document.getElementById('sellerPassword');
+  const pwToggle = document.getElementById('pwToggle');
+  const eyeIcon  = document.getElementById('eyeIcon');
+
+  pwToggle.addEventListener('click', () => {
+    const isHidden = pwInput.type === 'password';
+    pwInput.type = isHidden ? 'text' : 'password';
+    eyeIcon.innerHTML = isHidden
+      ? `<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>`
+      : `<path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/>`;
+  });
+
+  /* ── Form submission ── */
+  const loginForm   = document.getElementById('loginForm');
+  const continueBtn = document.getElementById('continueBtn');
+  const authMsg     = document.getElementById('authMsg');
+
+  loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    authMsg.className = 'msg';
+    authMsg.textContent = '';
+
+    const email    = document.getElementById('sellerEmail').value.trim();
+    const password = document.getElementById('sellerPassword').value;
+
+    if (!email || !password) {
+      showMsg('⚠ Please enter your email and password.', 'error');
+      return;
+    }
+
+    /* Simulate async sign-in */
+    continueBtn.classList.add('loading');
+    await fakeDelay(1600);
+    continueBtn.classList.remove('loading');
+
+    /* ─── Check admin demo credentials ─── */
+    if (email === 'seller@apexgear.com' && password === 'apex2026') {
+      sessionStorage.setItem('apexAdminAuth', 'true');
+      sessionStorage.setItem('apexAdminName', 'Admin');
+      sessionStorage.setItem('apexSellerEmail', email);
+      showMsg('✓ Sign in successful! Redirecting to Admin Portal…', 'success');
+      setTimeout(() => { window.location.href = 'admin.html'; }, 1400);
+      return;
+    }
+
+    /* ─── Check registered sellers from localStorage ─── */
+    const sellers = JSON.parse(localStorage.getItem('apexSellers') || '[]');
+    const match = sellers.find(s => s.email === email && s.password === password);
+
+    if (match) {
+      sessionStorage.setItem('apexSellerAuth', 'true');
+      sessionStorage.setItem('apexSellerEmail', match.email);
+      sessionStorage.setItem('apexSellerName', match.storeName || match.name);
+      showMsg('✓ Welcome back, ' + (match.storeName || match.name) + '! Redirecting…', 'success');
+      setTimeout(() => { window.location.href = 'seller-dashboard.html'; }, 1400);
+    } else {
+      showMsg('✗ Incorrect email or password. Check your credentials or create an account.', 'error');
+    }
+  });
+
+  /* ── Shop SSO ── */
+  function handleShopSSO() {
+    const shopBtn = document.getElementById('shopBtn');
+    shopBtn.style.opacity = '0.7';
+    shopBtn.style.pointerEvents = 'none';
+    showMsg('Redirecting to Shop authentication…', 'success');
+    setTimeout(() => {
+      shopBtn.style.opacity = '';
+      shopBtn.style.pointerEvents = '';
+      authMsg.className = 'msg';
+    }, 2200);
+  }
+
+  /* ── Forgot password ── */
+  document.getElementById('forgotLink').addEventListener('click', (e) => {
+    e.preventDefault();
+    const email = document.getElementById('sellerEmail').value.trim();
+    if (email) {
+      showMsg('✓ Password reset link sent to ' + email + ' (demo — no actual email sent).', 'success');
+    } else {
+      showMsg('Enter your email address first, then click Forgot password.', 'error');
+    }
+  });
+
+  /* ── Helpers ── */
+  function showMsg(text, type) {
+    authMsg.textContent = text;
+    authMsg.className = 'msg ' + type;
+  }
+
+  function fakeDelay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+</script>
+</body>
+</html>

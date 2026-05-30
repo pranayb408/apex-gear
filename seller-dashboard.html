@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Seller Dashboard — APEX GEAR</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Montserrat:wght@700;900&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --purple: #5a31f4; --purple-lt: rgba(90,49,244,.08);
+      --bg: #f4f5f7; --card: #ffffff; --border: #e5e7eb;
+      --text: #111827; --muted: #6b7280; --success: #16a34a;
+      --danger: #dc2626; --sidebar-w: 240px; --header-h: 60px;
+      --sans: 'Inter', sans-serif; --head: 'Montserrat', sans-serif;
+      --t: 0.2s ease; --shadow: 0 1px 3px rgba(0,0,0,.1);
+    }
+    html, body { height: 100%; background: var(--bg); font-family: var(--sans); color: var(--text); }
+
+    /* HEADER */
+    .hdr { position:fixed; top:0; left:0; right:0; height:var(--header-h); background:var(--card); border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; padding:0 24px; z-index:200; box-shadow:var(--shadow); }
+    .hdr-brand { display:flex; align-items:center; gap:10px; text-decoration:none; }
+    .hdr-brand .tri { font-size:20px; color:var(--purple); }
+    .hdr-brand .wm { font-family:var(--head); font-size:16px; font-weight:900; color:var(--text); letter-spacing:0.1em; text-transform:uppercase; }
+    .hdr-brand .bdg { font-size:9px; font-weight:700; background:var(--purple); color:#fff; padding:3px 8px; border-radius:20px; }
+    .hdr-right { display:flex; align-items:center; gap:14px; }
+    .store-tag { font-size:13px; font-weight:600; color:var(--muted); }
+    .store-tag span { color:var(--purple); }
+    .btn-logout { padding:7px 16px; border:1.5px solid var(--border); border-radius:20px; background:transparent; font-size:13px; font-weight:600; cursor:pointer; transition:all var(--t); }
+    .btn-logout:hover { background:var(--danger); color:#fff; border-color:var(--danger); }
+
+    /* SIDEBAR */
+    .sidebar { position:fixed; top:var(--header-h); left:0; bottom:0; width:var(--sidebar-w); background:var(--card); border-right:1px solid var(--border); padding:16px 0; overflow-y:auto; z-index:100; }
+    .sb-section { font-size:10px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); padding:12px 20px 6px; }
+    .sb-link { display:flex; align-items:center; gap:12px; padding:10px 20px; font-size:14px; font-weight:600; color:var(--muted); cursor:pointer; border:none; background:none; width:100%; text-align:left; border-right:3px solid transparent; transition:all var(--t); }
+    .sb-link:hover { background:var(--purple-lt); color:var(--purple); }
+    .sb-link.active { background:var(--purple-lt); color:var(--purple); border-right-color:var(--purple); font-weight:700; }
+
+    /* MAIN */
+    .main { margin-left:var(--sidebar-w); margin-top:var(--header-h); padding:28px; min-height:calc(100vh - var(--header-h)); }
+    .sec { display:none; }
+    .sec.active { display:block; }
+    .sec-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:22px; }
+    .sec-title { font-family:var(--head); font-size:21px; font-weight:900; }
+    .sec-sub { font-size:13px; color:var(--muted); margin-top:3px; }
+
+    /* STATS */
+    .stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:24px; }
+    .stat-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:20px; box-shadow:var(--shadow); }
+    .stat-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:var(--muted); margin-bottom:8px; }
+    .stat-val { font-family:var(--head); font-size:28px; font-weight:900; color:var(--text); }
+    .stat-sub { font-size:12px; color:var(--success); font-weight:600; margin-top:4px; }
+
+    /* CARD */
+    .card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:24px; box-shadow:var(--shadow); }
+
+    /* TABLE */
+    .tbl-wrap { overflow-x:auto; border-radius:8px; border:1px solid var(--border); }
+    table { width:100%; border-collapse:collapse; font-size:14px; }
+    thead { background:var(--bg); }
+    thead th { padding:12px 16px; text-align:left; font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); border-bottom:1px solid var(--border); }
+    tbody tr { border-bottom:1px solid var(--border); }
+    tbody tr:last-child { border-bottom:none; }
+    tbody tr:hover { background:rgba(0,0,0,.015); }
+    tbody td { padding:13px 16px; vertical-align:middle; }
+
+    /* FORM */
+    .form-group { margin-bottom:18px; }
+    .form-label { display:block; font-size:13px; font-weight:700; color:var(--text); margin-bottom:7px; }
+    .form-input, .form-select, .form-textarea { width:100%; padding:11px 14px; border:1.5px solid var(--border); border-radius:8px; font-family:var(--sans); font-size:14px; color:var(--text); background:var(--card); outline:none; transition:border-color var(--t); }
+    .form-input:focus, .form-select:focus, .form-textarea:focus { border-color:var(--purple); box-shadow:0 0 0 3px rgba(90,49,244,.1); }
+    .form-textarea { min-height:100px; resize:vertical; }
+    .two-col { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    .btn-add { display:inline-flex; align-items:center; gap:8px; padding:11px 28px; background:var(--purple); color:#fff; border:none; border-radius:8px; font-family:var(--head); font-size:13px; font-weight:800; letter-spacing:0.08em; text-transform:uppercase; cursor:pointer; transition:opacity var(--t), transform var(--t); }
+    .btn-add:hover { opacity:.85; transform:translateY(-1px); }
+
+    /* STATUS CHIP */
+    .chip { display:inline-block; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:700; letter-spacing:0.05em; }
+    .chip.active-chip { background:#d1fae5; color:#065f46; }
+    .chip.pending { background:#fef3c7; color:#92400e; }
+    .chip.inactive { background:#f3f4f6; color:#6b7280; }
+
+    /* WELCOME BANNER */
+    .welcome-banner { background:linear-gradient(135deg, var(--purple), #7c3aed); border-radius:12px; padding:28px 32px; color:#fff; margin-bottom:24px; position:relative; overflow:hidden; }
+    .welcome-banner::after { content:'▲'; position:absolute; right:24px; top:50%; transform:translateY(-50%); font-size:80px; opacity:.1; }
+    .welcome-banner h2 { font-family:var(--head); font-size:22px; font-weight:900; margin-bottom:6px; }
+    .welcome-banner p { font-size:14px; opacity:.85; }
+    .seller-id-tag { display:inline-block; background:rgba(255,255,255,.15); border-radius:6px; padding:4px 12px; font-size:11px; font-weight:700; margin-top:12px; letter-spacing:0.1em; }
+
+    /* PROFILE */
+    .profile-avatar { width:72px; height:72px; border-radius:50%; background:linear-gradient(135deg, var(--purple), #7c3aed); display:flex; align-items:center; justify-content:center; font-family:var(--head); font-size:28px; font-weight:900; color:#fff; margin-bottom:16px; }
+
+    .price-mono { font-family: "Courier New", Courier, monospace !important; font-weight: 700; }
+
+    /* TOAST */
+    .toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px); background:#111; color:#fff; font-size:13px; font-weight:600; padding:12px 24px; border-radius:8px; z-index:9999; opacity:0; pointer-events:none; transition:all .3s ease; white-space:nowrap; }
+    .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+    .toast.green { background:var(--success); }
+
+    /* NO PRODUCTS */
+    .empty-state { text-align:center; padding:60px 20px; color:var(--muted); }
+    .empty-state svg { margin-bottom:14px; color:#d1d5db; }
+
+    @media(max-width:900px) {
+      .sidebar { display:none; }
+      .main { margin-left:0; }
+      .stats-grid { grid-template-columns:1fr 1fr; }
+    }
+    @media(max-width:600px) {
+      .stats-grid { grid-template-columns:1fr 1fr; }
+      .two-col { grid-template-columns:1fr; }
+      .main { padding:16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="hdr">
+  <a href="index.html" class="hdr-brand">
+    <span class="tri">▲</span>
+    <span class="wm">Apex Gear</span>
+    <span class="bdg">Seller</span>
+  </a>
+  <div class="hdr-right">
+    <span class="store-tag">Store: <span id="storeNameTag">—</span></span>
+    <button class="btn-logout" onclick="logout()">Logout</button>
+  </div>
+</header>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sb-section">Dashboard</div>
+  <button class="sb-link active" onclick="navigate('overview')">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+    Overview
+  </button>
+  <div class="sb-section">Catalogue</div>
+  <button class="sb-link" onclick="navigate('addProduct')">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+    Add Product
+  </button>
+  <button class="sb-link" onclick="navigate('myProducts')">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+    My Products
+  </button>
+  <div class="sb-section">Account</div>
+  <button class="sb-link" onclick="navigate('profile')">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 1 0-16 0"/></svg>
+    My Profile
+  </button>
+  <div class="sb-section">Site</div>
+  <a href="index.html" class="sb-link" target="_blank">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 8 16 12 12 16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+    View Live Store
+  </a>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- OVERVIEW -->
+  <section class="sec active" id="sec-overview">
+    <div class="welcome-banner">
+      <h2>Welcome back, <span id="welcomeName">Seller</span>! 👋</h2>
+      <p>Here's what's happening with your store today.</p>
+      <div class="seller-id-tag" id="sellerIdTag">SELLER ID: —</div>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">My Products</div>
+        <div class="stat-val" id="statProducts">0</div>
+        <div class="stat-sub">Listed on store</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total Orders</div>
+        <div class="stat-val">0</div>
+        <div class="stat-sub">All time</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Revenue</div>
+        <div class="stat-val" style="font-size:20px; margin-top:4px;"><span class="price-mono">Rs. 0.00 INR</span></div>
+        <div class="stat-sub">This month</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Store Status</div>
+        <div class="stat-val" style="font-size:16px;margin-top:4px;"><span class="chip active-chip">Active</span></div>
+        <div class="stat-sub">Live on Apex Gear</div>
+      </div>
+    </div>
+    <div class="card">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+        <div style="font-family:var(--head); font-size:16px; font-weight:900;">Recent Products</div>
+        <button class="btn-add" style="padding:8px 18px; font-size:11px;" onclick="navigate('addProduct')">+ Add Product</button>
+      </div>
+      <div id="overviewProducts"></div>
+    </div>
+  </section>
+
+  <!-- ADD PRODUCT -->
+  <section class="sec" id="sec-addProduct">
+    <div class="sec-head">
+      <div>
+        <div class="sec-title">Add Product</div>
+        <div class="sec-sub">List a new product in your store</div>
+      </div>
+    </div>
+    <div class="card">
+      <form id="addProductForm" autocomplete="off">
+        <div class="form-group">
+          <label class="form-label" for="pName">Product Name *</label>
+          <input type="text" id="pName" class="form-input" placeholder="e.g. Apex Trail Runner X9" required/>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="pDesc">Description</label>
+          <textarea id="pDesc" class="form-textarea" placeholder="Describe your product…"></textarea>
+        </div>
+        <div class="two-col">
+          <div class="form-group">
+            <label class="form-label" for="pCat">Category *</label>
+            <select id="pCat" class="form-select" required>
+              <option value="" disabled selected>Select category</option>
+              <option value="shoes">Shoes</option>
+              <option value="clothing">Clothing</option>
+              <option value="watches">Watches</option>
+              <option value="specs">Specs / Eyewear</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="pBadge">Badge</label>
+            <select id="pBadge" class="form-select">
+              <option value="">None</option>
+              <option value="NEW">NEW</option>
+              <option value="SALE">SALE</option>
+              <option value="HOT">HOT</option>
+              <option value="LIMITED">LIMITED</option>
+            </select>
+          </div>
+        </div>
+        <div class="two-col">
+          <div class="form-group">
+            <label class="form-label" for="pPrice">Price (INR) *</label>
+            <input type="number" id="pPrice" class="form-input" placeholder="0" min="0" required/>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="pOffer">Offer Price (INR)</label>
+            <input type="number" id="pOffer" class="form-input" placeholder="0" min="0"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="pStock">Stock Qty *</label>
+          <input type="number" id="pStock" class="form-input" placeholder="0" min="0" required/>
+        </div>
+        <div id="addMsg" style="display:none; padding:10px 14px; border-radius:8px; font-size:13px; font-weight:500; margin-bottom:12px;"></div>
+        <button type="submit" class="btn-add">+ LIST PRODUCT</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- MY PRODUCTS -->
+  <section class="sec" id="sec-myProducts">
+    <div class="sec-head">
+      <div>
+        <div class="sec-title">My Products</div>
+        <div class="sec-sub">Manage your listed products</div>
+      </div>
+      <button class="btn-add" onclick="navigate('addProduct')">+ Add Product</button>
+    </div>
+    <div class="card">
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Category</th>
+              <th>Price</th>
+              <th>Stock</th>
+              <th>Badge</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="productsTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROFILE -->
+  <section class="sec" id="sec-profile">
+    <div class="sec-head">
+      <div>
+        <div class="sec-title">My Profile</div>
+        <div class="sec-sub">Your seller account details</div>
+      </div>
+    </div>
+    <div class="card" style="max-width:560px;">
+      <div class="profile-avatar" id="profileAvatar">?</div>
+      <div id="profileDetails"></div>
+    </div>
+  </section>
+
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  /* ── Auth guard ── */
+  const sellerEmail = sessionStorage.getItem('apexSellerEmail');
+  const sellerName  = sessionStorage.getItem('apexSellerName');
+  const sellerId    = sessionStorage.getItem('apexSellerId');
+  if (!sessionStorage.getItem('apexSellerAuth')) {
+    window.location.href = 'seller-login.html';
+  }
+
+  /* ── Load seller data ── */
+  const allSellers = JSON.parse(localStorage.getItem('apexSellers') || '[]');
+  const seller = allSellers.find(s => s.email === sellerEmail) || {};
+
+  document.getElementById('storeNameTag').textContent = sellerName || '—';
+  document.getElementById('welcomeName').textContent = seller.name || sellerName || 'Seller';
+  document.getElementById('sellerIdTag').textContent = 'SELLER ID: ' + (seller.sellerId || sellerId || '—');
+  if (seller.name) document.getElementById('profileAvatar').textContent = seller.name.charAt(0).toUpperCase();
+
+  /* ── Navigation ── */
+  function navigate(sec) {
+    document.querySelectorAll('.sec').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.sb-link').forEach(b => b.classList.remove('active'));
+    document.getElementById('sec-' + sec).classList.add('active');
+    event.currentTarget && event.currentTarget.classList.add('active');
+    if (sec === 'overview') renderOverview();
+    if (sec === 'myProducts') renderProducts();
+    if (sec === 'profile') renderProfile();
+  }
+
+  /* ── My products key ── */
+  function myKey() { return 'sellerProducts_' + sellerEmail; }
+
+  function getMyProducts() {
+    return JSON.parse(localStorage.getItem(myKey()) || '[]');
+  }
+
+  const fmtINR = n => 'Rs. ' + Number(n).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' INR';
+
+  /* ── Render overview ── */
+  function renderOverview() {
+    const prods = getMyProducts();
+    document.getElementById('statProducts').textContent = prods.length;
+    const el = document.getElementById('overviewProducts');
+    if (!prods.length) {
+      el.innerHTML = '<div class="empty-state"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/></svg><p>No products yet. Add your first product!</p></div>';
+      return;
+    }
+    el.innerHTML = '<div class="tbl-wrap"><table><thead><tr><th>Product</th><th>Category</th><th>Price</th><th>Stock</th></tr></thead><tbody>' +
+      prods.slice(0,5).map(p => `<tr><td><strong>${p.name}</strong></td><td>${p.category}</td><td class="price-mono">${fmtINR(p.price)}</td><td>${p.stock}</td></tr>`).join('') +
+      '</tbody></table></div>';
+  }
+
+  /* ── Render products table ── */
+  function renderProducts() {
+    const prods = getMyProducts();
+    const tbody = document.getElementById('productsTableBody');
+    if (!prods.length) {
+      tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><p>No products listed yet.</p></div></td></tr>`;
+      return;
+    }
+    tbody.innerHTML = prods.map((p, i) => `
+      <tr>
+        <td><strong>${p.name}</strong><br/><small style="color:var(--muted)">${p.desc ? p.desc.substring(0,40)+'…' : ''}</small></td>
+        <td>${p.category}</td>
+        <td class="price-mono">${fmtINR(p.price)}${p.offer ? ' <small style="color:var(--success)">/ ' + fmtINR(p.offer) + '</small>' : ''}</td>
+        <td>${p.stock}</td>
+        <td>${p.badge ? `<span class="chip active-chip">${p.badge}</span>` : '—'}</td>
+        <td><button onclick="deleteProduct(${i})" style="background:#fef2f2;color:#dc2626;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:700;">Delete</button></td>
+      </tr>`).join('');
+  }
+
+  function deleteProduct(idx) {
+    if (!confirm('Remove this product?')) return;
+    const prods = getMyProducts();
+    prods.splice(idx, 1);
+    localStorage.setItem(myKey(), JSON.stringify(prods));
+    renderProducts();
+    showToast('Product removed.', '');
+  }
+
+  /* ── Add product form ── */
+  document.getElementById('addProductForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const name = document.getElementById('pName').value.trim();
+    const cat  = document.getElementById('pCat').value;
+    const price = document.getElementById('pPrice').value;
+    const stock = document.getElementById('pStock').value;
+    if (!name || !cat || !price || !stock) {
+      showAddMsg('Please fill all required fields.', 'error'); return;
+    }
+    const product = {
+      name, desc: document.getElementById('pDesc').value.trim(),
+      category: cat, badge: document.getElementById('pBadge').value,
+      price, offer: document.getElementById('pOffer').value, stock,
+      listedAt: new Date().toLocaleDateString('en-IN')
+    };
+    const prods = getMyProducts();
+    prods.push(product);
+    localStorage.setItem(myKey(), JSON.stringify(prods));
+    document.getElementById('addProductForm').reset();
+    showAddMsg('✓ Product listed successfully!', 'success');
+    showToast('Product added!', 'green');
+    setTimeout(() => navigate('myProducts'), 1200);
+  });
+
+  function showAddMsg(text, type) {
+    const m = document.getElementById('addMsg');
+    m.textContent = text;
+    m.style.display = 'block';
+    m.style.background = type === 'error' ? '#fef2f2' : '#f0fdf4';
+    m.style.color = type === 'error' ? '#b91c1c' : '#166534';
+    m.style.border = '1px solid ' + (type === 'error' ? '#fecaca' : '#bbf7d0');
+  }
+
+  /* ── Render profile ── */
+  function renderProfile() {
+    const fields = [
+      ['Name', seller.name || '—'],
+      ['Email', seller.email || sellerEmail || '—'],
+      ['Phone', seller.phone || '—'],
+      ['Store Name', seller.storeName || sellerName || '—'],
+      ['Category', seller.category || '—'],
+      ['GST', seller.gst || 'Not provided'],
+      ['Address', seller.address || 'Not provided'],
+      ['Seller ID', seller.sellerId || sellerId || '—'],
+      ['Joined', seller.joinedAt || '—'],
+    ];
+    document.getElementById('profileDetails').innerHTML = fields.map(([k,v]) => `
+      <div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border);font-size:14px;">
+        <span style="color:var(--muted);font-weight:600;">${k}</span>
+        <span style="font-weight:700;text-align:right;">${v}</span>
+      </div>`).join('');
+  }
+
+  /* ── Logout ── */
+  function logout() {
+    sessionStorage.clear();
+    window.location.href = 'seller-login.html';
+  }
+
+  /* ── Toast ── */
+  function showToast(msg, cls) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast ' + cls + ' show';
+    setTimeout(() => t.classList.remove('show'), 2800);
+  }
+
+  /* ── Init ── */
+  renderOverview();
+</script>
+</body>
+</html>

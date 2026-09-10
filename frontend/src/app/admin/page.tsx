@@ -40,7 +40,7 @@ export default function AdminPanel() {
     try {
       let orders: Order[] = [];
       const ordersStr = localStorage.getItem('apex_gear_orders');
-      
+
       if (ordersStr) {
         orders = JSON.parse(ordersStr);
       } else {
@@ -89,7 +89,7 @@ export default function AdminPanel() {
       // Calculate stats
       const totalSales = orders.reduce((sum, o) => sum + (o.totalPrice || 0), 0);
       const activeOrders = orders.filter(o => o.status !== 'DELIVERED').length;
-      
+
       // Count unique customer emails or fallback
       const emails = new Set<string>();
       orders.forEach(o => {
@@ -117,7 +117,7 @@ export default function AdminPanel() {
 
   useEffect(() => {
     loadLocalData();
-    
+
     // Listen for storage events (e.g. checkout adding new orders)
     window.addEventListener('storage', loadLocalData);
     return () => window.removeEventListener('storage', loadLocalData);
@@ -137,7 +137,7 @@ export default function AdminPanel() {
       });
 
       localStorage.setItem('apex_gear_orders', JSON.stringify(updated));
-      
+
       // Reload states
       loadLocalData();
       showToastMessage(`Order #${orderId} updated to ${newStatus}!`);
@@ -160,7 +160,7 @@ export default function AdminPanel() {
     const customerPhone = addressObj.phone || 'N/A';
     const orderIdStr = String(order.id);
 
-    const matchesSearch = 
+    const matchesSearch =
       orderIdStr.toLowerCase().includes(searchQuery.toLowerCase()) ||
       customerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
       customerEmail.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -173,7 +173,7 @@ export default function AdminPanel() {
 
   return (
     <div className="flex flex-col md:flex-row min-h-screen bg-gray-50 text-gray-800 font-sans">
-      
+
       {/* Toast Notification */}
       {toast && (
         <div className="fixed top-5 right-5 bg-slate-900 text-white px-6 py-4 rounded-lg font-bold text-xs tracking-widest uppercase z-50 shadow-2xl border-l-4 border-red-600 transition-all duration-300">
@@ -189,7 +189,7 @@ export default function AdminPanel() {
           </h2>
           <p className="text-[10px] text-slate-500 font-black tracking-widest uppercase mt-1">Store Control Center</p>
         </div>
-        
+
         <nav className="flex flex-col gap-2">
           <button className="flex items-center gap-3 px-5 py-3.5 bg-slate-800 text-white text-xs font-bold tracking-wider uppercase rounded-md text-left cursor-pointer">
             <span>📊</span> Dashboard
@@ -216,7 +216,7 @@ export default function AdminPanel() {
             <h1 className="text-2xl md:text-3xl font-black tracking-tight text-slate-950 uppercase">Back-Office Admin Console</h1>
             <p className="text-gray-500 text-sm mt-1">Real-time revenue monitoring, customer directory, and manual order dispatch management.</p>
           </div>
-          <a 
+          <a
             href="/"
             className="inline-block px-5 py-3 bg-black text-white hover:bg-red-600 text-xs font-black tracking-widest uppercase transition-all shadow-md self-start lg:self-center"
           >
@@ -233,7 +233,7 @@ export default function AdminPanel() {
           <>
             {/* KPI Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-              
+
               <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-xs flex flex-col justify-between">
                 <span className="text-[10px] font-black tracking-widest text-gray-400 uppercase mb-2">Total Store Revenue</span>
                 <h2 className="text-3xl font-black text-slate-950 tracking-tight">
@@ -241,7 +241,7 @@ export default function AdminPanel() {
                 </h2>
                 <span className="text-[10px] text-emerald-600 font-bold mt-2">↑ 100% (Prisma Compatible)</span>
               </div>
-              
+
               <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-xs flex flex-col justify-between">
                 <span className="text-[10px] font-black tracking-widest text-gray-400 uppercase mb-2">Active Shipments</span>
                 <h2 className="text-3xl font-black text-slate-950 tracking-tight">
@@ -249,7 +249,7 @@ export default function AdminPanel() {
                 </h2>
                 <span className="text-[10px] text-amber-500 font-bold mt-2">Pending fulfillment cycles</span>
               </div>
-              
+
               <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-xs flex flex-col justify-between">
                 <span className="text-[10px] font-black tracking-widest text-gray-400 uppercase mb-2">Synced Customer Accounts</span>
                 <h2 className="text-3xl font-black text-slate-950 tracking-tight">
@@ -263,15 +263,15 @@ export default function AdminPanel() {
             {/* Filters Row */}
             <div className="flex flex-col md:flex-row gap-4 mb-6 items-stretch md:items-center">
               <div className="flex-grow">
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   placeholder="🔍 Search orders by Customer name, email, phone or order ID..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full px-5 py-3.5 rounded-lg border border-gray-200 bg-white text-sm font-semibold outline-none focus:border-black shadow-xs"
                 />
               </div>
-              
+
               <div className="flex items-center gap-3">
                 <span className="text-xs font-black tracking-widest text-gray-400 uppercase">FILTER:</span>
                 <select
@@ -294,7 +294,7 @@ export default function AdminPanel() {
                 <h3 className="font-black text-slate-950 text-base uppercase tracking-tight">Transaction & Full-Stack Dispatch Log</h3>
                 <span className="text-xs font-bold text-gray-500">Showing {filteredOrders.length} orders</span>
               </div>
-              
+
               {filteredOrders.length === 0 ? (
                 <div className="text-center py-16 text-gray-500 bg-gray-50">
                   <p className="font-black text-sm uppercase tracking-wider">No orders found.</p>
@@ -330,19 +330,19 @@ export default function AdminPanel() {
                         return (
                           <tr key={order.id} className="hover:bg-gray-50/50 transition-colors">
                             <td className="py-6 px-6 font-black text-slate-950">#{order.id}</td>
-                            
+
                             {/* Customer Details */}
                             <td className="py-6 px-6">
                               <span className="font-bold block text-sm text-slate-950">{name}</span>
                               <span className="text-[11px] text-gray-500 block mt-0.5">{email}</span>
                               <span className="text-[11px] text-gray-500 block mt-0.5">☎ {phone}</span>
                             </td>
-                            
+
                             {/* Address details */}
                             <td className="py-6 px-6 text-gray-500 max-w-xs leading-relaxed">
                               {fullAddress}
                             </td>
-                            
+
                             {/* Items */}
                             <td className="py-6 px-6">
                               <div className="flex flex-col gap-1.5 max-w-[200px]">
@@ -353,27 +353,26 @@ export default function AdminPanel() {
                                 ))}
                               </div>
                             </td>
-                            
+
                             {/* Grand Total */}
                             <td className="py-6 px-6 font-black text-sm text-slate-950">
                               ₹{order.totalPrice.toLocaleString('en-IN')}
                             </td>
-                            
+
                             {/* Status Selector */}
                             <td className="py-6 px-6">
                               <div className="flex flex-col gap-2 items-start">
-                                <span className={`px-2 py-1 text-[9px] font-black tracking-widest rounded-md uppercase border ${
-                                  order.status === 'DELIVERED' 
-                                    ? 'bg-emerald-50 text-emerald-700 border-emerald-200' 
-                                    : order.status === 'SHIPPED' 
-                                      ? 'bg-blue-50 text-blue-700 border-blue-200' 
-                                      : order.status === 'PROCESSING' 
-                                        ? 'bg-amber-50 text-amber-700 border-amber-200' 
+                                <span className={`px-2 py-1 text-[9px] font-black tracking-widest rounded-md uppercase border ${order.status === 'DELIVERED'
+                                    ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                                    : order.status === 'SHIPPED'
+                                      ? 'bg-blue-50 text-blue-700 border-blue-200'
+                                      : order.status === 'PROCESSING'
+                                        ? 'bg-amber-50 text-amber-700 border-amber-200'
                                         : 'bg-gray-50 text-gray-700 border-gray-200'
-                                }`}>
+                                  }`}>
                                   {order.status}
                                 </span>
-                                
+
                                 <select
                                   value={order.status}
                                   onChange={(e) => handleStatusChange(order.id, e.target.value)}

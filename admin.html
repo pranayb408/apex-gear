@@ -1,0 +1,1851 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Portal — APEX GEAR</title>
+  <meta name="description" content="Apex Gear Admin Portal — manage products, orders and inventory." />
+
+  <!-- Fonts: Montserrat + Inter (project fonts) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Montserrat:wght@700;800;900&display=swap"
+    rel="stylesheet" />
+
+  <style>
+    /* ══════════════════════════════════════════
+       RESET & CSS VARIABLES
+    ══════════════════════════════════════════ */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --accent: #000000;
+      --accent-lt: rgba(0, 0, 0, 0.06);
+      --sidebar-w: 248px;
+      --header-h: 62px;
+      --bg: #f3f4f6;
+      --card: #ffffff;
+      --border: #e5e7eb;
+      --text: #111827;
+      --muted: #6b7280;
+      --danger: #dc2626;
+      --success: #16a34a;
+      --toggle-on: #2563eb;
+      --mono: 'Courier New', Courier, monospace;
+      --sans: 'Inter', sans-serif;
+      --head: 'Montserrat', sans-serif;
+      --radius: 8px;
+      --t: 0.2s ease;
+      --shadow: 0 1px 3px rgba(0, 0, 0, .1), 0 1px 2px rgba(0, 0, 0, .06);
+      --shadow-md: 0 4px 12px rgba(0, 0, 0, .1);
+    }
+
+    html,
+    body {
+      height: 100%;
+      background: var(--bg);
+      font-family: var(--sans);
+      color: var(--text);
+    }
+
+    /* ══════════════════════════════════════════
+       HEADER
+    ══════════════════════════════════════════ */
+    .ap-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 200;
+      height: var(--header-h);
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .ap-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .ap-brand .tri {
+      font-size: 20px;
+      color: var(--accent);
+    }
+
+    .ap-brand .wordmark {
+      font-family: var(--head);
+      font-size: 17px;
+      font-weight: 900;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .ap-brand .badge {
+      font-family: var(--mono);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      background: var(--accent);
+      color: #fff;
+      padding: 3px 8px;
+      border-radius: 20px;
+    }
+
+    .ap-header-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .ap-admin-tag {
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    .ap-admin-tag span {
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .btn-logout {
+      padding: 7px 18px;
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      background: transparent;
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      cursor: pointer;
+      transition: background var(--t), color var(--t), border-color var(--t);
+    }
+
+    .btn-logout:hover {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    /* ══════════════════════════════════════════
+       SIDEBAR
+    ══════════════════════════════════════════ */
+    .ap-sidebar {
+      position: fixed;
+      top: var(--header-h);
+      left: 0;
+      bottom: 0;
+      width: var(--sidebar-w);
+      background: var(--card);
+      border-right: 1px solid var(--border);
+      padding: 20px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      z-index: 100;
+      overflow-y: auto;
+    }
+
+    .sb-section-title {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 12px 20px 6px;
+      margin-top: 8px;
+    }
+
+    .sb-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 20px;
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      border: none;
+      background: none;
+      text-align: left;
+      width: 100%;
+      border-right: 3px solid transparent;
+      transition: background var(--t), color var(--t), border-color var(--t);
+      border-radius: 0;
+      text-decoration: none;
+    }
+
+    .sb-link:hover {
+      background: var(--accent-lt);
+      color: var(--text);
+    }
+
+    .sb-link.active {
+      background: var(--accent-lt);
+      color: var(--accent);
+      border-right-color: var(--accent);
+      font-weight: 700;
+    }
+
+    .sb-link svg {
+      flex-shrink: 0;
+    }
+
+    .sb-badge {
+      margin-left: auto;
+      background: var(--accent);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 10px;
+    }
+
+    /* Stats chips in sidebar */
+    .sb-stat-chips {
+      padding: 12px 16px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .sb-chip {
+      background: var(--bg);
+      border-radius: 6px;
+      padding: 10px 8px;
+      text-align: center;
+    }
+
+    .sb-chip-val {
+      font-family: var(--head);
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--accent);
+    }
+
+    .sb-chip-label {
+      font-size: 10px;
+      color: var(--muted);
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      margin-top: 2px;
+    }
+
+    /* ══════════════════════════════════════════
+       MAIN CONTENT
+    ══════════════════════════════════════════ */
+    .ap-main {
+      margin-left: var(--sidebar-w);
+      margin-top: var(--header-h);
+      padding: 28px 32px;
+      min-height: calc(100vh - var(--header-h));
+    }
+
+    /* ── Page sections (tabs) ── */
+    .ap-section {
+      display: none;
+    }
+
+    .ap-section.active {
+      display: block;
+    }
+
+    /* ── Section heading ── */
+    .sec-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 22px;
+    }
+
+    .sec-title {
+      font-family: var(--head);
+      font-size: 22px;
+      font-weight: 900;
+      color: var(--text);
+      letter-spacing: 0.01em;
+    }
+
+    .sec-sub {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    /* ── Card container ── */
+    .ap-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      padding: 28px;
+    }
+
+    /* ══════════════════════════════════════════
+       ADD PRODUCT FORM  (matches GreenCart layout)
+    ══════════════════════════════════════════ */
+    .form-label {
+      display: block;
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .form-group {
+      margin-bottom: 22px;
+    }
+
+    /* Image upload boxes */
+    .img-upload-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .img-upload-box {
+      aspect-ratio: 1;
+      border: 2px dashed var(--border);
+      border-radius: var(--radius);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      position: relative;
+      background: var(--bg);
+      overflow: hidden;
+      transition: border-color var(--t), background var(--t);
+    }
+
+    .img-upload-box:hover {
+      border-color: var(--accent);
+      background: rgba(0, 0, 0, .02);
+    }
+
+    .img-upload-box input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .img-upload-box svg {
+      color: #9ca3af;
+    }
+
+    .img-upload-box span {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      font-family: var(--mono);
+      letter-spacing: 0.06em;
+    }
+
+    .img-upload-box .preview-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      inset: 0;
+      display: none;
+    }
+
+    .img-upload-box.has-img .preview-img {
+      display: block;
+    }
+
+    .img-upload-box.has-img svg,
+    .img-upload-box.has-img span {
+      display: none;
+    }
+
+    .remove-img-btn {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      z-index: 2;
+      background: rgba(0, 0, 0, .6);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      font-size: 12px;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+
+    .img-upload-box.has-img .remove-img-btn {
+      display: flex;
+    }
+
+    /* text inputs */
+    .form-input,
+    .form-select,
+    .form-textarea {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      font-family: var(--sans);
+      font-size: 14px;
+      color: var(--text);
+      background: var(--card);
+      outline: none;
+      transition: border-color var(--t), box-shadow var(--t);
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 110px;
+    }
+
+    .form-input:focus,
+    .form-select:focus,
+    .form-textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(0, 0, 0, .08);
+    }
+
+    /* price row */
+    .price-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    /* ADD button */
+    .btn-add {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 32px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      font-family: var(--head);
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: opacity var(--t), transform var(--t);
+      margin-top: 4px;
+    }
+
+    .btn-add:hover {
+      opacity: .85;
+      transform: translateY(-1px);
+    }
+
+    .btn-add:active {
+      transform: translateY(0);
+    }
+
+    /* ══════════════════════════════════════════
+       PRODUCT LIST TABLE
+    ══════════════════════════════════════════ */
+    .tbl-wrap {
+      overflow-x: auto;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    thead {
+      background: var(--bg);
+    }
+
+    thead th {
+      padding: 13px 16px;
+      text-align: left;
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+    }
+
+    tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    tbody tr:hover {
+      background: rgba(0, 0, 0, .015);
+    }
+
+    tbody td {
+      padding: 14px 16px;
+      vertical-align: middle;
+      font-family: var(--sans);
+      font-size: 14px;
+      color: var(--text);
+    }
+
+    /* product cell with thumb */
+    .tbl-prod-cell {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .tbl-thumb {
+      width: 52px;
+      height: 52px;
+      object-fit: contain;
+      background: var(--bg);
+      border-radius: 6px;
+      flex-shrink: 0;
+      border: 1px solid var(--border);
+    }
+
+    .tbl-prod-name {
+      font-family: var(--head);
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    /* Category chip */
+    .cat-chip {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-family: var(--mono);
+    }
+
+    .cat-chip.shoes {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .cat-chip.specs {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
+    .cat-chip.cloth {
+      background: #fce7f3;
+      color: #9d174d;
+    }
+
+    .cat-chip.watch {
+      background: #d1fae5;
+      color: #064e3b;
+    }
+
+    /* Toggle switch */
+    .toggle {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+    }
+
+    .toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-track {
+      position: absolute;
+      cursor: pointer;
+      inset: 0;
+      background: #d1d5db;
+      border-radius: 24px;
+      transition: background var(--t);
+    }
+
+    .toggle-track::before {
+      content: '';
+      position: absolute;
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background: white;
+      border-radius: 50%;
+      transition: transform var(--t);
+      box-shadow: var(--shadow);
+    }
+
+    .toggle input:checked~.toggle-track {
+      background: var(--toggle-on);
+    }
+
+    .toggle input:checked~.toggle-track::before {
+      transform: translateX(20px);
+    }
+
+    /* Action buttons in table */
+    .btn-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background var(--t), color var(--t);
+      font-size: 14px;
+    }
+
+    .btn-delete {
+      background: #fef2f2;
+      color: var(--danger);
+    }
+
+    .btn-delete:hover {
+      background: var(--danger);
+      color: #fff;
+    }
+
+    /* empty state */
+    .tbl-empty {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .tbl-empty svg {
+      margin-bottom: 12px;
+      color: #d1d5db;
+    }
+
+    /* ══════════════════════════════════════════
+       ORDERS SECTION
+    ══════════════════════════════════════════ */
+    .order-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: start;
+      gap: 18px;
+      transition: box-shadow var(--t);
+    }
+
+    .order-card:hover {
+      box-shadow: var(--shadow-md);
+    }
+
+    .order-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: var(--accent-lt);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .order-id {
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .order-customer {
+      font-family: var(--head);
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text);
+      text-transform: uppercase;
+    }
+
+    .order-items {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .order-right {
+      text-align: right;
+    }
+
+    .order-total {
+      font-family: var(--head);
+      font-size: 16px;
+      font-weight: 900;
+      color: var(--text);
+    }
+
+    .order-date {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+      font-family: var(--mono);
+    }
+
+    .status-chip {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      font-family: var(--mono);
+      margin-top: 8px;
+    }
+
+    .status-chip.processing {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .status-chip.shipped {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
+    .status-chip.delivered {
+      background: #d1fae5;
+      color: #064e3b;
+    }
+
+    .order-select {
+      font-family: var(--mono);
+      font-size: 11px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 8px;
+      cursor: pointer;
+      background: var(--card);
+      color: var(--text);
+      outline: none;
+      margin-top: 8px;
+    }
+
+    .orders-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* ══════════════════════════════════════════
+       DASHBOARD / STATS
+    ══════════════════════════════════════════ */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .stat-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+      font-family: var(--mono);
+    }
+
+    .stat-val {
+      font-family: var(--head);
+      font-size: 28px;
+      font-weight: 900;
+      color: var(--text);
+    }
+
+    .stat-sub {
+      font-size: 12px;
+      color: var(--success);
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .dash-recent-head {
+      font-family: var(--head);
+      font-size: 16px;
+      font-weight: 900;
+      margin-bottom: 16px;
+    }
+
+    /* ══════════════════════════════════════════
+       TOAST
+    ══════════════════════════════════════════ */
+    .ap-toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--text);
+      color: #fff;
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 12px 24px;
+      border-radius: 6px;
+      z-index: 9999;
+      opacity: 0;
+      pointer-events: none;
+      transition: transform .3s ease, opacity .3s ease;
+      white-space: nowrap;
+    }
+
+    .ap-toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .ap-toast.green {
+      background: var(--success);
+    }
+
+    .ap-toast.red {
+      background: var(--danger);
+    }
+
+    /* ══════════════════════════════════════════
+       SEARCH / FILTER BAR
+    ══════════════════════════════════════════ */
+    .list-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .search-wrap {
+      position: relative;
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .search-wrap svg {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      pointer-events: none;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 10px 14px 10px 38px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      font-family: var(--sans);
+      font-size: 14px;
+      color: var(--text);
+      background: var(--card);
+      outline: none;
+      transition: border-color var(--t);
+    }
+
+    .search-input:focus {
+      border-color: var(--accent);
+    }
+
+    .filter-sel {
+      padding: 10px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      background: var(--card);
+      cursor: pointer;
+      outline: none;
+    }
+
+    /* ══════════════════════════════════════════
+       CONFIRM DIALOG
+    ══════════════════════════════════════════ */
+    .ap-dialog-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .4);
+      z-index: 5000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ap-dialog-overlay.open {
+      display: flex;
+    }
+
+    .ap-dialog {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 28px 32px;
+      max-width: 380px;
+      width: 90%;
+      box-shadow: var(--shadow-md);
+      animation: dialogIn .22s ease both;
+    }
+
+    @keyframes dialogIn {
+      from {
+        opacity: 0;
+        transform: scale(.94);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .ap-dialog h3 {
+      font-family: var(--head);
+      font-size: 17px;
+      font-weight: 900;
+      margin-bottom: 10px;
+    }
+
+    .ap-dialog p {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 22px;
+    }
+
+    .dialog-btns {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    .btn-cancel {
+      padding: 9px 20px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      background: transparent;
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--text);
+      transition: background var(--t);
+    }
+
+    .btn-cancel:hover {
+      background: var(--bg);
+    }
+
+    .btn-confirm-del {
+      padding: 9px 20px;
+      border: none;
+      border-radius: var(--radius);
+      background: var(--danger);
+      color: #fff;
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity var(--t);
+    }
+
+    .btn-confirm-del:hover {
+      opacity: .88;
+    }
+
+    /* ══════════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════════ */
+    @media(max-width: 900px) {
+      :root {
+        --sidebar-w: 0px;
+      }
+
+      .ap-sidebar {
+        transform: translateX(-248px);
+        transition: transform .3s ease;
+        width: 248px;
+      }
+
+      .ap-sidebar.open {
+        transform: translateX(0);
+      }
+
+      .ap-main {
+        margin-left: 0;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .img-upload-row {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .price-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media(max-width: 600px) {
+      .ap-main {
+        padding: 16px;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .ap-card {
+        padding: 18px;
+      }
+    }
+
+    /* Sidebar toggle btn (mobile) */
+    .sb-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text);
+      padding: 4px;
+    }
+
+    @media(max-width: 900px) {
+      .sb-toggle {
+        display: flex;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ══════════════════ HEADER ══════════════════ -->
+  <header class="ap-header">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <button class="sb-toggle" id="sbToggle" aria-label="Toggle sidebar">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round">
+          <line x1="3" y1="6" x2="21" y2="6" />
+          <line x1="3" y1="12" x2="21" y2="12" />
+          <line x1="3" y1="18" x2="21" y2="18" />
+        </svg>
+      </button>
+
+      <a href="index.html" class="ap-brand">
+        <span class="tri">▲</span>
+        <span class="wordmark">Apex Gear</span>
+        <span class="badge">Admin</span>
+      </a>
+    </div>
+
+    <div class="ap-header-right">
+      <span class="ap-admin-tag">Hi! <span id="adminNameTag">Admin</span></span>
+      <button class="btn-logout" id="logoutBtn">Logout</button>
+    </div>
+  </header>
+
+  <!-- ══════════════════ SIDEBAR ══════════════════ -->
+  <aside class="ap-sidebar" id="apSidebar">
+
+    <!-- Quick stats chips -->
+    <div class="sb-stat-chips">
+      <div class="sb-chip">
+        <div class="sb-chip-val" id="sbChipProducts">0</div>
+        <div class="sb-chip-label">Products</div>
+      </div>
+      <div class="sb-chip">
+        <div class="sb-chip-val" id="sbChipOrders">0</div>
+        <div class="sb-chip-label">Orders</div>
+      </div>
+    </div>
+
+    <div class="sb-section-title">Catalogue</div>
+
+    <button class="sb-link active" id="sbAddProduct" onclick="navigate('addProduct')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="2" />
+        <line x1="12" y1="8" x2="12" y2="16" />
+        <line x1="8" y1="12" x2="16" y2="12" />
+      </svg>
+      Add Product
+    </button>
+
+    <button class="sb-link" id="sbProductList" onclick="navigate('productList')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <line x1="8" y1="6" x2="21" y2="6" />
+        <line x1="8" y1="12" x2="21" y2="12" />
+        <line x1="8" y1="18" x2="21" y2="18" />
+        <line x1="3" y1="6" x2="3.01" y2="6" />
+        <line x1="3" y1="12" x2="3.01" y2="12" />
+        <line x1="3" y1="18" x2="3.01" y2="18" />
+      </svg>
+      Product List
+      <span class="sb-badge" id="sbBadgeProducts">0</span>
+    </button>
+
+    <div class="sb-section-title">Sales</div>
+
+    <button class="sb-link" id="sbOrders" onclick="navigate('orders')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2" />
+        <rect x="9" y="3" width="6" height="4" rx="1" />
+        <polyline points="9 12 11 14 15 10" />
+      </svg>
+      Orders
+      <span class="sb-badge" id="sbBadgeOrders">0</span>
+    </button>
+
+    <div class="sb-section-title">Site</div>
+
+    <a href="index.html" class="sb-link" target="_blank">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10" />
+        <polyline points="12 8 16 12 12 16" />
+        <line x1="8" y1="12" x2="16" y2="12" />
+      </svg>
+      View Live Store
+    </a>
+
+  </aside>
+
+  <!-- ══════════════════ MAIN ══════════════════ -->
+  <main class="ap-main">
+
+    <!-- ────── DASHBOARD ────── -->
+    <!-- (hidden section, but stats always visible on product list) -->
+
+    <!-- ────── ADD PRODUCT ────── -->
+    <section class="ap-section active" id="sec-addProduct">
+      <div class="sec-head">
+        <div>
+          <div class="sec-title">Add Product</div>
+          <div class="sec-sub">Add a new product to a category page on your store</div>
+        </div>
+      </div>
+
+      <div class="ap-card">
+        <form id="addProductForm" autocomplete="off">
+
+          <!-- Image uploads -->
+          <div class="form-group">
+            <label class="form-label">Product Image</label>
+            <div class="img-upload-row" id="imgUploadRow">
+              <!-- 4 boxes generated by JS -->
+            </div>
+          </div>
+
+          <!-- Product name -->
+          <div class="form-group">
+            <label class="form-label" for="pName">Product Name</label>
+            <input type="text" id="pName" class="form-input" placeholder="e.g. APEX Trail Runner X9" required />
+          </div>
+
+          <!-- Description -->
+          <div class="form-group">
+            <label class="form-label" for="pDesc">Product Description</label>
+            <textarea id="pDesc" class="form-textarea"
+              placeholder="Describe the product features, materials, etc."></textarea>
+          </div>
+
+          <!-- Category -->
+          <div class="form-group">
+            <label class="form-label" for="pCategory">Category</label>
+            <select id="pCategory" class="form-select" required>
+              <option value="" disabled selected>Select Category</option>
+              <option value="shoes">Shoes</option>
+              <option value="specs">Specs</option>
+              <option value="cloth">Clothing</option>
+              <option value="watch">Watches</option>
+            </select>
+          </div>
+
+          <!-- Price row -->
+          <div class="price-row">
+            <div class="form-group">
+              <label class="form-label" for="pPrice">Product Price (INR)</label>
+              <input type="number" id="pPrice" class="form-input" placeholder="0" min="0" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="pOffer">Offer Price (INR)</label>
+              <input type="number" id="pOffer" class="form-input" placeholder="0" min="0" />
+            </div>
+          </div>
+
+          <!-- Badge -->
+          <div class="form-group">
+            <label class="form-label" for="pBadge">Badge (optional)</label>
+            <select id="pBadge" class="form-select">
+              <option value="">None</option>
+              <option value="NEW">NEW</option>
+              <option value="SALE">SALE</option>
+              <option value="HOT">HOT</option>
+              <option value="LIMITED">LIMITED</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn-add">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="12" y1="5" x2="12" y2="19" />
+              <line x1="5" y1="12" x2="19" y2="12" />
+            </svg>
+            ADD PRODUCT
+          </button>
+
+        </form>
+      </div>
+    </section>
+
+    <!-- ────── PRODUCT LIST ────── -->
+    <section class="ap-section" id="sec-productList">
+      <div class="sec-head">
+        <div>
+          <div class="sec-title">All Products</div>
+          <div class="sec-sub" id="productCountSub">0 products across all categories</div>
+        </div>
+      </div>
+
+      <!-- Filter bar -->
+      <div class="list-bar">
+        <div class="search-wrap">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+          <input type="text" class="search-input" id="searchInput" placeholder="Search products…"
+            oninput="filterProducts()" />
+        </div>
+        <select class="filter-sel" id="filterCat" onchange="filterProducts()">
+          <option value="">All Categories</option>
+          <option value="shoes">Shoes</option>
+          <option value="specs">Specs</option>
+          <option value="cloth">Clothing</option>
+          <option value="watch">Watches</option>
+        </select>
+      </div>
+
+      <div class="tbl-wrap">
+        <table id="productTable">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Category</th>
+              <th>Price</th>
+              <th>Offer Price</th>
+              <th>In Stock</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="productTableBody">
+            <tr>
+              <td colspan="6">
+                <div class="tbl-empty">
+                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <rect x="2" y="7" width="20" height="14" rx="2" />
+                    <path d="M16 7V5a2 2 0 0 0-4 0v2" />
+                  </svg>
+                  <div>No products added yet.</div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ────── ORDERS ────── -->
+    <section class="ap-section" id="sec-orders">
+      <div class="sec-head">
+        <div>
+          <div class="sec-title">Orders List</div>
+          <div class="sec-sub" id="orderCountSub">Loading orders…</div>
+        </div>
+      </div>
+
+      <div class="orders-grid" id="ordersContainer">
+        <!-- populated by JS -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ══════════════════ CONFIRM DIALOG ══════════════════ -->
+  <div class="ap-dialog-overlay" id="confirmDialog">
+    <div class="ap-dialog">
+      <h3>Delete Product?</h3>
+      <p>This will permanently remove the product from <strong id="deleteFrom">all</strong> category pages. This action
+        cannot be undone.</p>
+      <div class="dialog-btns">
+        <button class="btn-cancel" onclick="closeDialog()">Cancel</button>
+        <button class="btn-confirm-del" id="confirmDeleteBtn">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════ TOAST ══════════════════ -->
+  <div class="ap-toast" id="apToast"></div>
+
+  <!-- ══════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════ -->
+  <script>
+    /* ──────────────────────────────────────────
+       AUTH GUARD
+    ────────────────────────────────────────── */
+    (function () {
+      if (!sessionStorage.getItem('apexAdminAuth')) {
+        window.location.href = 'seller-login.html';
+      } else {
+        const name = sessionStorage.getItem('apexAdminName') || 'Admin';
+        document.getElementById('adminNameTag').textContent = name;
+      }
+    })();
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      sessionStorage.removeItem('apexAdminAuth');
+      sessionStorage.removeItem('apexAdminName');
+      window.location.href = 'seller-login.html';
+    });
+
+    /* ──────────────────────────────────────────
+       STORE KEYS
+    ────────────────────────────────────────── */
+    const STORE_KEY = 'apexAdminProducts';
+    const ORDER_KEY = 'apexAdminOrders';
+
+    function getProducts() {
+      try { return JSON.parse(localStorage.getItem(STORE_KEY)) || []; }
+      catch { return []; }
+    }
+    function saveProducts(arr) {
+      localStorage.setItem(STORE_KEY, JSON.stringify(arr));
+      syncAllToStore(arr);
+      updateSidebarBadges();
+    }
+    function getOrders() {
+      try { return JSON.parse(localStorage.getItem(ORDER_KEY)) || []; }
+      catch { return []; }
+    }
+    function saveOrders(arr) { localStorage.setItem(ORDER_KEY, JSON.stringify(arr)); }
+
+    /* ──────────────────────────────────────────
+       SEED ALL EXISTING APEX GEAR STORE PRODUCTS
+       (shoes × 12, specs × 12, cloth × 12, watch × 12)
+       Runs only once — if admin product list is empty
+    ────────────────────────────────────────── */
+    var IMG_A = 'shoes.png';
+    var IMG_B = 'shoes.png';
+    var IMG_C = 'shoes.png';
+
+    var STORE_PRODUCTS_BY_CAT = {
+      shoes: [
+        { name: 'Nike Air IQ3408 — Sport Blue', price: 12999, offer: 12999, badge: 'NEW', img: IMG_A },
+        { name: 'Storm 415 Traction Boot', price: 17200, offer: 17200, badge: '', img: IMG_B },
+        { name: 'Sylvan Sneaker — Ranger Green', price: 15600, offer: 15600, badge: '', img: IMG_C },
+        { name: 'Foster High Top — Blacktop', price: 17100, offer: 17100, badge: '', img: IMG_A },
+        { name: 'Naito Sneaker — Black', price: 12600, offer: 10200, badge: 'SALE', img: IMG_B },
+        { name: 'Dima 3.0 — Ranger Green', price: 17600, offer: 17600, badge: '', img: IMG_C },
+        { name: 'Boyer Slip-On — Black', price: 15600, offer: 15600, badge: '', img: IMG_A },
+        { name: '415 Boot Stacked — White', price: 12600, offer: 12600, badge: '', img: IMG_B },
+        { name: 'Vegan Canvas Low — Ecru', price: 9800, offer: 9800, badge: 'NEW', img: IMG_A },
+        { name: 'Urban Bike Clipless — Ranger', price: 21400, offer: 21400, badge: '', img: IMG_C },
+        { name: 'Leather Lace-Up Boot — Brown', price: 19800, offer: 19800, badge: '', img: IMG_A },
+        { name: 'Bromley Pro Vegan — White', price: 14600, offer: 14600, badge: '', img: IMG_B },
+      ],
+      specs: [
+        { name: 'Apex Aviator Sunglasses — Black', price: 4999, offer: 4999, badge: 'NEW', img: 'specs.png' },
+        { name: 'Retro Round Optical Frame — Tortoise', price: 3599, offer: 3599, badge: '', img: 'specs.png' },
+        { name: 'Sport Shield Glasses — Mirror Blue', price: 5499, offer: 5499, badge: '', img: 'specs.png' },
+        { name: 'Apex Classic Wayfarer — Brown', price: 3999, offer: 3599, badge: 'SALE', img: 'specs.png' },
+        { name: 'Cat Eye Frame — Rose Gold', price: 4299, offer: 4299, badge: '', img: 'specs.png' },
+        { name: 'Polarized Wrap Sunglasses — Black', price: 5999, offer: 5999, badge: '', img: 'specs.png' },
+        { name: 'Apex Square Frame — Matte Black', price: 3299, offer: 3299, badge: 'NEW', img: 'specs.png' },
+        { name: 'Half Rim Reading Glasses — Grey', price: 2599, offer: 2599, badge: '', img: 'specs.png' },
+        { name: 'Slim Titanium Frame — Silver', price: 7999, offer: 6999, badge: 'SALE', img: 'specs.png' },
+        { name: 'Oversized Shield — Gunmetal', price: 6299, offer: 6299, badge: '', img: 'specs.png' },
+        { name: 'Sporty Clip-On Frames — Blue', price: 2999, offer: 2999, badge: '', img: 'specs.png' },
+        { name: 'Apex Kids Shield — Orange', price: 1999, offer: 1999, badge: 'NEW', img: 'specs.png' },
+      ],
+      cloth: [
+        { name: 'Apex Urban Hoodie — Black', price: 4299, offer: 4299, badge: 'NEW', img: 'clothes.png' },
+        { name: 'Cargo Trekker Pants — Olive', price: 5499, offer: 5499, badge: '', img: 'clothes.png' },
+        { name: 'Apex Sport Tee — White', price: 1999, offer: 1799, badge: 'SALE', img: 'clothes.png' },
+        { name: 'Denim Urban Jacket — Blue Raw', price: 7999, offer: 7999, badge: '', img: 'clothes.png' },
+        { name: 'Apex Slim Jeans — Black', price: 4999, offer: 4999, badge: '', img: 'clothes.png' },
+        { name: 'Thermal Base Layer — Grey', price: 3299, offer: 3299, badge: 'NEW', img: 'clothes.png' },
+        { name: 'Bomber Jacket — Midnight Blue', price: 8999, offer: 7999, badge: 'SALE', img: 'clothes.png' },
+        { name: 'Apex Polo Shirt — Navy', price: 2499, offer: 2499, badge: '', img: 'clothes.png' },
+        { name: 'Mesh Shorts — Ranger Green', price: 1799, offer: 1799, badge: '', img: 'clothes.png' },
+        { name: 'Fleece Pullover — Charcoal', price: 3999, offer: 3999, badge: 'NEW', img: 'clothes.png' },
+        { name: 'Track Pants — Black', price: 2799, offer: 2799, badge: '', img: 'clothes.png' },
+        { name: 'Knit Beanie — Olive', price: 999, offer: 999, badge: '', img: 'clothes.png' },
+      ],
+      watch: [
+        { name: 'Casio G-Steel GMW-BZ5000D', price: 18999, offer: 18999, badge: 'NEW', img: 'watch.png' },
+        { name: 'Casio G-Shock GA-2100', price: 9999, offer: 9999, badge: '', img: 'watch.png' },
+        { name: 'Casio Edifice ECB-900', price: 13499, offer: 12999, badge: 'SALE', img: 'watch.png' },
+        { name: 'G-Shock DW-6900NB — Neon Blue', price: 7499, offer: 7499, badge: '', img: 'watch.png' },
+        { name: 'G-Steel Carbon Core — Black', price: 21999, offer: 21999, badge: 'NEW', img: 'watch.png' },
+        { name: 'Casio Solar Edifice — Gunmetal', price: 15999, offer: 15999, badge: '', img: 'watch.png' },
+        { name: 'G-Shock Mudmaster — Olive', price: 19499, offer: 17999, badge: 'SALE', img: 'watch.png' },
+        { name: 'Classic A-168WA — Silver', price: 3199, offer: 3199, badge: '', img: 'watch.png' },
+        { name: 'G-Shock Frogman — Black', price: 29999, offer: 29999, badge: 'NEW', img: 'watch.png' },
+        { name: 'Edifice Bluetooth ECB-20', price: 11999, offer: 11999, badge: '', img: 'watch.png' },
+        { name: 'G-Shock Rangeman — Forest Green', price: 23999, offer: 22499, badge: 'SALE', img: 'watch.png' },
+        { name: 'Casio Baby-G BA-130 — Rose Gold', price: 6499, offer: 6499, badge: 'NEW', img: 'watch.png' },
+      ]
+    };
+
+    function seedStoreProducts() {
+      var existing = getProducts();
+      // Only seed if no store products exist yet
+      var hasStore = existing.some(function (p) { return p.isStore; });
+      if (hasStore) return;
+
+      var all = [];
+      var pid = 1000;
+      ['shoes', 'specs', 'cloth', 'watch'].forEach(function (cat) {
+        STORE_PRODUCTS_BY_CAT[cat].forEach(function (p) {
+          all.push({
+            id: pid++,
+            name: p.name,
+            desc: 'Apex Gear ' + catLabel(cat) + ' — premium quality, built for performance.',
+            category: cat,
+            price: p.price,
+            offer: p.offer,
+            badge: p.badge,
+            img: p.img,
+            inStock: true,
+            isStore: true,
+            addedAt: '2026-01-01T00:00:00.000Z'
+          });
+        });
+      });
+
+      // Merge with any admin-added products
+      var combined = all.concat(existing.filter(function (p) { return !p.isStore; }));
+      localStorage.setItem(STORE_KEY, JSON.stringify(combined));
+      syncAllToStore(combined);
+    }
+
+    /* ──────────────────────────────────────────
+       SYNC products → shop page localStorage keys
+    ────────────────────────────────────────── */
+    function syncAllToStore(products) {
+      var maps = { shoes: [], specs: [], cloth: [], watch: [] };
+      products.forEach(function (p) {
+        if (maps[p.category]) maps[p.category].push(p);
+      });
+      Object.keys(maps).forEach(function (c) {
+        localStorage.setItem('apexProducts_' + c, JSON.stringify(maps[c]));
+      });
+    }
+
+    function syncProductToStore(product, add) {
+      var key = 'apexProducts_' + product.category;
+      var arr = [];
+      try { arr = JSON.parse(localStorage.getItem(key)) || []; } catch { }
+      if (add) { arr.push(product); }
+      else { arr = arr.filter(function (p) { return p.id !== product.id; }); }
+      localStorage.setItem(key, JSON.stringify(arr));
+    }
+
+    /* ──────────────────────────────────────────
+       SEED DEMO ORDERS
+    ────────────────────────────────────────── */
+    function seedOrders() {
+      if (getOrders().length === 0) {
+        saveOrders([
+          { id: 'ORD-001', customer: 'Rohan Mehra', items: 'Nike Air IQ3408 — Sport Blue', total: 12999, date: '2026-04-19', status: 'processing' },
+          { id: 'ORD-002', customer: 'Priya Sharma', items: 'G-Steel GMW-BZ5000D', total: 18999, date: '2026-04-18', status: 'shipped' },
+          { id: 'ORD-003', customer: 'Akash Gupta', items: 'Cargo Trekker Pants — Olive', total: 5499, date: '2026-04-17', status: 'delivered' },
+          { id: 'ORD-004', customer: 'Nisha Patel', items: 'Apex Aviator Sunglasses', total: 4999, date: '2026-04-16', status: 'delivered' },
+        ]);
+      }
+    }
+
+    /* ──────────────────────────────────────────
+       NAV
+    ────────────────────────────────────────── */
+    var sections = ['addProduct', 'productList', 'orders'];
+    function navigate(id) {
+      sections.forEach(function (s) {
+        document.getElementById('sec-' + s).classList.remove('active');
+        var btn = document.getElementById('sb' + s.charAt(0).toUpperCase() + s.slice(1));
+        if (btn) btn.classList.remove('active');
+      });
+      document.getElementById('sec-' + id).classList.add('active');
+      var btn = document.getElementById('sb' + id.charAt(0).toUpperCase() + id.slice(1));
+      if (btn) btn.classList.add('active');
+      if (id === 'productList') renderProductTable();
+      if (id === 'orders') renderOrders();
+      document.getElementById('apSidebar').classList.remove('open');
+    }
+
+    /* ──────────────────────────────────────────
+       SIDEBAR BADGES
+    ────────────────────────────────────────── */
+    function updateSidebarBadges() {
+      var pLen = getProducts().length;
+      var oLen = getOrders().length;
+      document.getElementById('sbBadgeProducts').textContent = pLen;
+      document.getElementById('sbBadgeOrders').textContent = oLen;
+      document.getElementById('sbChipProducts').textContent = pLen;
+      document.getElementById('sbChipOrders').textContent = oLen;
+    }
+
+    /* ──────────────────────────────────────────
+       IMAGE UPLOAD (4 boxes)
+    ────────────────────────────────────────── */
+    var imgData = [null, null, null, null];
+
+    function buildUploadBoxes() {
+      var row = document.getElementById('imgUploadRow');
+      row.innerHTML = '';
+      for (var i = 0; i < 4; i++) {
+        (function (idx) {
+          var box = document.createElement('div');
+          box.className = 'img-upload-box';
+          box.id = 'imgBox' + idx;
+          box.innerHTML =
+            '<input type="file" accept="image/*" id="imgFile' + idx + '"/>' +
+            '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>' +
+            '<span>Upload</span>' +
+            '<img class="preview-img" id="imgPrev' + idx + '" src="" alt="preview"/>' +
+            '<button class="remove-img-btn" type="button" id="imgRm' + idx + '">✕</button>';
+          row.appendChild(box);
+
+          document.getElementById('imgFile' + idx).addEventListener('change', function () {
+            if (!this.files[0]) return;
+            var reader = new FileReader();
+            reader.onload = function (e) {
+              imgData[idx] = e.target.result;
+              document.getElementById('imgPrev' + idx).src = e.target.result;
+              document.getElementById('imgBox' + idx).classList.add('has-img');
+            };
+            reader.readAsDataURL(this.files[0]);
+          });
+
+          document.getElementById('imgRm' + idx).addEventListener('click', function () {
+            imgData[idx] = null;
+            document.getElementById('imgPrev' + idx).src = '';
+            document.getElementById('imgBox' + idx).classList.remove('has-img');
+            document.getElementById('imgFile' + idx).value = '';
+          });
+        })(i);
+      }
+    }
+
+    /* ──────────────────────────────────────────
+       ADD PRODUCT
+    ────────────────────────────────────────── */
+    document.getElementById('addProductForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      var name = document.getElementById('pName').value.trim();
+      var desc = document.getElementById('pDesc').value.trim();
+      var category = document.getElementById('pCategory').value;
+      var price = parseFloat(document.getElementById('pPrice').value) || 0;
+      var offer = parseFloat(document.getElementById('pOffer').value) || 0;
+      var badge = document.getElementById('pBadge').value;
+
+      if (!name || !category || price <= 0) {
+        showToast('Please fill in Name, Category and Price.', 'red');
+        return;
+      }
+
+      var firstImg = '';
+      for (var i = 0; i < imgData.length; i++) {
+        if (imgData[i]) { firstImg = imgData[i]; break; }
+      }
+
+      var product = {
+        id: Date.now(),
+        name: name,
+        desc: desc,
+        category: category,
+        price: price,
+        offer: offer || price,
+        badge: badge,
+        img: firstImg,
+        inStock: true,
+        isStore: false,
+        addedAt: new Date().toISOString()
+      };
+
+      var products = getProducts();
+      products.push(product);
+      saveProducts(products);
+
+      showToast('\u2713 Product "' + name + '" added to ' + catLabel(category) + '!', 'green');
+      this.reset();
+      imgData = [null, null, null, null];
+      buildUploadBoxes();
+    });
+
+    function catLabel(c) {
+      return { shoes: 'Shoes', specs: 'Specs', cloth: 'Clothing', watch: 'Watches' }[c] || c;
+    }
+
+    /* ──────────────────────────────────────────
+       PRODUCT LIST TABLE
+    ────────────────────────────────────────── */
+    function renderProductTable() {
+      var allProducts = getProducts();
+      var search = (document.getElementById('searchInput') ? document.getElementById('searchInput').value : '').toLowerCase();
+      var cat = document.getElementById('filterCat') ? document.getElementById('filterCat').value : '';
+
+      var products = allProducts.filter(function (p) {
+        var matchSearch = !search || p.name.toLowerCase().indexOf(search) !== -1;
+        var matchCat = !cat || p.category === cat;
+        return matchSearch && matchCat;
+      });
+
+      document.getElementById('productCountSub').textContent =
+        allProducts.length + ' product(s) across all categories';
+
+      var tbody = document.getElementById('productTableBody');
+
+      if (products.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6"><div class="tbl-empty">' +
+          '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2"/></svg>' +
+          '<div>No products found.</div></div></td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = products.map(function (p) {
+        var thumbHtml = p.img
+          ? '<img class="tbl-thumb" src="' + p.img + '" alt="' + escHtml(p.name) + '" onerror="this.style.display=\'none\'"/>'
+          : '<div class="tbl-thumb" style="display:flex;align-items:center;justify-content:center;color:#9ca3af;font-size:10px;font-weight:700;">' + p.category.toUpperCase() + '</div>';
+
+        var badgeHtml = p.badge
+          ? '<span style="font-size:9px;font-weight:700;letter-spacing:.1em;font-family:var(--mono);color:#fff;background:#000;padding:2px 7px;border-radius:3px;">' + p.badge + '</span>'
+          : '';
+
+        var offerHtml = (p.offer && p.offer !== p.price)
+          ? 'Rs. ' + p.offer.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' INR'
+          : '—';
+
+        var storeBadge = p.isStore
+          ? '<span style="font-size:9px;font-weight:600;color:#1e40af;margin-left:6px;font-family:var(--mono);background:#dbeafe;padding:1px 5px;border-radius:3px;">STORE</span>'
+          : '';
+
+        return '<tr id="row-' + p.id + '">' +
+          '<td><div class="tbl-prod-cell">' + thumbHtml +
+          '<div><div class="tbl-prod-name">' + escHtml(p.name) + '</div>' + badgeHtml + storeBadge + '</div>' +
+          '</div></td>' +
+          '<td><span class="cat-chip ' + p.category + '">' + catLabel(p.category) + '</span></td>' +
+          '<td style="font-family:var(--mono);font-weight:700;">Rs. ' + p.price.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' INR</td>' +
+          '<td style="font-family:var(--mono);color:var(--muted);">' + offerHtml + '</td>' +
+          '<td><label class="toggle" title="' + (p.inStock ? 'In Stock' : 'Out of Stock') + '">' +
+          '<input type="checkbox" ' + (p.inStock ? 'checked' : '') + ' data-id="' + p.id + '" class="stock-toggle"/>' +
+          '<span class="toggle-track"></span>' +
+          '</label></td>' +
+          '<td><button class="btn-icon btn-delete" title="Delete" data-id="' + p.id + '" data-cat="' + catLabel(p.category) + '">' +
+          '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>' +
+          '</button></td>' +
+          '</tr>';
+      }).join('');
+
+      // Wire up toggles
+      document.querySelectorAll('.stock-toggle').forEach(function (cb) {
+        cb.addEventListener('change', function () {
+          toggleStock(parseInt(this.dataset.id), this.checked);
+        });
+      });
+
+      // Wire up delete buttons
+      document.querySelectorAll('.btn-delete').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          confirmDelete(parseInt(this.dataset.id), this.dataset.cat);
+        });
+      });
+    }
+
+    function filterProducts() { renderProductTable(); }
+
+    function toggleStock(id, inStock) {
+      var products = getProducts();
+      var idx = -1;
+      for (var i = 0; i < products.length; i++) { if (products[i].id === id) { idx = i; break; } }
+      if (idx === -1) return;
+      products[idx].inStock = inStock;
+      saveProducts(products);
+      showToast(inStock ? '\u2713 Marked In Stock' : '\u2713 Marked Out of Stock');
+    }
+
+    /* ──────────────────────────────────────────
+       DELETE PRODUCT
+    ────────────────────────────────────────── */
+    var pendingDeleteId = null;
+
+    function confirmDelete(id, catName) {
+      pendingDeleteId = id;
+      document.getElementById('deleteFrom').textContent = catName;
+      document.getElementById('confirmDialog').classList.add('open');
+    }
+
+    function closeDialog() {
+      pendingDeleteId = null;
+      document.getElementById('confirmDialog').classList.remove('open');
+    }
+
+    document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
+      if (!pendingDeleteId) return;
+      var products = getProducts();
+      var deleted = null;
+      var newList = products.filter(function (p) {
+        if (p.id === pendingDeleteId) { deleted = p; return false; }
+        return true;
+      });
+      saveProducts(newList);  // also triggers syncAllToStore
+      closeDialog();
+      renderProductTable();
+      showToast('\uD83D\uDDD1 Product deleted.', 'red');
+    });
+
+    /* ──────────────────────────────────────────
+       ORDERS
+    ────────────────────────────────────────── */
+    function renderOrders() {
+      var orders = getOrders();
+      var container = document.getElementById('ordersContainer');
+      document.getElementById('orderCountSub').textContent = orders.length + ' order(s)';
+
+      if (orders.length === 0) {
+        container.innerHTML = '<div class="tbl-empty" style="padding:60px;background:var(--card);border-radius:var(--radius);border:1px solid var(--border);">' +
+          '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin:0 auto 12px;display:block;color:#d1d5db;"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg>' +
+          '<div style="text-align:center;color:var(--muted);">No orders yet.</div></div>';
+        return;
+      }
+
+      container.innerHTML = orders.map(function (order, i) {
+        return '<div class="order-card">' +
+          '<div class="order-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div>' +
+          '<div><div class="order-id">' + order.id + '</div><div class="order-customer">' + escHtml(order.customer) + '</div><div class="order-items">' + escHtml(order.items) + '</div><span class="status-chip ' + order.status + '">' + order.status.toUpperCase() + '</span></div>' +
+          '<div class="order-right"><div class="order-total" style="font-family:var(--mono);font-size:14px;">Rs. ' + order.total.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' INR</div><div class="order-date">' + order.date + '</div>' +
+          '<select class="order-select" data-idx="' + i + '">' +
+          '<option value="processing"' + (order.status === 'processing' ? ' selected' : '') + '>Processing</option>' +
+          '<option value="shipped"' + (order.status === 'shipped' ? ' selected' : '') + '>Shipped</option>' +
+          '<option value="delivered"' + (order.status === 'delivered' ? ' selected' : '') + '>Delivered</option>' +
+          '</select>' +
+          '</div></div>';
+      }).join('');
+
+      document.querySelectorAll('.order-select').forEach(function (sel) {
+        sel.addEventListener('change', function () {
+          updateOrderStatus(parseInt(this.dataset.idx), this.value);
+        });
+      });
+    }
+
+    function updateOrderStatus(idx, status) {
+      var orders = getOrders();
+      if (!orders[idx]) return;
+      orders[idx].status = status;
+      saveOrders(orders);
+      renderOrders();
+      showToast('\u2713 Order status updated to ' + status);
+    }
+
+    /* ──────────────────────────────────────────
+       TOAST
+    ────────────────────────────────────────── */
+    var toastTimer;
+    function showToast(msg, type) {
+      type = type || '';
+      var t = document.getElementById('apToast');
+      t.textContent = msg;
+      t.className = 'ap-toast show' + (type ? ' ' + type : '');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(function () { t.className = 'ap-toast'; }, 2800);
+    }
+
+    /* ──────────────────────────────────────────
+       HELPERS
+    ────────────────────────────────────────── */
+    function escHtml(s) {
+      return String(s).replace(/[&<>"']/g, function (c) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+      });
+    }
+
+    /* ──────────────────────────────────────────
+       MOBILE SIDEBAR
+    ────────────────────────────────────────── */
+    document.getElementById('sbToggle').addEventListener('click', function () {
+      document.getElementById('apSidebar').classList.toggle('open');
+    });
+
+    /* ──────────────────────────────────────────
+       INIT
+    ────────────────────────────────────────── */
+    seedStoreProducts();
+    seedOrders();
+    buildUploadBoxes();
+    updateSidebarBadges();
+  </script>
+
+</body>
+
+</html>

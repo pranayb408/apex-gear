@@ -1823,7 +1823,20 @@
 
 
     /* ── ADMIN PRODUCT SYNC & DYNAMIC INJECTION ── */
-    const DEFAULT_PRODUCTS = [{"name": "Casio G-Steel GMW-BZ5000D", "price": 18999, "offer": 18999, "badge": "NEW", "img": "watch.png"}, {"name": "Casio G-Shock GA-2100", "price": 9999, "offer": 9999, "badge": "", "img": "watch.png"}, {"name": "Casio Edifice ECB-900", "price": 13499, "offer": 12999, "badge": "SALE", "img": "watch.png"}, {"name": "G-Shock DW-6900NB \u2014 Neon Blue", "price": 7499, "offer": 7499, "badge": "", "img": "watch.png"}, {"name": "G-Steel Carbon Core \u2014 Black", "price": 21999, "offer": 21999, "badge": "NEW", "img": "watch.png"}, {"name": "Casio Solar Edifice \u2014 Gunmetal", "price": 15999, "offer": 15999, "badge": "", "img": "watch.png"}, {"name": "G-Shock Mudmaster \u2014 Olive", "price": 19499, "offer": 17999, "badge": "SALE", "img": "watch.png"}, {"name": "Classic A-168WA \u2014 Silver", "price": 3199, "offer": 3199, "badge": "", "img": "watch.png"}, {"name": "G-Shock Frogman \u2014 Black", "price": 29999, "offer": 29999, "badge": "NEW", "img": "watch.png"}, {"name": "Edifice Bluetooth ECB-20", "price": 11999, "offer": 11999, "badge": "", "img": "watch.png"}, {"name": "G-Shock Rangeman \u2014 Forest Green", "price": 23999, "offer": 22499, "badge": "SALE", "img": "watch.png"}, {"name": "Casio Baby-G BA-130 \u2014 Rose Gold", "price": 6499, "offer": 6499, "badge": "NEW", "img": "watch.png"}];
+    const DEFAULT_PRODUCTS = [
+      { name: "Casio G-Steel GMW-BZ5000D", price: 18999, offer: 18999, badge: "NEW", img: "watch.png" },
+      { name: "Casio G-Shock GA-2100", price: 9999, offer: 9999, badge: "", img: "gshock-ga-2100cm.png" },
+      { name: "Casio Edifice ECB-900", price: 13499, offer: 12999, badge: "SALE", img: "https://images.unsplash.com/photo-1585123334904-845d60e97b29?w=800&q=80" },
+      { name: "G-Shock DW-6900NB — Neon Blue", price: 7499, offer: 7499, badge: "", img: "gshock-gm-6900cmg.png" },
+      { name: "G-Steel Carbon Core — Black", price: 21999, offer: 21999, badge: "NEW", img: "https://images.unsplash.com/photo-1547996160-81dfa63595aa?w=800&q=80" },
+      { name: "Casio Solar Edifice — Gunmetal", price: 15999, offer: 15999, badge: "", img: "https://images.unsplash.com/photo-1551816230-ef5deaed4a26?w=800&q=80" },
+      { name: "G-Shock Mudmaster — Olive", price: 19499, offer: 17999, badge: "SALE", img: "gravitymaster-gwr.png" },
+      { name: "Classic A-168WA — Silver", price: 3199, offer: 3199, badge: "", img: "https://images.unsplash.com/photo-1591034284664-16e8a6b8a9a1?w=800&q=80" },
+      { name: "G-Shock Frogman — Black", price: 29999, offer: 29999, badge: "NEW", img: "https://images.unsplash.com/photo-1612817158483-12d260ebdf70?w=800&q=80" },
+      { name: "Edifice Bluetooth ECB-20", price: 11999, offer: 11999, badge: "", img: "https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?w=800&q=80" },
+      { name: "G-Shock Rangeman — Forest Green", price: 23999, offer: 22499, badge: "SALE", img: "grid-watch.png" },
+      { name: "Casio Baby-G BA-130 — Rose Gold", price: 6499, offer: 6499, badge: "NEW", img: "gshock-pokemon.png" }
+    ];
 
     function determineSubCategory(name, cat) {
       name = name.toLowerCase();
@@ -1870,9 +1883,15 @@
     (function initAndInject() {
       const cat = 'watch';
       const baseId = 1036;
+      const DATA_VERSION = 'v3_unique_watches';
       let localProducts = [];
       try {
+        const storedVer = localStorage.getItem('apexProducts_' + cat + '_ver');
         localProducts = JSON.parse(localStorage.getItem('apexProducts_' + cat)) || [];
+        if (storedVer !== DATA_VERSION || localProducts.every(p => p.img === 'watch.png')) {
+          localStorage.removeItem('apexProducts_' + cat);
+          localProducts = [];
+        }
       } catch(e) {}
 
       if (localProducts.length === 0) {
@@ -1892,6 +1911,7 @@
         }));
 
         localStorage.setItem('apexProducts_' + cat, JSON.stringify(allSeeded));
+        localStorage.setItem('apexProducts_' + cat + '_ver', DATA_VERSION);
         localProducts = allSeeded;
 
         // Sync back to master list 'apexAdminProducts'

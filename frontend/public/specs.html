@@ -1944,62 +1944,18 @@
 
     /* ── ADMIN PRODUCT SYNC & DYNAMIC INJECTION ── */
     const DEFAULT_PRODUCTS = [
-      {
-        name: "Radar® EV Path®",
-        price: 27990,
-        offer: 24990,
-        badge: "HOT",
-        img: "https://assets2.oakley.com/prod-onecp-record-files/pieyewear/5f6a315b-dc2b-4f2b-8e8f-b45c009b8151/0OO9208__9208G6__P21__noshad__fr.png?impolicy=PI20_Oakley_Resize&wid=640",
-        reviews: 184
-      },
-      {
-        name: "Portal Jacket®",
-        price: 32990,
-        offer: 29990,
-        badge: "NEW",
-        img: "https://assets2.oakley.com/prod-onecp-record-files/pieyewear/31338572-2505-434b-ae43-b4580184ff9e/0OO9536__953601__P21__noshad__fr.png?impolicy=PI20_Oakley_Resize&wid=640",
-        reviews: 126
-      },
-      {
-        name: "Custom Holbrook™ XL",
-        price: 34990,
-        offer: 34990,
-        badge: "HOT",
-        img: "https://configure-imagecomposer.fluidretail.net/recipe/49325181/image/Front.png",
-        reviews: 219
-      },
-      {
-        name: "Custom Bisphaera™ Speed",
-        price: 39990,
-        offer: 39990,
-        badge: "NEW",
-        img: "https://configure-imagecomposer.fluidretail.net/recipe/86067585/image/Front.png",
-        reviews: 158
-      },
-      {
-        name: "Encoder",
-        price: 31990,
-        offer: 28990,
-        badge: "SALE",
-        img: "https://assets2.oakley.com/cdn-record-files-pi/66a2552c-66f6-449a-aef8-b2f400a94bb1/901816e5-927e-4f50-bdc7-b2f400a94da4/0OO6029__602901__P21__noshad__fr.png?impolicy=PI20_Oakley_Resize&wid=640",
-        reviews: 271
-      },
-      {
-        name: "Latitude Low Key",
-        price: 26990,
-        offer: 26990,
-        badge: "",
-        img: "https://assets2.oakley.com/prod-onecp-record-files/pieyewear/7ee73b64-2d9f-4318-971c-b26a010d8293/0OO9433__943301__P21__noshad__fr.png?impolicy=PI20_Oakley_Resize&wid=640",
-        reviews: 94
-      },
-      {
-        name: "Kaast",
-        price: 29990,
-        offer: 29990,
-        badge: "NEW",
-        img: "https://assets2.oakley.com/prod-onecp-record-files/pieyewear/5a39cb67-f47c-48d8-9122-b26a01103f6f/0OO9227__922701__P21__noshad__fr.png?impolicy=PI20_Oakley_Resize&wid=640",
-        reviews: 142
-      }
+      { name: "Radar® EV Path®", price: 27990, offer: 24990, badge: "HOT", img: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=800&q=80", reviews: 184 },
+      { name: "Portal Jacket®", price: 32990, offer: 29990, badge: "NEW", img: "https://images.unsplash.com/photo-1508296695146-257a814070b4?w=800&q=80", reviews: 126 },
+      { name: "Custom Holbrook™ XL", price: 34990, offer: 34990, badge: "HOT", img: "https://images.unsplash.com/photo-1577803645773-f96470509666?w=800&q=80", reviews: 219 },
+      { name: "Custom Bisphaera™ Speed", price: 39990, offer: 39990, badge: "NEW", img: "https://images.unsplash.com/photo-1563720360172-67b8f3dce741?w=800&q=80", reviews: 158 },
+      { name: "Encoder Shield", price: 31990, offer: 28990, badge: "SALE", img: "specs.png", reviews: 271 },
+      { name: "Latitude Low Key", price: 26990, offer: 26990, badge: "", img: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800&q=80", reviews: 94 },
+      { name: "Kaast Minimalist", price: 29990, offer: 29990, badge: "NEW", img: "https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=800&q=80", reviews: 142 },
+      { name: "Titanium Half-Rim", price: 18990, offer: 18990, badge: "", img: "https://images.unsplash.com/photo-1591076482161-42ce6da69f67?w=800&q=80", reviews: 105 },
+      { name: "Retro Round Optical Frame", price: 15990, offer: 15990, badge: "", img: "https://images.unsplash.com/photo-1483095348487-53dbf97d8d5b?w=800&q=80", reviews: 88 },
+      { name: "Polarized Wrap Sunglasses", price: 22990, offer: 22990, badge: "SALE", img: "https://images.unsplash.com/photo-1509695503492-413bc6d0a63a?w=800&q=80", reviews: 130 },
+      { name: "Apex Aviator — Gunmetal", price: 24990, offer: 24990, badge: "HOT", img: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=800&q=80", reviews: 215 },
+      { name: "Sporty Clip-On Frames", price: 12990, offer: 12990, badge: "", img: "https://images.unsplash.com/photo-1582142306909-195724d33ffc?w=800&q=80", reviews: 76 }
     ];
 
     function determineSubCategory(name, cat) {
@@ -2047,14 +2003,15 @@
     (function initAndInject() {
       const cat = 'specs';
       const baseId = 1012;
-      const DATA_VERSION = 'v2_oakley';
+      const DATA_VERSION = 'v3_unique_specs';
       let localProducts = [];
       try {
         const storedVersion = localStorage.getItem('apexProducts_' + cat + '_ver');
-        if (storedVersion !== DATA_VERSION) {
-          localStorage.removeItem('apexProducts_' + cat);
-        }
         localProducts = JSON.parse(localStorage.getItem('apexProducts_' + cat)) || [];
+        if (storedVersion !== DATA_VERSION || localProducts.some(p => p.img && (p.img.includes('oakley.com') || p.img.includes('fluidretail.net')))) {
+          localStorage.removeItem('apexProducts_' + cat);
+          localProducts = [];
+        }
       } catch(e) {}
 
       if (localProducts.length === 0) {

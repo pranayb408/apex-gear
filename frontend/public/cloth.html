@@ -1819,7 +1819,20 @@
 
 
     /* ── ADMIN PRODUCT SYNC & DYNAMIC INJECTION ── */
-    const DEFAULT_PRODUCTS = [{"name": "Apex Urban Hoodie \u2014 Black", "price": 4299, "offer": 4299, "badge": "NEW", "img": "clothes.png"}, {"name": "Cargo Trekker Pants \u2014 Olive", "price": 5499, "offer": 5499, "badge": "", "img": "clothes.png"}, {"name": "Apex Sport Tee \u2014 White", "price": 1999, "offer": 1799, "badge": "SALE", "img": "clothes.png"}, {"name": "Denim Urban Jacket \u2014 Blue Raw", "price": 7999, "offer": 7999, "badge": "", "img": "clothes.png"}, {"name": "Apex Slim Jeans \u2014 Black", "price": 4999, "offer": 4999, "badge": "", "img": "clothes.png"}, {"name": "Thermal Base Layer \u2014 Grey", "price": 3299, "offer": 3299, "badge": "NEW", "img": "clothes.png"}, {"name": "Bomber Jacket \u2014 Midnight Blue", "price": 8999, "offer": 7999, "badge": "SALE", "img": "clothes.png"}, {"name": "Apex Polo Shirt \u2014 Navy", "price": 2499, "offer": 2499, "badge": "", "img": "clothes.png"}, {"name": "Mesh Shorts \u2014 Ranger Green", "price": 1799, "offer": 1799, "badge": "", "img": "clothes.png"}, {"name": "Fleece Pullover \u2014 Charcoal", "price": 3999, "offer": 3999, "badge": "NEW", "img": "clothes.png"}, {"name": "Track Pants \u2014 Black", "price": 2799, "offer": 2799, "badge": "", "img": "clothes.png"}, {"name": "Knit Beanie \u2014 Olive", "price": 999, "offer": 999, "badge": "", "img": "clothes.png"}];
+    const DEFAULT_PRODUCTS = [
+      { name: "Apex Urban Hoodie — Black", price: 4299, offer: 4299, badge: "NEW", img: "clothes.png" },
+      { name: "Cargo Trekker Pants — Olive", price: 5499, offer: 5499, badge: "", img: "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=800&q=80" },
+      { name: "Apex Sport Tee — White", price: 1999, offer: 1799, badge: "SALE", img: "cloth-victory.jpg" },
+      { name: "Denim Urban Jacket — Blue Raw", price: 7999, offer: 7999, badge: "", img: "https://images.unsplash.com/photo-1576995853123-5a10305d93c0?w=800&q=80" },
+      { name: "Apex Slim Jeans — Black", price: 4999, offer: 4999, badge: "", img: "baggy-jeans.jpg" },
+      { name: "Thermal Base Layer — Grey", price: 3299, offer: 3299, badge: "NEW", img: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80" },
+      { name: "Bomber Jacket — Midnight Blue", price: 8999, offer: 7999, badge: "SALE", img: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800&q=80" },
+      { name: "Apex Polo Shirt — Navy", price: 2499, offer: 2499, badge: "", img: "https://images.unsplash.com/photo-1589902860314-e910697dea18?w=800&q=80" },
+      { name: "Mesh Shorts — Ranger Green", price: 1799, offer: 1799, badge: "", img: "https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=800&q=80" },
+      { name: "Fleece Pullover — Charcoal", price: 3999, offer: 3999, badge: "NEW", img: "cloth-daredevil.png" },
+      { name: "Track Pants — Black", price: 2799, offer: 2799, badge: "", img: "https://images.unsplash.com/photo-1552902865-b72c031ac5ea?w=800&q=80" },
+      { name: "Knit Beanie — Olive", price: 999, offer: 999, badge: "", img: "spiderman-cap.jpg" }
+    ];
 
     function determineSubCategory(name, cat) {
       name = name.toLowerCase();
@@ -1866,9 +1879,15 @@
     (function initAndInject() {
       const cat = 'cloth';
       const baseId = 1024;
+      const DATA_VERSION = 'v3_unique_clothes';
       let localProducts = [];
       try {
+        const storedVer = localStorage.getItem('apexProducts_' + cat + '_ver');
         localProducts = JSON.parse(localStorage.getItem('apexProducts_' + cat)) || [];
+        if (storedVer !== DATA_VERSION || localProducts.every(p => p.img === 'clothes.png')) {
+          localStorage.removeItem('apexProducts_' + cat);
+          localProducts = [];
+        }
       } catch(e) {}
 
       if (localProducts.length === 0) {
@@ -1888,6 +1907,7 @@
         }));
 
         localStorage.setItem('apexProducts_' + cat, JSON.stringify(allSeeded));
+        localStorage.setItem('apexProducts_' + cat + '_ver', DATA_VERSION);
         localProducts = allSeeded;
 
         // Sync back to master list 'apexAdminProducts'

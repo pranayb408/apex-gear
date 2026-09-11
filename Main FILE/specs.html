@@ -117,7 +117,8 @@
 
     .breadcrumbs a {
       text-decoration: underline;
-      color: #111; font-weight: 800;
+      color: #111;
+      font-weight: 800;
       text-underline-offset: 3px;
     }
 
@@ -190,7 +191,8 @@
       border-bottom: 2px solid transparent;
       margin-bottom: -2px;
       transition: border-color 0.2s, color 0.2s;
-      color: #111; font-weight: 800;
+      color: #111;
+      font-weight: 800;
     }
 
     .cat-tab.active,
@@ -341,7 +343,8 @@
     }
 
     .rev-count {
-      color: #111; font-weight: 800;
+      color: #111;
+      font-weight: 800;
       font-family: "Courier New", Courier, monospace;
       font-weight: 600;
       font-size: 11px;
@@ -359,6 +362,7 @@
       font-weight: 700 !important;
       color: #000 !important;
     }
+
     .pc-orig {
       font-family: "Courier New", Courier, monospace !important;
       font-size: 13px !important;
@@ -533,7 +537,8 @@
 
     .ci-price {
       font-size: 12px;
-      color: #111; font-weight: 800;
+      color: #111;
+      font-weight: 800;
       margin-bottom: 8px;
     }
 
@@ -705,110 +710,246 @@
 
     /* ══ PRODUCT DETAIL MODAL ══ */
     .pdm-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 1200;
-      opacity: 0; pointer-events: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      z-index: 1200;
+      opacity: 0;
+      pointer-events: none;
       transition: opacity 0.35s ease;
       backdrop-filter: blur(4px);
     }
-    .pdm-overlay.open { opacity: 1; pointer-events: all; }
+
+    .pdm-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
 
     .pdm-modal {
-      position: fixed; top: 0; right: 0; width: min(980px, 100vw); height: 100%;
-      background: #fff; z-index: 1201;
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: min(980px, 100vw);
+      height: 100%;
+      background: #fff;
+      z-index: 1201;
       transform: translateX(100%);
-      transition: transform 0.42s cubic-bezier(0.25,0.46,0.45,0.94);
-      display: flex; flex-direction: column; overflow: hidden;
+      transition: transform 0.42s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
       font-family: 'Inter', sans-serif;
     }
-    .pdm-modal.open { transform: translateX(0); }
+
+    .pdm-modal.open {
+      transform: translateX(0);
+    }
 
     .pdm-header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 18px 28px; border-bottom: 1px solid #eee;
-      position: sticky; top: 0; background: #fff; z-index: 10; flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 28px;
+      border-bottom: 1px solid #eee;
+      position: sticky;
+      top: 0;
+      background: #fff;
+      z-index: 10;
+      flex-shrink: 0;
     }
+
     .pdm-breadcrumb {
-      font-size: 13px; color: #111; font-family: 'Inter', sans-serif;
-      font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+      font-size: 13px;
+      color: #111;
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
     }
-    .pdm-breadcrumb a { color: #111; text-decoration: underline; font-weight: 800; }
+
+    .pdm-breadcrumb a {
+      color: #111;
+      text-decoration: underline;
+      font-weight: 800;
+    }
+
     .pdm-close {
-      width: 38px; height: 38px; border: 1.5px solid #ddd;
-      background: #fff; display: flex; align-items: center; justify-content: center;
-      cursor: pointer; font-size: 18px; color: #555;
-      transition: background 0.2s, color 0.2s; flex-shrink: 0;
+      width: 38px;
+      height: 38px;
+      border: 1.5px solid #ddd;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 18px;
+      color: #555;
+      transition: background 0.2s, color 0.2s;
+      flex-shrink: 0;
     }
-    .pdm-close:hover { background: #000; color: #fff; border-color: #000; }
+
+    .pdm-close:hover {
+      background: #000;
+      color: #fff;
+      border-color: #000;
+    }
 
     .pdm-body {
-      flex: 1; overflow-y: auto; display: grid;
+      flex: 1;
+      overflow-y: auto;
+      display: grid;
       grid-template-columns: 1fr 1fr;
     }
 
     /* Left: image gallery */
     .pdm-gallery {
       padding: 28px 16px 28px 28px;
-      display: flex; flex-direction: column; gap: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
       border-right: 1px solid #f0f0f0;
-      position: sticky; top: 72px; height: calc(100vh - 72px);
+      position: sticky;
+      top: 72px;
+      height: calc(100vh - 72px);
       overflow-y: auto;
     }
+
     .pdm-main-img {
-      width: 100%; aspect-ratio: 1/1;
+      width: 100%;
+      aspect-ratio: 1/1;
       background: #f7f7f7;
-      display: flex; align-items: center; justify-content: center;
-      overflow: hidden; margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      margin-bottom: 8px;
     }
+
     .pdm-main-img img {
-      width: 90%; height: 90%; object-fit: contain;
+      width: 90%;
+      height: 90%;
+      object-fit: contain;
       transition: transform 0.4s ease;
     }
-    .pdm-main-img:hover img { transform: scale(1.05); }
-    .pdm-thumbs {
-      display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;
+
+    .pdm-main-img:hover img {
+      transform: scale(1.05);
     }
+
+    .pdm-thumbs {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+
     .pdm-thumb {
-      aspect-ratio: 1/1; background: #f7f7f7;
-      cursor: pointer; border: 2px solid transparent; overflow: hidden;
+      aspect-ratio: 1/1;
+      background: #f7f7f7;
+      cursor: pointer;
+      border: 2px solid transparent;
+      overflow: hidden;
       transition: border-color 0.2s;
     }
-    .pdm-thumb.active { border-color: #000; }
-    .pdm-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .pdm-thumb.active {
+      border-color: #000;
+    }
+
+    .pdm-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
 
     /* Right: product info */
     .pdm-info {
       padding: 28px 28px 28px 24px;
-      display: flex; flex-direction: column; gap: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
     }
-    .pdm-badge-row { display: flex; gap: 8px; }
+
+    .pdm-badge-row {
+      display: flex;
+      gap: 8px;
+    }
+
     .pdm-badge {
-      display: inline-block; padding: 4px 10px;
-      font-size: 9px; font-weight: 800; letter-spacing: 0.16em;
-      text-transform: uppercase; font-family: 'Inter', sans-serif;
+      display: inline-block;
+      padding: 4px 10px;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-family: 'Inter', sans-serif;
     }
-    .pdm-badge--new { background: #1a6b3c; color: #fff; }
-    .pdm-badge--sale { background: #c00; color: #fff; }
-    .pdm-badge--hot { background: #000; color: #fff; }
+
+    .pdm-badge--new {
+      background: #1a6b3c;
+      color: #fff;
+    }
+
+    .pdm-badge--sale {
+      background: #c00;
+      color: #fff;
+    }
+
+    .pdm-badge--hot {
+      background: #000;
+      color: #fff;
+    }
 
     .pdm-name {
-      font-family: 'Montserrat', sans-serif; font-size: 26px;
-      font-weight: 900; color: #000; line-height: 1.2;
-      text-transform: uppercase; letter-spacing: 0.01em; margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 26px;
+      font-weight: 900;
+      color: #000;
+      line-height: 1.2;
+      text-transform: uppercase;
+      letter-spacing: 0.01em;
+      margin: 0;
     }
-    .pdm-stars-row {
-      display: flex; align-items: center; gap: 8px;
-    }
-    .pdm-stars { color: #FFEA3B; font-size: 16px; letter-spacing: 1px; text-shadow: 0 0 1px #bbb; }
-    .pdm-rating-text { font-size: 12px; color: #555; font-weight: 600; }
-    .pdm-rev-link { font-size: 12px; color: #555; text-decoration: underline; cursor: pointer; }
 
-    .pdm-price-row { display: flex; align-items: baseline; gap: 12px; }
+    .pdm-stars-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pdm-stars {
+      color: #FFEA3B;
+      font-size: 16px;
+      letter-spacing: 1px;
+      text-shadow: 0 0 1px #bbb;
+    }
+
+    .pdm-rating-text {
+      font-size: 12px;
+      color: #555;
+      font-weight: 600;
+    }
+
+    .pdm-rev-link {
+      font-size: 12px;
+      color: #555;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    .pdm-price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+    }
+
     .pdm-price {
       font-family: "Courier New", Courier, monospace !important;
       font-size: 20px !important;
       font-weight: 700 !important;
       color: #000 !important;
     }
+
     .pdm-orig-price {
       font-family: "Courier New", Courier, monospace !important;
       font-size: 16px !important;
@@ -816,164 +957,418 @@
       text-decoration: line-through !important;
       margin-left: 10px !important;
     }
+
     .pdm-save-tag {
-      font-size: 11px; font-weight: 700;
-      background: #c00; color: #fff; padding: 3px 8px;
-      font-family: 'Inter', sans-serif; letter-spacing: 0.1em;
+      font-size: 11px;
+      font-weight: 700;
+      background: #c00;
+      color: #fff;
+      padding: 3px 8px;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: 0.1em;
     }
 
-    .pdm-divider { border: none; border-top: 1px solid #eee; margin: 0; }
+    .pdm-divider {
+      border: none;
+      border-top: 1px solid #eee;
+      margin: 0;
+    }
 
     /* Color swatches */
     .pdm-section-label {
-      font-size: 11px; font-weight: 700; letter-spacing: 0.14em;
-      text-transform: uppercase; color: #000; margin-bottom: 10px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #000;
+      margin-bottom: 10px;
       font-family: 'Inter', sans-serif;
     }
+
     .pdm-color-name {
-      font-size: 11px; color: #666; font-family: 'Inter', sans-serif; margin-left: 4px;
+      font-size: 11px;
+      color: #666;
+      font-family: 'Inter', sans-serif;
+      margin-left: 4px;
     }
-    .pdm-swatches { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    .pdm-swatches {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
     .pdm-swatch {
-      width: 30px; height: 30px; border-radius: 50%;
-      border: 2px solid #ddd; cursor: pointer;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 2px solid #ddd;
+      cursor: pointer;
       box-shadow: 0 0 0 3px #fff inset;
       transition: box-shadow 0.15s, border-color 0.15s;
     }
-    .pdm-swatch.active, .pdm-swatch:hover {
+
+    .pdm-swatch.active,
+    .pdm-swatch:hover {
       border-color: #000;
-      box-shadow: 0 0 0 3px #fff inset, 0 0 0 4px rgba(0,0,0,0.12);
+      box-shadow: 0 0 0 3px #fff inset, 0 0 0 4px rgba(0, 0, 0, 0.12);
     }
 
     /* Size selector */
-    .pdm-sizes { display: flex; flex-wrap: wrap; gap: 8px; }
+    .pdm-sizes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
     .pdm-size {
-      min-width: 64px; padding: 10px 8px;
-      border: 1.5px solid #ddd; background: #fff;
-      font-size: 11px; font-weight: 700; font-family: 'Inter', sans-serif;
-      letter-spacing: 0.06em; text-align: center; cursor: pointer;
+      min-width: 64px;
+      padding: 10px 8px;
+      border: 1.5px solid #ddd;
+      background: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: 0.06em;
+      text-align: center;
+      cursor: pointer;
       transition: border-color 0.15s, background 0.15s, color 0.15s;
       line-height: 1.2;
     }
-    .pdm-size:hover { border-color: #000; }
-    .pdm-size.active { background: #000; color: #fff; border-color: #000; }
-    .pdm-size.unavail { color: #ccc; border-color: #f0f0f0; cursor: not-allowed; text-decoration: line-through; }
+
+    .pdm-size:hover {
+      border-color: #000;
+    }
+
+    .pdm-size.active {
+      background: #000;
+      color: #fff;
+      border-color: #000;
+    }
+
+    .pdm-size.unavail {
+      color: #ccc;
+      border-color: #f0f0f0;
+      cursor: not-allowed;
+      text-decoration: line-through;
+    }
+
     .pdm-size-guide {
-      font-size: 11px; color: #555; text-decoration: underline;
-      cursor: pointer; background: none; border: none;
-      font-family: 'Inter', sans-serif; margin-top: 4px; padding: 0;
+      font-size: 11px;
+      color: #555;
+      text-decoration: underline;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: 'Inter', sans-serif;
+      margin-top: 4px;
+      padding: 0;
     }
 
     /* CTA buttons */
     .pdm-add-btn {
-      width: 100%; padding: 18px; background: #FFEA3B; color: #111;
-      border: none; font-family: 'Montserrat', sans-serif;
-      font-size: 13px; font-weight: 900; letter-spacing: 0.14em;
-      text-transform: uppercase; cursor: pointer;
+      width: 100%;
+      padding: 18px;
+      background: #FFEA3B;
+      color: #111;
+      border: none;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      cursor: pointer;
       transition: background 0.2s, transform 0.1s;
-      display: flex; align-items: center; justify-content: center; gap: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
     }
-    .pdm-add-btn:hover { background: #ffe600; }
-    .pdm-add-btn:active { transform: scale(0.99); }
+
+    .pdm-add-btn:hover {
+      background: #ffe600;
+    }
+
+    .pdm-add-btn:active {
+      transform: scale(0.99);
+    }
+
     .pdm-wishlist-btn {
-      width: 100%; padding: 16px; background: #fff; color: #000;
-      border: 2px solid #000; font-family: 'Montserrat', sans-serif;
-      font-size: 12px; font-weight: 800; letter-spacing: 0.14em;
-      text-transform: uppercase; cursor: pointer;
+      width: 100%;
+      padding: 16px;
+      background: #fff;
+      color: #000;
+      border: 2px solid #000;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      cursor: pointer;
       transition: background 0.2s, color 0.2s;
-      display: flex; align-items: center; justify-content: center; gap: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
-    .pdm-wishlist-btn:hover { background: #000; color: #fff; }
+
+    .pdm-wishlist-btn:hover {
+      background: #000;
+      color: #fff;
+    }
 
     /* Guarantees row */
     .pdm-perks {
-      display: flex; gap: 16px; padding: 14px 0;
-      border-top: 1px solid #eee; border-bottom: 1px solid #eee;
+      display: flex;
+      gap: 16px;
+      padding: 14px 0;
+      border-top: 1px solid #eee;
+      border-bottom: 1px solid #eee;
     }
+
     .pdm-perk {
-      flex: 1; text-align: center; font-size: 10px;
-      font-weight: 700; font-family: 'Inter', sans-serif;
-      letter-spacing: 0.1em; text-transform: uppercase; color: #555;
-      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      flex: 1;
+      text-align: center;
+      font-size: 10px;
+      font-weight: 700;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #555;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
     }
-    .pdm-perk svg { color: #000; }
+
+    .pdm-perk svg {
+      color: #000;
+    }
 
     /* Accordion tabs */
-    .pdm-accord-item { border-bottom: 1px solid #eee; }
+    .pdm-accord-item {
+      border-bottom: 1px solid #eee;
+    }
+
     .pdm-accord-header {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 16px 0; cursor: pointer; user-select: none;
-      font-size: 12px; font-weight: 800; letter-spacing: 0.12em;
-      text-transform: uppercase; font-family: 'Montserrat', sans-serif;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 0;
+      cursor: pointer;
+      user-select: none;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-family: 'Montserrat', sans-serif;
     }
-    .pdm-accord-icon { font-size: 18px; transition: transform 0.25s; font-weight: 300; }
-    .pdm-accord-item.open .pdm-accord-icon { transform: rotate(45deg); }
+
+    .pdm-accord-icon {
+      font-size: 18px;
+      transition: transform 0.25s;
+      font-weight: 300;
+    }
+
+    .pdm-accord-item.open .pdm-accord-icon {
+      transform: rotate(45deg);
+    }
+
     .pdm-accord-body {
-      max-height: 0; overflow: hidden;
-      transition: max-height 0.35s cubic-bezier(0.25,0.46,0.45,0.94);
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
-    .pdm-accord-item.open .pdm-accord-body { max-height: 400px; }
+
+    .pdm-accord-item.open .pdm-accord-body {
+      max-height: 400px;
+    }
+
     .pdm-accord-content {
-      padding: 0 0 18px; font-size: 13px; line-height: 1.7;
-      color: #444; font-family: 'Inter', sans-serif;
+      padding: 0 0 18px;
+      font-size: 13px;
+      line-height: 1.7;
+      color: #444;
+      font-family: 'Inter', sans-serif;
     }
-    .pdm-accord-content ul { padding-left: 18px; margin: 8px 0 0; }
-    .pdm-accord-content ul li { margin-bottom: 6px; }
+
+    .pdm-accord-content ul {
+      padding-left: 18px;
+      margin: 8px 0 0;
+    }
+
+    .pdm-accord-content ul li {
+      margin-bottom: 6px;
+    }
 
     /* Reviews inside modal */
-    .pdm-reviews-section { padding: 24px 0 0; }
-    .pdm-rev-header { font-size: 14px; font-weight: 900; text-transform: uppercase; font-family: 'Montserrat', sans-serif; margin-bottom: 16px; }
+    .pdm-reviews-section {
+      padding: 24px 0 0;
+    }
+
+    .pdm-rev-header {
+      font-size: 14px;
+      font-weight: 900;
+      text-transform: uppercase;
+      font-family: 'Montserrat', sans-serif;
+      margin-bottom: 16px;
+    }
+
     .pdm-rev-summary {
-      display: flex; align-items: center; gap: 20px;
-      padding: 18px; background: #f9f9f9; margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 18px;
+      background: #f9f9f9;
+      margin-bottom: 18px;
     }
-    .pdm-rev-big-num { font-size: 48px; font-weight: 900; font-family: 'Montserrat', sans-serif; line-height: 1; }
-    .pdm-rev-big-stars { font-size: 20px; color: #FFEA3B; margin-bottom: 4px; }
-    .pdm-rev-total { font-size: 12px; color: #888; font-family: 'Inter', sans-serif; }
+
+    .pdm-rev-big-num {
+      font-size: 48px;
+      font-weight: 900;
+      font-family: 'Montserrat', sans-serif;
+      line-height: 1;
+    }
+
+    .pdm-rev-big-stars {
+      font-size: 20px;
+      color: #FFEA3B;
+      margin-bottom: 4px;
+    }
+
+    .pdm-rev-total {
+      font-size: 12px;
+      color: #888;
+      font-family: 'Inter', sans-serif;
+    }
+
     .pdm-rev-card {
-      padding: 18px 0; border-bottom: 1px solid #eee;
+      padding: 18px 0;
+      border-bottom: 1px solid #eee;
     }
-    .pdm-rev-meta { display: flex; justify-content: space-between; margin-bottom: 8px; }
-    .pdm-rev-author { font-size: 12px; font-weight: 800; font-family: 'Montserrat', sans-serif; }
-    .pdm-rev-date { font-size: 11px; color: #aaa; font-family: 'Courier New', monospace; }
-    .pdm-rev-stars { font-size: 13px; color: #FFEA3B; margin-bottom: 6px; }
-    .pdm-rev-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
-    .pdm-rev-text { font-size: 12px; color: #555; line-height: 1.6; font-family: 'Inter', sans-serif; }
+
+    .pdm-rev-meta {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .pdm-rev-author {
+      font-size: 12px;
+      font-weight: 800;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .pdm-rev-date {
+      font-size: 11px;
+      color: #aaa;
+      font-family: 'Courier New', monospace;
+    }
+
+    .pdm-rev-stars {
+      font-size: 13px;
+      color: #FFEA3B;
+      margin-bottom: 6px;
+    }
+
+    .pdm-rev-title {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .pdm-rev-text {
+      font-size: 12px;
+      color: #555;
+      line-height: 1.6;
+      font-family: 'Inter', sans-serif;
+    }
 
     /* Sticky add-to-cart bar */
     .pdm-sticky-bar {
-      position: sticky; bottom: 0; left: 0; right: 0;
-      background: #fff; border-top: 2px solid #000;
+      position: sticky;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #fff;
+      border-top: 2px solid #000;
       padding: 14px 28px;
-      display: flex; align-items: center; gap: 16px; flex-shrink: 0;
-    }
-    .pdm-sticky-img {
-      width: 48px; height: 48px; background: #f7f7f7;
-      object-fit: contain; flex-shrink: 0;
-    }
-    .pdm-sticky-name { flex: 1; font-size: 12px; font-weight: 800; font-family: 'Montserrat', sans-serif; text-transform: uppercase; }
-    .pdm-sticky-price { font-size: 14px; font-weight: 900; font-family: 'Montserrat', sans-serif; }
-    .pdm-sticky-add {
-      background: #FFEA3B; color: #111; border: none;
-      padding: 12px 24px; font-family: 'Montserrat', sans-serif;
-      font-size: 11px; font-weight: 900; letter-spacing: 0.14em;
-      text-transform: uppercase; cursor: pointer;
-      transition: background 0.2s; white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 16px;
       flex-shrink: 0;
     }
-    .pdm-sticky-add:hover { background: #ffe600; }
+
+    .pdm-sticky-img {
+      width: 48px;
+      height: 48px;
+      background: #f7f7f7;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+
+    .pdm-sticky-name {
+      flex: 1;
+      font-size: 12px;
+      font-weight: 800;
+      font-family: 'Montserrat', sans-serif;
+      text-transform: uppercase;
+    }
+
+    .pdm-sticky-price {
+      font-size: 14px;
+      font-weight: 900;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .pdm-sticky-add {
+      background: #FFEA3B;
+      color: #111;
+      border: none;
+      padding: 12px 24px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .pdm-sticky-add:hover {
+      background: #ffe600;
+    }
 
     @media (max-width: 768px) {
-      .pdm-modal { width: 100vw; }
-      .pdm-body { grid-template-columns: 1fr; }
-      .pdm-gallery {
-        position: static; height: auto;
-        padding: 16px;
-        border-right: none; border-bottom: 1px solid #eee;
+      .pdm-modal {
+        width: 100vw;
       }
-      .pdm-info { padding: 16px; }
-      .pdm-name { font-size: 20px; }
-      .pdm-sticky-bar { padding: 10px 16px; }
+
+      .pdm-body {
+        grid-template-columns: 1fr;
+      }
+
+      .pdm-gallery {
+        position: static;
+        height: auto;
+        padding: 16px;
+        border-right: none;
+        border-bottom: 1px solid #eee;
+      }
+
+      .pdm-info {
+        padding: 16px;
+      }
+
+      .pdm-name {
+        font-size: 20px;
+      }
+
+      .pdm-sticky-bar {
+        padding: 10px 16px;
+      }
     }
   </style>
 </head>
@@ -983,7 +1378,8 @@
   <!-- Announcement bar -->
   <div class="ann-bar">
     <div class="ann-track">
-      <span>FREE SHIPPING ON ORDERS OVER Rs. 5,000.00 INR &nbsp;&bull;&nbsp; SHOES COLLECTION 2026 &nbsp;&bull;&nbsp; NEW DROPS EVERY WEEK</span>
+      <span>FREE SHIPPING ON ORDERS OVER Rs. 5,000.00 INR &nbsp;&bull;&nbsp; SHOES COLLECTION 2026 &nbsp;&bull;&nbsp;
+        NEW DROPS EVERY WEEK</span>
     </div>
   </div>
 
@@ -995,13 +1391,15 @@
         <span class="logo-txt">APEX GEAR</span>
       </a>
 
-            <ul class="nav-menu" id="navMenu" role="menubar">
+      <ul class="nav-menu" id="navMenu" role="menubar">
         <li class="nm-item has-mega" role="none">
           <a href="shoes.html" class="nm-link" role="menuitem">SHOES</a>
           <div class="mega-menu" id="megaShoes">
             <div class="mega-inner">
               <div class="mega-featured-img">
-                <img src="https://adn-static1.nykaa.com/nykdesignstudio-images/pub/media/catalog/product/5/3/5324c8eNike-HF5441-007_5.jpg?rnd=20200526195200&tr=w-1080" alt="Shoes" loading="lazy" />
+                <img
+                  src="https://adn-static1.nykaa.com/nykdesignstudio-images/pub/media/catalog/product/5/3/5324c8eNike-HF5441-007_5.jpg?rnd=20200526195200&tr=w-1080"
+                  alt="Shoes" loading="lazy" />
                 <span class="img-overlay-text">STAY DRY KICKS</span>
               </div>
               <div class="mega-text-wrap">
@@ -1028,7 +1426,9 @@
           <div class="mega-menu" id="megaWatches">
             <div class="mega-inner">
               <div class="mega-featured-img">
-                <img src="https://gshock.casio.com/content/dam/casio/product-info/locales/in/en/timepiece/product/watch/G/GB/gbm/gbm-2100a-2b/assets/GBM-2100A-2B.png.transform/main-visual-sp/image.png" alt="Casio G-Shock" loading="lazy" style="object-fit:cover" />
+                <img
+                  src="https://gshock.casio.com/content/dam/casio/product-info/locales/in/en/timepiece/product/watch/G/GB/gbm/gbm-2100a-2b/assets/GBM-2100A-2B.png.transform/main-visual-sp/image.png"
+                  alt="Casio G-Shock" loading="lazy" style="object-fit:cover" />
                 <span class="img-overlay-text">CASIO G-SHOCK</span>
               </div>
               <div class="mega-text-wrap">
@@ -1072,7 +1472,9 @@
           <div class="mega-menu" id="megaSpecs">
             <div class="mega-inner">
               <div class="mega-featured-img">
-                <img src="https://cdn-prod.fluidconfigure.com/imagecomposer/generate/?view=Left&recipe=1%2C1%2C-1%2C-1%2C132%2C26%2C2%2C15%2C13%2C1%2C-1%2C-1%2C-1%2C0%2C2%2C-1%2C-1%2C-1%2C-1%2C-1%2C-1%2C0%2C-1%2C0%2C0%2C0%2C-1%2C-1%2C33%2C-1%2C-1%2C0%2C132%2C26%2C-1%2C-1%2C0%2C0%2C1%2C1%2C1%2C1%2C0%2C1%2C-1%2C-1&apiKey=O4K3L3Y78pihfgpR6R1ETlBWEAuvrnoIN2rKxqLH4FkU92tq&workflow=prod&environment=prod&customerId=1479&productId=20900&configVersion=1788345709432&publishedTime=09%2F02%2F2026%2010%3A41%3A49&purpose=serverDisplay&format=jpg&trim=false&padding=0&scale=0.25&binary=true&quality=95" alt="Eyewear" loading="lazy" />
+                <img
+                  src="https://cdn-prod.fluidconfigure.com/imagecomposer/generate/?view=Left&recipe=1%2C1%2C-1%2C-1%2C132%2C26%2C2%2C15%2C13%2C1%2C-1%2C-1%2C-1%2C0%2C2%2C-1%2C-1%2C-1%2C-1%2C-1%2C-1%2C0%2C-1%2C0%2C0%2C0%2C-1%2C-1%2C33%2C-1%2C-1%2C0%2C132%2C26%2C-1%2C-1%2C0%2C0%2C1%2C1%2C1%2C1%2C0%2C1%2C-1%2C-1&apiKey=O4K3L3Y78pihfgpR6R1ETlBWEAuvrnoIN2rKxqLH4FkU92tq&workflow=prod&environment=prod&customerId=1479&productId=20900&configVersion=1788345709432&publishedTime=09%2F02%2F2026%2010%3A41%3A49&purpose=serverDisplay&format=jpg&trim=false&padding=0&scale=0.25&binary=true&quality=95"
+                  alt="Eyewear" loading="lazy" />
                 <span class="img-overlay-text">DESIGNER FRAMES</span>
               </div>
               <div class="mega-text-wrap">
@@ -1229,9 +1631,13 @@
 
     <main class="shop-main">
       <div class="shop-grid" id="shopGrid">
-        <article class="prod-card" data-cat="sports" data-name="Radar® EV Path®" data-price="Rs. 24,990.00 INR" data-img="https://assets2.oakley.com/prod-onecp-record-files/pieyewear/5f6a315b-dc2b-4f2b-8e8f-b45c009b8151/0OO9208__9208G6__P21__noshad__fr.png?impolicy=PI20_Oakley_Resize&amp;wid=640" data-admin-id="1012">
+        <article class="prod-card" data-cat="sports" data-name="Radar® EV Path®" data-price="Rs. 24,990.00 INR"
+          data-img="https://assets2.oakley.com/prod-onecp-record-files/pieyewear/5f6a315b-dc2b-4f2b-8e8f-b45c009b8151/0OO9208__9208G6__P21__noshad__fr.png?impolicy=PI20_Oakley_Resize&amp;wid=640"
+          data-admin-id="1012">
           <div class="pc-img-wrap">
-            <img src="https://assets2.oakley.com/prod-onecp-record-files/pieyewear/5f6a315b-dc2b-4f2b-8e8f-b45c009b8151/0OO9208__9208G6__P21__noshad__fr.png?impolicy=PI20_Oakley_Resize&amp;wid=640" alt="Radar® EV Path®" loading="lazy" />
+            <img
+              src="https://assets2.oakley.com/prod-onecp-record-files/pieyewear/5f6a315b-dc2b-4f2b-8e8f-b45c009b8151/0OO9208__9208G6__P21__noshad__fr.png?impolicy=PI20_Oakley_Resize&amp;wid=640"
+              alt="Radar® EV Path®" loading="lazy" />
             <span class="pc-badge">HOT</span>
             <div class="pc-overlay">
               <button class="pc-quick-add" onclick="addToCartFromAdmin(event, this)">+ QUICK ADD</button>
@@ -1247,9 +1653,13 @@
           </div>
         </article>
 
-        <article class="prod-card" data-cat="sunglasses" data-name="Portal Jacket®" data-price="Rs. 29,990.00 INR" data-img="https://assets2.oakley.com/prod-onecp-record-files/pieyewear/31338572-2505-434b-ae43-b4580184ff9e/0OO9536__953601__P21__noshad__fr.png?impolicy=PI20_Oakley_Resize&amp;wid=640" data-admin-id="1013">
+        <article class="prod-card" data-cat="sunglasses" data-name="Portal Jacket®" data-price="Rs. 29,990.00 INR"
+          data-img="https://assets2.oakley.com/prod-onecp-record-files/pieyewear/31338572-2505-434b-ae43-b4580184ff9e/0OO9536__953601__P21__noshad__fr.png?impolicy=PI20_Oakley_Resize&amp;wid=640"
+          data-admin-id="1013">
           <div class="pc-img-wrap">
-            <img src="https://assets2.oakley.com/prod-onecp-record-files/pieyewear/31338572-2505-434b-ae43-b4580184ff9e/0OO9536__953601__P21__noshad__fr.png?impolicy=PI20_Oakley_Resize&amp;wid=640" alt="Portal Jacket®" loading="lazy" />
+            <img
+              src="https://assets2.oakley.com/prod-onecp-record-files/pieyewear/31338572-2505-434b-ae43-b4580184ff9e/0OO9536__953601__P21__noshad__fr.png?impolicy=PI20_Oakley_Resize&amp;wid=640"
+              alt="Portal Jacket®" loading="lazy" />
             <span class="pc-badge new-badge">NEW</span>
             <div class="pc-overlay">
               <button class="pc-quick-add" onclick="addToCartFromAdmin(event, this)">+ QUICK ADD</button>
@@ -1265,9 +1675,12 @@
           </div>
         </article>
 
-        <article class="prod-card" data-cat="sunglasses" data-name="Custom Holbrook™ XL" data-price="Rs. 34,990.00 INR" data-img="https://configure-imagecomposer.fluidretail.net/recipe/49325181/image/Front.png" data-admin-id="1014">
+        <article class="prod-card" data-cat="sunglasses" data-name="Custom Holbrook™ XL" data-price="Rs. 34,990.00 INR"
+          data-img="https://configure-imagecomposer.fluidretail.net/recipe/49325181/image/Front.png"
+          data-admin-id="1014">
           <div class="pc-img-wrap">
-            <img src="https://configure-imagecomposer.fluidretail.net/recipe/49325181/image/Front.png" alt="Custom Holbrook™ XL" loading="lazy" />
+            <img src="https://configure-imagecomposer.fluidretail.net/recipe/49325181/image/Front.png"
+              alt="Custom Holbrook™ XL" loading="lazy" />
             <span class="pc-badge">CUSTOM</span>
             <div class="pc-overlay">
               <button class="pc-quick-add" onclick="addToCartFromAdmin(event, this)">+ QUICK ADD</button>
@@ -1283,9 +1696,12 @@
           </div>
         </article>
 
-        <article class="prod-card" data-cat="sports" data-name="Custom Bisphaera™ Speed" data-price="Rs. 42,990.00 INR" data-img="https://configure-imagecomposer.fluidretail.net/recipe/86067585/image/Front.png" data-admin-id="1015">
+        <article class="prod-card" data-cat="sports" data-name="Custom Bisphaera™ Speed" data-price="Rs. 42,990.00 INR"
+          data-img="https://configure-imagecomposer.fluidretail.net/recipe/86067585/image/Front.png"
+          data-admin-id="1015">
           <div class="pc-img-wrap">
-            <img src="https://configure-imagecomposer.fluidretail.net/recipe/86067585/image/Front.png" alt="Custom Bisphaera™ Speed" loading="lazy" />
+            <img src="https://configure-imagecomposer.fluidretail.net/recipe/86067585/image/Front.png"
+              alt="Custom Bisphaera™ Speed" loading="lazy" />
             <span class="pc-badge">CUSTOM</span>
             <div class="pc-overlay">
               <button class="pc-quick-add" onclick="addToCartFromAdmin(event, this)">+ QUICK ADD</button>
@@ -1301,9 +1717,13 @@
           </div>
         </article>
 
-        <article class="prod-card" data-cat="sports" data-name="Encoder" data-price="Rs. 38,990.00 INR" data-img="https://assets2.oakley.com/cdn-record-files-pi/66a2552c-66f6-449a-aef8-b2f400a94bb1/901816e5-927e-4f50-bdc7-b2f400a94da4/0OO6029__602901__P21__noshad__fr.png?impolicy=PI20_Oakley_Resize&amp;wid=640" data-admin-id="1016">
+        <article class="prod-card" data-cat="sports" data-name="Encoder" data-price="Rs. 38,990.00 INR"
+          data-img="https://assets2.oakley.com/cdn-record-files-pi/66a2552c-66f6-449a-aef8-b2f400a94bb1/901816e5-927e-4f50-bdc7-b2f400a94da4/0OO6029__602901__P21__noshad__fr.png?impolicy=PI20_Oakley_Resize&amp;wid=640"
+          data-admin-id="1016">
           <div class="pc-img-wrap">
-            <img src="https://assets2.oakley.com/cdn-record-files-pi/66a2552c-66f6-449a-aef8-b2f400a94bb1/901816e5-927e-4f50-bdc7-b2f400a94da4/0OO6029__602901__P21__noshad__fr.png?impolicy=PI20_Oakley_Resize&amp;wid=640" alt="Encoder" loading="lazy" />
+            <img
+              src="https://assets2.oakley.com/cdn-record-files-pi/66a2552c-66f6-449a-aef8-b2f400a94bb1/901816e5-927e-4f50-bdc7-b2f400a94da4/0OO6029__602901__P21__noshad__fr.png?impolicy=PI20_Oakley_Resize&amp;wid=640"
+              alt="Encoder" loading="lazy" />
             <span class="pc-badge">POPULAR</span>
             <div class="pc-overlay">
               <button class="pc-quick-add" onclick="addToCartFromAdmin(event, this)">+ QUICK ADD</button>
@@ -1319,9 +1739,13 @@
           </div>
         </article>
 
-        <article class="prod-card" data-cat="sunglasses" data-name="Suture Jacket®" data-price="Rs. 48,990.00 INR" data-img="https://assets2.oakley.com/cdn-record-files-pi/916dd32a-41ab-412e-a013-b37f012416a9/954ac66f-a67c-4d73-8f49-b37f0124183d/0OO9532__953207__P21__noshad__fr.png?impolicy=PI20_Oakley_Resize&amp;wid=640" data-admin-id="1017">
+        <article class="prod-card" data-cat="sunglasses" data-name="Suture Jacket®" data-price="Rs. 48,990.00 INR"
+          data-img="https://assets2.oakley.com/cdn-record-files-pi/916dd32a-41ab-412e-a013-b37f012416a9/954ac66f-a67c-4d73-8f49-b37f0124183d/0OO9532__953207__P21__noshad__fr.png?impolicy=PI20_Oakley_Resize&amp;wid=640"
+          data-admin-id="1017">
           <div class="pc-img-wrap">
-            <img src="https://assets2.oakley.com/cdn-record-files-pi/916dd32a-41ab-412e-a013-b37f012416a9/954ac66f-a67c-4d73-8f49-b37f0124183d/0OO9532__953207__P21__noshad__fr.png?impolicy=PI20_Oakley_Resize&amp;wid=640" alt="Suture Jacket®" loading="lazy" />
+            <img
+              src="https://assets2.oakley.com/cdn-record-files-pi/916dd32a-41ab-412e-a013-b37f012416a9/954ac66f-a67c-4d73-8f49-b37f0124183d/0OO9532__953207__P21__noshad__fr.png?impolicy=PI20_Oakley_Resize&amp;wid=640"
+              alt="Suture Jacket®" loading="lazy" />
             <span class="pc-badge">HOT</span>
             <div class="pc-overlay">
               <button class="pc-quick-add" onclick="addToCartFromAdmin(event, this)">+ QUICK ADD</button>
@@ -1337,9 +1761,13 @@
           </div>
         </article>
 
-        <article class="prod-card" data-cat="sports" data-name="Encoder Strike" data-price="Rs. 54,990.00 INR" data-img="https://assets2.oakley.com/cdn-record-files-pi/a8b8b619-04fe-4e02-8498-af25013d17e5/120b7a79-7015-4fa9-ab51-af32017e05c1/0OO9235__923502__P21__noshad__fr.png?impolicy=PI20_Oakley_Resize&amp;wid=640" data-admin-id="1018">
+        <article class="prod-card" data-cat="sports" data-name="Encoder Strike" data-price="Rs. 54,990.00 INR"
+          data-img="https://assets2.oakley.com/cdn-record-files-pi/a8b8b619-04fe-4e02-8498-af25013d17e5/120b7a79-7015-4fa9-ab51-af32017e05c1/0OO9235__923502__P21__noshad__fr.png?impolicy=PI20_Oakley_Resize&amp;wid=640"
+          data-admin-id="1018">
           <div class="pc-img-wrap">
-            <img src="https://assets2.oakley.com/cdn-record-files-pi/a8b8b619-04fe-4e02-8498-af25013d17e5/120b7a79-7015-4fa9-ab51-af32017e05c1/0OO9235__923502__P21__noshad__fr.png?impolicy=PI20_Oakley_Resize&amp;wid=640" alt="Encoder Strike" loading="lazy" />
+            <img
+              src="https://assets2.oakley.com/cdn-record-files-pi/a8b8b619-04fe-4e02-8498-af25013d17e5/120b7a79-7015-4fa9-ab51-af32017e05c1/0OO9235__923502__P21__noshad__fr.png?impolicy=PI20_Oakley_Resize&amp;wid=640"
+              alt="Encoder Strike" loading="lazy" />
             <span class="pc-badge new-badge">NEW</span>
             <div class="pc-overlay">
               <button class="pc-quick-add" onclick="addToCartFromAdmin(event, this)">+ QUICK ADD</button>
@@ -1637,78 +2065,78 @@
       'Aviator Classic': {
         badge: 'HOT', badgeClass: 'pdm-badge--hot',
         desc: 'Our Aviator Classic sunglasses feature 100% UV400 polarized lenses in a timeless gold-tone metal frame. Lightweight and scratch-resistant, perfect for all-day wear.',
-        features: ['100% UV400 polarized protection','Scratch-resistant glass lenses','Lightweight gold-tone metal frame','Spring-loaded hinges for flexible fit','Includes protective case & cleaning cloth'],
+        features: ['100% UV400 polarized protection', 'Scratch-resistant glass lenses', 'Lightweight gold-tone metal frame', 'Spring-loaded hinges for flexible fit', 'Includes protective case & cleaning cloth'],
         sizes: ['One Size'],
         unavail: [],
         rating: '4.8', reviews: 670,
-        imgs: ['specs.png','specs.png','specs.png','specs.png'],
-        colors: [{c:'#c9a84c',n:'Gold'},{c:'#111',n:'Black'},{c:'#c0a080',n:'Rose Gold'}]
+        imgs: ['specs.png', 'specs.png', 'specs.png', 'specs.png'],
+        colors: [{ c: '#c9a84c', n: 'Gold' }, { c: '#111', n: 'Black' }, { c: '#c0a080', n: 'Rose Gold' }]
       }
     };
 
     /* Generic fallback reviews */
     const GENERIC_REVIEWS = [
-      { author:'Kavita S.', date:'April 2025', stars:5, title:'Stunning aviators!', text:'The polarized lenses are crystal clear and the frame feels premium. I get so many compliments every time I wear them.' },
-      { author:'Rohit M.', date:'March 2025', stars:5, title:'Worth every rupee', text:'These look exactly like the photos. UV protection is excellent and they stay comfortable even after hours of wear.' },
-      { author:'Naina P.', date:'Feb 2025', stars:4, title:'Great quality frames', text:'Really elegant design and the lenses are top-notch. The case and cleaning cloth included are a nice touch.' }
+      { author: 'Kavita S.', date: 'April 2025', stars: 5, title: 'Stunning aviators!', text: 'The polarized lenses are crystal clear and the frame feels premium. I get so many compliments every time I wear them.' },
+      { author: 'Rohit M.', date: 'March 2025', stars: 5, title: 'Worth every rupee', text: 'These look exactly like the photos. UV protection is excellent and they stay comfortable even after hours of wear.' },
+      { author: 'Naina P.', date: 'Feb 2025', stars: 4, title: 'Great quality frames', text: 'Really elegant design and the lenses are top-notch. The case and cleaning cloth included are a nice touch.' }
     ];
 
     function openProductModal(card) {
-      const name    = card.dataset.name  || 'Product';
-      const price   = card.dataset.price || 'Rs. 0.00 INR';
-      const img     = card.dataset.img   || '';
+      const name = card.dataset.name || 'Product';
+      const price = card.dataset.price || 'Rs. 0.00 INR';
+      const img = card.dataset.img || '';
       const ratingEl = card.querySelector('.rev-count');
-      const revCount = ratingEl ? ratingEl.textContent.replace(/[^0-9]/g,'') : '99';
-      const starsEl  = card.querySelector('.stars');
+      const revCount = ratingEl ? ratingEl.textContent.replace(/[^0-9]/g, '') : '99';
+      const starsEl = card.querySelector('.stars');
       const starsHtml = starsEl ? starsEl.textContent : '★★★★★';
-      const origEl   = card.querySelector('.pc-orig');
+      const origEl = card.querySelector('.pc-orig');
       const origPrice = origEl ? origEl.textContent : '';
 
       const data = PRODUCT_DATA[name] || {};
-      const imgs   = data.imgs   || [img, img, img, img];
-      const colors = data.colors || [{c:'#111',n:'Black'},{c:'#555',n:'Grey'},{c:'#fff',n:'White',border:true}];
-      const sizes  = data.sizes  || ['One Size'];
-      const unav   = data.unavail|| [];
+      const imgs = data.imgs || [img, img, img, img];
+      const colors = data.colors || [{ c: '#111', n: 'Black' }, { c: '#555', n: 'Grey' }, { c: '#fff', n: 'White', border: true }];
+      const sizes = data.sizes || ['One Size'];
+      const unav = data.unavail || [];
       const rating = data.rating || '4.8';
-      const reviews= data.reviews|| parseInt(revCount)||99;
-      const badge  = data.badge  || '';
+      const reviews = data.reviews || parseInt(revCount) || 99;
+      const badge = data.badge || '';
       const badgeCls = data.badgeClass || 'pdm-badge--hot';
-      const desc   = data.desc   || 'Built for performance and style. Premium materials, expert construction, and an aesthetic that turns heads on every terrain.';
-      const feats  = data.features|| ['Premium upper construction','Cushioned midsole for all-day comfort','Durable rubber outsole','Available in multiple colorways','Free shipping on orders over Rs. 5,000.00 INR'];
+      const desc = data.desc || 'Built for performance and style. Premium materials, expert construction, and an aesthetic that turns heads on every terrain.';
+      const feats = data.features || ['Premium upper construction', 'Cushioned midsole for all-day comfort', 'Durable rubber outsole', 'Available in multiple colorways', 'Free shipping on orders over Rs. 5,000.00 INR'];
 
       /* Compute save */
-      const priceNum  = parseFloat(price.replace(/[^0-9.]/g,''));
-      const origNum   = origPrice ? parseFloat(origPrice.replace(/[^0-9.]/g,'')) : 0;
-      const saveAmt   = origNum  ? origNum - priceNum : 0;
-      const savePct   = origNum  ? Math.round(saveAmt/origNum*100) : 0;
+      const priceNum = parseFloat(price.replace(/[^0-9.]/g, ''));
+      const origNum = origPrice ? parseFloat(origPrice.replace(/[^0-9.]/g, '')) : 0;
+      const saveAmt = origNum ? origNum - priceNum : 0;
+      const savePct = origNum ? Math.round(saveAmt / origNum * 100) : 0;
 
       /* Build star averages */
-      const starCount = (starsHtml.match(/★/g)||[]).length;
-      const halfStar  = starsHtml.includes('☆');
-      const fullStarsHtml = '★'.repeat(starCount) + (halfStar?'☆':'') + '☆'.repeat(5-starCount-(halfStar?1:0));
+      const starCount = (starsHtml.match(/★/g) || []).length;
+      const halfStar = starsHtml.includes('☆');
+      const fullStarsHtml = '★'.repeat(starCount) + (halfStar ? '☆' : '') + '☆'.repeat(5 - starCount - (halfStar ? 1 : 0));
 
       /* Thumbs */
-      const thumbsHtml = imgs.map((src,i)=>`
-        <div class="pdm-thumb${i===0?' active':''}" data-idx="${i}">
-          <img src="${src}" alt="View ${i+1}" loading="lazy"/>
+      const thumbsHtml = imgs.map((src, i) => `
+        <div class="pdm-thumb${i === 0 ? ' active' : ''}" data-idx="${i}">
+          <img src="${src}" alt="View ${i + 1}" loading="lazy"/>
         </div>`).join('');
 
       /* Colors */
-      const colorsHtml = colors.map((c,i)=>`
-        <span class="pdm-swatch${i===0?' active':''}" style="background:${c.c};${c.border?'border-color:#ccc;':''}" title="${c.n}" data-color="${c.n}"></span>`).join('');
+      const colorsHtml = colors.map((c, i) => `
+        <span class="pdm-swatch${i === 0 ? ' active' : ''}" style="background:${c.c};${c.border ? 'border-color:#ccc;' : ''}" title="${c.n}" data-color="${c.n}"></span>`).join('');
 
       /* Sizes */
-      const sizesHtml = sizes.map(s=>`
-        <button class="pdm-size${unav.includes(s)?' unavail':''}" ${unav.includes(s)?'disabled':''}>${s}</button>`).join('');
+      const sizesHtml = sizes.map(s => `
+        <button class="pdm-size${unav.includes(s) ? ' unavail' : ''}" ${unav.includes(s) ? 'disabled' : ''}>${s}</button>`).join('');
 
       /* Reviews */
-      const revCardsHtml = GENERIC_REVIEWS.map(r=>`
+      const revCardsHtml = GENERIC_REVIEWS.map(r => `
         <div class="pdm-rev-card">
           <div class="pdm-rev-meta">
             <span class="pdm-rev-author">${r.author}</span>
             <span class="pdm-rev-date">${r.date}</span>
           </div>
-          <div class="pdm-rev-stars">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</div>
+          <div class="pdm-rev-stars">${'★'.repeat(r.stars)}${'☆'.repeat(5 - r.stars)}</div>
           <div class="pdm-rev-title">${r.title}</div>
           <div class="pdm-rev-text">${r.text}</div>
         </div>`).join('');
@@ -1812,7 +2240,7 @@
                 <div class="pdm-accord-body">
                   <div class="pdm-accord-content">
                     <p>${desc}</p>
-                    <ul>${feats.map(f=>`<li>${f}</li>`).join('')}</ul>
+                    <ul>${feats.map(f => `<li>${f}</li>`).join('')}</ul>
                   </div>
                 </div>
               </div>
@@ -1847,9 +2275,9 @@
                         <div class="pdm-rev-total">${reviews.toLocaleString()} reviews</div>
                       </div>
                       <div style="flex:1;margin-left:20px">
-                        ${[5,4,3,2,1].map(s=>{
-                          const pct = s===5?78:s===4?15:s===3?4:s===2?2:1;
-                          return `<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:11px;font-family:'Inter',sans-serif">
+                        ${[5, 4, 3, 2, 1].map(s => {
+        const pct = s === 5 ? 78 : s === 4 ? 15 : s === 3 ? 4 : s === 2 ? 2 : 1;
+        return `<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:11px;font-family:'Inter',sans-serif">
                             <span style="width:12px">${s}★</span>
                             <div style="flex:1;height:6px;background:#eee"><div style="width:${pct}%;height:100%;background:#FFEA3B"></div></div>
                             <span style="width:24px;color:#888">${pct}%</span>
@@ -1883,27 +2311,27 @@
       document.getElementById('pdmCloseBtn').addEventListener('click', closeProductModal);
 
       /* Thumbs */
-      document.querySelectorAll('.pdm-thumb').forEach(th=>{
-        th.addEventListener('click', ()=>{
-          document.querySelectorAll('.pdm-thumb').forEach(t=>t.classList.remove('active'));
+      document.querySelectorAll('.pdm-thumb').forEach(th => {
+        th.addEventListener('click', () => {
+          document.querySelectorAll('.pdm-thumb').forEach(t => t.classList.remove('active'));
           th.classList.add('active');
           document.getElementById('pdmMainImgEl').src = imgs[+th.dataset.idx];
         });
       });
 
       /* Color swatches */
-      document.querySelectorAll('#pdmSwatches .pdm-swatch').forEach(sw=>{
-        sw.addEventListener('click', ()=>{
-          document.querySelectorAll('#pdmSwatches .pdm-swatch').forEach(s=>s.classList.remove('active'));
+      document.querySelectorAll('#pdmSwatches .pdm-swatch').forEach(sw => {
+        sw.addEventListener('click', () => {
+          document.querySelectorAll('#pdmSwatches .pdm-swatch').forEach(s => s.classList.remove('active'));
           sw.classList.add('active');
           document.getElementById('pdmColorName').textContent = sw.dataset.color;
         });
       });
 
       /* Sizes */
-      document.querySelectorAll('#pdmSizes .pdm-size:not(.unavail)').forEach(sz=>{
-        sz.addEventListener('click', ()=>{
-          document.querySelectorAll('#pdmSizes .pdm-size').forEach(s=>s.classList.remove('active'));
+      document.querySelectorAll('#pdmSizes .pdm-size:not(.unavail)').forEach(sz => {
+        sz.addEventListener('click', () => {
+          document.querySelectorAll('#pdmSizes .pdm-size').forEach(s => s.classList.remove('active'));
           sz.classList.add('active');
         });
       });
@@ -1919,8 +2347,8 @@
       document.getElementById('pdmStickyAdd')?.addEventListener('click', doAdd);
 
       /* Accordions */
-      document.querySelectorAll('.pdm-accord-header').forEach(hdr=>{
-        hdr.addEventListener('click', ()=>{
+      document.querySelectorAll('.pdm-accord-header').forEach(hdr => {
+        hdr.addEventListener('click', () => {
           const item = hdr.parentElement;
           item.classList.toggle('open');
         });
@@ -1939,23 +2367,67 @@
     document.getElementById('pdmOverlay')?.addEventListener('click', closeProductModal);
 
     /* Escape key */
-    document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeProductModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeProductModal(); });
 
 
     /* ── ADMIN PRODUCT SYNC & DYNAMIC INJECTION ── */
     const DEFAULT_PRODUCTS = [
-      { name: "Radar® EV Path®", price: 27990, offer: 24990, badge: "HOT", img: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=800&q=80", reviews: 184 },
-      { name: "Portal Jacket®", price: 32990, offer: 29990, badge: "NEW", img: "https://images.unsplash.com/photo-1508296695146-257a814070b4?w=800&q=80", reviews: 126 },
-      { name: "Custom Holbrook™ XL", price: 34990, offer: 34990, badge: "HOT", img: "https://images.unsplash.com/photo-1577803645773-f96470509666?w=800&q=80", reviews: 219 },
-      { name: "Custom Bisphaera™ Speed", price: 39990, offer: 39990, badge: "NEW", img: "https://images.unsplash.com/photo-1563720360172-67b8f3dce741?w=800&q=80", reviews: 158 },
-      { name: "Encoder Shield", price: 31990, offer: 28990, badge: "SALE", img: "specs.png", reviews: 271 },
-      { name: "Latitude Low Key", price: 26990, offer: 26990, badge: "", img: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800&q=80", reviews: 94 },
-      { name: "Kaast Minimalist", price: 29990, offer: 29990, badge: "NEW", img: "https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=800&q=80", reviews: 142 },
-      { name: "Titanium Half-Rim", price: 18990, offer: 18990, badge: "", img: "https://images.unsplash.com/photo-1591076482161-42ce6da69f67?w=800&q=80", reviews: 105 },
-      { name: "Retro Round Optical Frame", price: 15990, offer: 15990, badge: "", img: "https://images.unsplash.com/photo-1483095348487-53dbf97d8d5b?w=800&q=80", reviews: 88 },
-      { name: "Polarized Wrap Sunglasses", price: 22990, offer: 22990, badge: "SALE", img: "https://images.unsplash.com/photo-1509695503492-413bc6d0a63a?w=800&q=80", reviews: 130 },
-      { name: "Apex Aviator — Gunmetal", price: 24990, offer: 24990, badge: "HOT", img: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=800&q=80", reviews: 215 },
-      { name: "Sporty Clip-On Frames", price: 12990, offer: 12990, badge: "", img: "https://images.unsplash.com/photo-1582142306909-195724d33ffc?w=800&q=80", reviews: 76 }
+      {
+        name: "Radar® EV Path®",
+        price: 27990,
+        offer: 24990,
+        badge: "HOT",
+        img: "https://assets2.oakley.com/prod-onecp-record-files/pieyewear/5f6a315b-dc2b-4f2b-8e8f-b45c009b8151/0OO9208__9208G6__P21__noshad__fr.png?impolicy=PI20_Oakley_Resize&wid=640",
+        reviews: 184
+      },
+      {
+        name: "Portal Jacket®",
+        price: 32990,
+        offer: 29990,
+        badge: "NEW",
+        img: "https://assets2.oakley.com/prod-onecp-record-files/pieyewear/31338572-2505-434b-ae43-b4580184ff9e/0OO9536__953601__P21__noshad__fr.png?impolicy=PI20_Oakley_Resize&wid=640",
+        reviews: 126
+      },
+      {
+        name: "Custom Holbrook™ XL",
+        price: 34990,
+        offer: 34990,
+        badge: "HOT",
+        img: "https://configure-imagecomposer.fluidretail.net/recipe/49325181/image/Front.png",
+        reviews: 219
+      },
+      {
+        name: "Custom Bisphaera™ Speed",
+        price: 39990,
+        offer: 39990,
+        badge: "NEW",
+        img: "https://configure-imagecomposer.fluidretail.net/recipe/86067585/image/Front.png",
+        reviews: 158
+      },
+      {
+        name: "Encoder",
+        price: 31990,
+        offer: 28990,
+        badge: "SALE",
+        img: "https://assets2.oakley.com/cdn-record-files-pi/66a2552c-66f6-449a-aef8-b2f400a94bb1/901816e5-927e-4f50-bdc7-b2f400a94da4/0OO6029__602901__P21__noshad__fr.png?impolicy=PI20_Oakley_Resize&wid=640",
+        reviews: 271
+      },
+      {
+        name: "Latitude Low Key",
+        price: 26990,
+        offer: 26990,
+        badge: "",
+        img: "https://assets2.oakley.com/prod-onecp-record-files/pieyewear/7ee73b64-2d9f-4318-971c-b26a010d8293/0OO9433__943301__P21__noshad__fr.png?impolicy=PI20_Oakley_Resize&wid=640",
+        reviews: 94
+      },
+      {
+        name: "Kaast",
+        price: 29990,
+        offer: 29990,
+        badge: "NEW",
+        img: "https://assets2.oakley.com/prod-onecp-record-files/pieyewear/5a39cb67-f47c-48d8-9122-b26a01103f6f/0OO9227__922701__P21__noshad__fr.png?impolicy=PI20_Oakley_Resize&wid=640",
+        reviews: 142
+      }
     ];
 
     function determineSubCategory(name, cat) {
@@ -2003,16 +2475,15 @@
     (function initAndInject() {
       const cat = 'specs';
       const baseId = 1012;
-      const DATA_VERSION = 'v3_unique_specs';
+      const DATA_VERSION = 'v2_oakley';
       let localProducts = [];
       try {
         const storedVersion = localStorage.getItem('apexProducts_' + cat + '_ver');
-        localProducts = JSON.parse(localStorage.getItem('apexProducts_' + cat)) || [];
-        if (storedVersion !== DATA_VERSION || localProducts.some(p => p.img && (p.img.includes('oakley.com') || p.img.includes('fluidretail.net')))) {
+        if (storedVersion !== DATA_VERSION) {
           localStorage.removeItem('apexProducts_' + cat);
-          localProducts = [];
         }
-      } catch(e) {}
+        localProducts = JSON.parse(localStorage.getItem('apexProducts_' + cat)) || [];
+      } catch (e) { }
 
       if (localProducts.length === 0) {
         // Seed category defaults
@@ -2038,7 +2509,7 @@
         let masterProducts = [];
         try {
           masterProducts = JSON.parse(localStorage.getItem('apexAdminProducts')) || [];
-        } catch(e) {}
+        } catch (e) { }
 
         masterProducts = masterProducts.filter(p => !(p.category === cat && p.isStore));
         masterProducts = masterProducts.concat(allSeeded);
@@ -2099,7 +2570,7 @@
           if (typeof openProductModal === 'function') openProductModal(card);
         });
       });
-      
+
       // Update results count label
       const rc = document.getElementById('resultsCount');
       if (rc) {

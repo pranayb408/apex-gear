@@ -106,7 +106,8 @@ document.getElementById('cartX')?.addEventListener('click', closeCart);
 cartOverlay?.addEventListener('click', closeCart);
 document.getElementById('ceShop')?.addEventListener('click', closeCart);
 document.getElementById('checkoutBtn')?.addEventListener('click', () => {
-  window.location.href = `${NEXT_JS_URL}/checkout?uid=${ag_uid}`;
+  if (!cart.length) { showToast('Your cart is empty!'); return; }
+  openCheckoutModal();
 });
 
 /* ─── Quick Add buttons (event delegation — fires even inside overflow:hidden) */
@@ -303,7 +304,7 @@ function initCarousel(trackId, prevId, nextId, progId) {
   function update() {
     const v = vis();
     const max = Math.max(0, cards.length - v);
-    cur = Math.min(cur, max);
+    cur = Math.min(Math.max(0, cur), max);
     const cw = (cards[0]?.offsetWidth || 0) + 16;
     track.style.transform = `translateX(${-cur * cw}px)`;
     if (prev) { prev.disabled = cur === 0; prev.style.opacity = cur === 0 ? '.25' : '1'; }
@@ -314,6 +315,39 @@ function initCarousel(trackId, prevId, nextId, progId) {
   next?.addEventListener('click', () => { cur++; update(); });
   prev?.addEventListener('click', () => { cur--; update(); });
   window.addEventListener('resize', update, { passive: true });
+
+  // Mobile touch swipe gestures
+  let startX = 0;
+  let currentX = 0;
+  let isSwiping = false;
+
+  track.addEventListener('touchstart', e => {
+    if (!e.touches || !e.touches[0]) return;
+    startX = e.touches[0].clientX;
+    currentX = startX;
+    isSwiping = true;
+  }, { passive: true });
+
+  track.addEventListener('touchmove', e => {
+    if (!isSwiping || !e.touches || !e.touches[0]) return;
+    currentX = e.touches[0].clientX;
+  }, { passive: true });
+
+  track.addEventListener('touchend', () => {
+    if (!isSwiping) return;
+    isSwiping = false;
+    const diff = startX - currentX;
+    if (Math.abs(diff) > 40) {
+      if (diff > 0) {
+        cur++;
+        update();
+      } else {
+        cur--;
+        update();
+      }
+    }
+  }, { passive: true });
+
   update();
 }
 
@@ -415,12 +449,176 @@ srTargets.forEach((el, i) => {
 
 const sio = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vis'); sio.unobserve(e.target); } });
-}, { threshold: 0.08, rootMargin: '0px 0px -24px 0px' });
+}, { threshold: 0.01, rootMargin: '80px 0px 80px 0px' });
 
-srTargets.forEach(el => sio.observe(el));
+srTargets.forEach(el => {
+  sio.observe(el);
+  if (el.getBoundingClientRect().top < window.innerHeight + 100) {
+    el.classList.add('vis');
+  }
+});
 
 function loadCart() {
   cart = JSON.parse(localStorage.getItem('ag_cart') || '[]');
+}
+
+/* ─── Account Dropdown ────────────────────────────────────── */
+const acctBtn = document.getElementById('acctBtn');
+const acctDropMenu = document.getElementById('acctDropMenu');
+
+if (acctBtn && acctDropMenu) {
+  acctBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isOpen = acctDropMenu.style.display === 'block';
+    acctDropMenu.style.display = isOpen ? 'none' : 'block';
+    acctBtn.setAttribute('aria-expanded', String(!isOpen));
+  });
+  document.addEventListener('click', () => {
+    acctDropMenu.style.display = 'none';
+    acctBtn.setAttribute('aria-expanded', 'false');
+  });
+  acctDropMenu.addEventListener('click', (e) => e.stopPropagation());
+}
+
+/* ─── Checkout Modal ──────────────────────────────────────── */
+function openCheckoutModal() {
+  const modal   = document.getElementById('checkoutModal');
+  const overlay = document.getElementById('checkoutOverlay');
+  if (!modal) return;
+  const summary = document.getElementById('coOrderSummary');
+  if (summary) {
+    summary.innerHTML = `
+      <p style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#888;margin-bottom:10px;">Order Summary</p>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:6px;">
+        ${cart.map(i => `<li style="display:flex;justify-content:space-between;font-size:13px;"><span>${i.name} &times; ${i.qty}</span><strong>${i.price}</strong></li>`).join('')}
+      </ul>
+      <div style="margin-top:10px;padding-top:10px;border-top:1px solid #e5e5e5;display:flex;justify-content:space-between;font-size:14px;font-weight:800;">
+        <span>Total</span><span>${fmtINR(cartTotal())}</span>
+      </div>`;
+  }
+  modal.style.display   = 'block';
+  overlay.style.display = 'block';
+  document.body.style.overflow = 'hidden';
+  closeCart();
+}
+
+function closeCheckoutModal(e) {
+  if (e && e.target !== document.getElementById('checkoutOverlay')) return;
+  document.getElementById('checkoutModal').style.display   = 'none';
+  document.getElementById('checkoutOverlay').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function placeOrder() {
+  const name    = (document.getElementById('coName')?.value  || '').trim();
+  const phone   = (document.getElementById('coPhone')?.value || '').trim();
+  const addr    = (document.getElementById('coAddr')?.value  || '').trim();
+  const city    = (document.getElementById('coCity')?.value  || '').trim();
+  const pin     = (document.getElementById('coPIN')?.value   || '').trim();
+  const payment = document.getElementById('coPayment')?.value || 'cod';
+  const coMsg   = document.getElementById('coMsg');
+
+  const showErr = (msg) => {
+    coMsg.style.cssText = 'display:block;padding:11px 14px;border-radius:8px;font-size:13px;margin-bottom:16px;background:#fef2f2;color:#b91c1c;border:1px solid #fecaca;';
+    coMsg.textContent = msg;
+  };
+
+  if (!name || !phone || !addr || !city || !pin) { showErr('⚠ Please fill in all required fields.'); return; }
+  if (!/^[6-9]\d{9}$/.test(phone)) { showErr('⚠ Enter a valid 10-digit Indian mobile number.'); return; }
+  if (!/^\d{6}$/.test(pin))         { showErr('⚠ Enter a valid 6-digit PIN code.'); return; }
+
+  const order = {
+    orderId:   'AG-' + Date.now(),
+    placedAt:  new Date().toISOString(),
+    customer:  { name, phone, address: addr, city, pin },
+    payment,
+    items:     cart.map(i => ({ name: i.name, price: i.price, qty: i.qty, img: i.img })),
+    total:     fmtINR(cartTotal()),
+    status:    'CONFIRMED'
+  };
+
+  const orders = JSON.parse(localStorage.getItem('apexOrders') || '[]');
+  orders.unshift(order);
+  localStorage.setItem('apexOrders', JSON.stringify(orders));
+
+  cart = []; saveCart(); renderCart();
+
+  const btn = document.getElementById('coPlaceBtn');
+  btn.disabled = true;
+  btn.textContent = '✓ Order Placed!';
+  btn.style.background = '#1a6b3c';
+  coMsg.style.cssText = 'display:block;padding:11px 14px;border-radius:8px;font-size:13px;margin-bottom:16px;background:#f0fdf4;color:#166534;border:1px solid #bbf7d0;';
+  coMsg.innerHTML = `✓ Order <strong>${order.orderId}</strong> confirmed! Estimated delivery: <strong>3–5 business days</strong>.`;
+
+  setTimeout(() => {
+    document.getElementById('checkoutModal').style.display   = 'none';
+    document.getElementById('checkoutOverlay').style.display = 'none';
+    document.body.style.overflow = '';
+    btn.disabled = false; btn.textContent = 'Place Order →'; btn.style.background = '#000';
+    coMsg.style.display = 'none';
+    ['coName','coPhone','coAddr','coCity','coPIN'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+    showToast('✓ Order placed! Check seller dashboard for status.');
+  }, 3000);
+}
+
+/* ─── Video & Audio Management ────────────────────────────── */
+function initResponsiveVideos() {
+  // 1. Hero Video (background showcase)
+  const heroVid = document.getElementById('heroVid');
+  if (heroVid) {
+    heroVid.muted = true;
+    const showHeroVid = () => heroVid.classList.add('loaded');
+    heroVid.addEventListener('canplay', showHeroVid);
+    heroVid.addEventListener('playing', showHeroVid);
+    if (heroVid.readyState >= 2) showHeroVid();
+    heroVid.play().catch(() => {});
+  }
+
+  // 2. Move Banner Video (Oakley Meta AI Glasses / Virat Kohli)
+  const mbVid = document.getElementById('mbVid');
+  const mbSoundBtn = document.getElementById('mbSoundBtn');
+  if (mbVid) {
+    mbVid.muted = true;
+    const playVideo = () => {
+      const p = mbVid.play();
+      if (p !== undefined) {
+        p.catch(() => {
+          // Autoplay was blocked by mobile browser policy; play on first interaction
+          const onUserGesture = () => {
+            mbVid.play().catch(() => {});
+            document.removeEventListener('touchstart', onUserGesture);
+            document.removeEventListener('click', onUserGesture);
+          };
+          document.addEventListener('touchstart', onUserGesture, { passive: true, once: true });
+          document.addEventListener('click', onUserGesture, { passive: true, once: true });
+        });
+      }
+    };
+    playVideo();
+
+    if (mbSoundBtn) {
+      const icMuted = mbSoundBtn.querySelector('.mb-ic-muted');
+      const icUnmuted = mbSoundBtn.querySelector('.mb-ic-unmuted');
+      const soundLabel = mbSoundBtn.querySelector('.mb-sound-label');
+
+      mbSoundBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (mbVid.muted) {
+          mbVid.muted = false;
+          if (icMuted) icMuted.style.display = 'none';
+          if (icUnmuted) icUnmuted.style.display = 'block';
+          if (soundLabel) soundLabel.textContent = 'MUTE';
+          showToast('Audio unmuted');
+        } else {
+          mbVid.muted = true;
+          if (icMuted) icMuted.style.display = 'block';
+          if (icUnmuted) icUnmuted.style.display = 'none';
+          if (soundLabel) soundLabel.textContent = 'UNMUTE';
+          showToast('Audio muted');
+        }
+      });
+    }
+  }
 }
 
 /* ─── Init ────────────────────────────────────────────────── */
@@ -429,12 +627,5 @@ document.addEventListener('DOMContentLoaded', () => {
   renderCart();
   initQuickAdd();
   initShopLogic();
-
-  // Intercept account and login links to route to Next.js Dashboard
-  document.querySelectorAll('a[href="login.html"], a[href="seller-login.html"], a[href*="login"]').forEach(el => {
-    el.addEventListener('click', (e) => {
-      e.preventDefault();
-      window.location.href = `${NEXT_JS_URL}/dashboard`;
-    });
-  });
+  initResponsiveVideos();
 });

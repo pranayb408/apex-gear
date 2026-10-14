@@ -200,7 +200,8 @@
           <div class="mega-menu" id="megaSpecs">
             <div class="mega-inner">
               <div class="mega-featured-img">
-                <img src="specs.png" alt="Bags" loading="lazy" />
+                <img src="specs.png" alt="Bags"
+                  loading="lazy" />
                 <span class="img-overlay-text">ALL SPECS</span>
               </div>
               <div class="mega-text-wrap">
@@ -229,9 +230,7 @@
           <div class="mega-menu" id="megaWatches">
             <div class="mega-inner">
               <div class="mega-featured-img">
-                <img
-                  src="https://gshock.casio.com/content/dam/casio/product-info/locales/in/en/timepiece/product/watch/G/GB/gbm/gbm-2100a-2b/assets/GBM-2100A-2B.png.transform/main-visual-sp/image.png"
-                  alt="Casio G-Shock" loading="lazy" style="object-fit:cover" />
+                <img src="https://gshock.casio.com/content/dam/casio/product-info/locales/in/en/timepiece/product/watch/G/GB/gbm/gbm-2100a-2b/assets/GBM-2100A-2B.png.transform/main-visual-sp/image.png" alt="Casio G-Shock" loading="lazy" style="object-fit:cover" />
                 <span class="img-overlay-text">CASIO G-SHOCK</span>
               </div>
               <div class="mega-text-wrap">
@@ -280,9 +279,7 @@
           <div class="mega-menu" id="megaShoesMenu">
             <div class="mega-inner">
               <div class="mega-featured-img">
-                <img
-                  src="https://adn-static1.nykaa.com/nykdesignstudio-images/pub/media/catalog/product/5/3/5324c8eNike-HF5441-007_5.jpg?rnd=20200526195200&tr=w-1080"
-                  alt="Shoes" loading="lazy" />
+                <img src="https://adn-static1.nykaa.com/nykdesignstudio-images/pub/media/catalog/product/5/3/5324c8eNike-HF5441-007_5.jpg?rnd=20200526195200&tr=w-1080" alt="Shoes" loading="lazy" />
                 <span class="img-overlay-text">STAY DRY KICKS</span>
               </div>
               <div class="mega-text-wrap">
@@ -315,12 +312,25 @@
             <line x1="21" y1="21" x2="16.65" y2="16.65" />
           </svg>
         </button>
-        <a href="login.html" class="nav-ic" id="acctBtn" aria-label="Account">
-          <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-            <circle cx="12" cy="7" r="4" />
-          </svg>
-        </a>
+        <!-- Account dropdown -->
+        <div class="acct-drop-wrap" id="acctDropWrap" style="position:relative;display:inline-flex;">
+          <button class="nav-ic" id="acctBtn" aria-label="Account" aria-haspopup="true" aria-expanded="false">
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+          </button>
+          <div id="acctDropMenu" style="display:none;position:absolute;top:calc(100% + 8px);right:0;min-width:200px;background:#fff;border:1.5px solid #eee;border-radius:10px;box-shadow:0 8px 32px rgba(0,0,0,.13);z-index:3000;overflow:hidden;font-family:'Inter',sans-serif;">
+            <a href="login.html" style="display:flex;align-items:center;gap:10px;padding:13px 18px;font-size:13px;font-weight:600;color:#111;text-decoration:none;border-bottom:1px solid #f0f0f0;transition:background .15s;" onmouseover="this.style.background='#f8f8f8'" onmouseout="this.style.background=''">
+              <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              Customer Login
+            </a>
+            <a href="seller-login.html" style="display:flex;align-items:center;gap:10px;padding:13px 18px;font-size:13px;font-weight:600;color:#5a31f4;text-decoration:none;transition:background .15s;" onmouseover="this.style.background='#f5f3ff'" onmouseout="this.style.background=''">
+              <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#5a31f4" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+              Seller Portal ›
+            </a>
+          </div>
+        </div>
         <button class="nav-ic cart-ic" id="cartBtn" aria-label="Cart">
           <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
@@ -363,6 +373,7 @@
     </ul>
     <div class="mob-foot">
       <a href="login.html">My Account</a>
+      <a href="seller-login.html" style="color:#5a31f4;font-weight:700;">Seller Portal ›</a>
       <a href="#">Order Status</a>
       <a href="#">Shipping &amp; Returns</a>
       <a href="#">Contact Us</a>
@@ -389,10 +400,18 @@
       </video>
       <!-- Floating product showcase -->
       <div class="hero-product-showcase">
-        <img class="hero-prod active" id="heroProd0" src="slide-shoes.png" alt="Asics Shoes Collection" />
-        <img class="hero-prod" id="heroProd1" src="slide-watch.png" alt="Casio G-Shock Watches" />
-        <img class="hero-prod" id="heroProd2" src="slide-men-clothes.png" alt="Men's Urban Streetwear" />
-        <img class="hero-prod" id="heroProd3" src="slide-women-clothes.png" alt="Women's Contemporary Essentials" />
+        <img class="hero-prod active" id="heroProd0"
+          src="slide-shoes.png"
+          alt="Asics Shoes Collection" />
+        <img class="hero-prod" id="heroProd1"
+          src="slide-watch.png"
+          alt="Casio G-Shock Watches" />
+        <img class="hero-prod" id="heroProd2"
+          src="slide-men-clothes.png"
+          alt="Men's Urban Streetwear" />
+        <img class="hero-prod" id="heroProd3"
+          src="slide-women-clothes.png"
+          alt="Women's Contemporary Essentials" />
       </div>
       <!-- Dots to switch products -->
       <div class="hero-thumb-dots" id="heroThumbDots">
@@ -412,6 +431,7 @@
         </svg>
       </button>
       <!-- Floating particles -->
+      <div class="hero-pts" id="heroPts"></div>
     </div>
 
     <!-- Right: text panel -->
@@ -486,7 +506,7 @@
   <!-- ══════════════════════════════════════
   "THIS IS IT" — Product Carousel #1
   (Chrome Industries exact product card style: image, name, stars, price, color swatches)
-══════════════════════════════════════ -->
+  ══════════════════════════════════════ -->
   <section class="prod-section prod-section--ci" id="thisIsIt">
     <div class="ps-header ps-header--center">
       <h2 class="ps-title">THIS IS IT</h2>
@@ -540,6 +560,7 @@
             </div>
           </div>
         </article>
+
         <!-- Product 3: Nike Air Max 90 -->
         <article class="prod-card" data-name="Nike Air Max 90" data-price="Rs. 12,995.00 INR"
           data-img="https://adn-static1.nykaa.com/nykdesignstudio-images/pub/media/catalog/product/3/2/32d6286Nike-IR5598-001_1.jpg?rnd=20200526195200&tr=w-1080">
@@ -758,7 +779,7 @@
   <!-- ══════════════════════════════════════
   REFLECT / COMMUTE / REPEL panels
   (2×2 editorial image grid with centred bold label)
-  ══════════════════════════════════════ -->
+══════════════════════════════════════ -->
   <section class="label-panels" id="labelPanels">
     <div class="lp-grid">
       <a href="shoes.html" class="lp-card" id="lpReflect">
@@ -1002,18 +1023,62 @@
             <p class="pc-name">MORTAL KOMBAT: FLAWLESS</p>
             <div class="pc-stars">★★★★★ <span class="pc-rcount">(132)</span></div>
             <p class="pc-price"><s class="pc-orig">Rs. 1,299.00 INR</s> Rs. 899.00 INR</p>
-  <section class="move-banner" id="moveBanner" style="position:relative;width:100%;height:520px;overflow:hidden;background:#000;">
-    <div class="mb-bg" style="position:absolute;inset:0;width:100%;height:100%;">
-      <video class="mb-vid" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;display:block;">
+            <div class="pc-swatches">
+              <span class="swatch" style="background:#111" title="Black"></span>
+              <span class="swatch" style="background:#f1c40f" title="Yellow"></span>
+            </div>
+          </div>
+        </article>
+
+      </div>
+      <!-- Bottom controls row: progress bar left, arrows right -->
+      <div class="ps-controls-row">
+        <div class="ps-progress-wrap">
+          <div class="ps-progress" id="prog2"></div>
+        </div>
+        <div class="ps-arrows-group">
+          <button class="ps-arrow-ci ps-prev-ci" id="prev2" aria-label="Previous">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="15 18 9 12 15 6" />
+            </svg>
+          </button>
+          <button class="ps-arrow-ci ps-next-ci" id="next2" aria-label="Next">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 6 15 12 9 18" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+  "MOVE YOUR WAY" — Full-bleed video/story banner
+══════════════════════════════════════ -->
+  <section class="move-banner" id="moveBanner">
+    <div class="mb-bg">
+      <video class="mb-vid" id="mbVid" autoplay muted loop playsinline preload="auto">
         <source src="move_banner_video.mp4" type="video/mp4" />
         <source src="vidssave.com%20Oakley%20Meta%20AI%20Glasses%20_%20Athletic%20Intelligence%20is%20Here%20_%20Virat%20Kohli%20720P.mp4" type="video/mp4" />
       </video>
+      <button class="mb-sound-btn" id="mbSoundBtn" aria-label="Toggle audio">
+        <svg class="mb-ic-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          <line x1="23" y1="9" x2="17" y2="15"></line>
+          <line x1="17" y1="9" x2="23" y2="15"></line>
+        </svg>
+        <svg class="mb-ic-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+        </svg>
+        <span class="mb-sound-label">UNMUTE</span>
+      </button>
     </div>
   </section>
 
   <!-- ══════════════════════════════════════
   "MORE IN DEMAND" — Product Carousel #3
-  ══════════════════════════════════════ -->
+══════════════════════════════════════ -->
   <section class="prod-section prod-section--ci" id="inDemand2">
     <div class="ps-header ps-header--center">
       <h2 class="ps-title">IN DEMAND</h2>
@@ -1196,44 +1261,6 @@
         </div>
       </div>
     </div>
-  </section>  data-img="shoes.png">
-          <div class="pc-img-wrap">
-            <img src="shoes.png" alt="Air Jordan Sixty Plus Low" loading="lazy" />
-            <div class="pc-overlay">
-              <button class="pc-quick-add">+ QUICK ADD</button>
-            </div>
-          </div>
-          <div class="pc-info">
-            <p class="pc-name">AIR JORDAN SIXTY PLUS LOW</p>
-            <div class="pc-stars">★★★★★ <span class="pc-rcount">(98)</span></div>
-            <p class="pc-price">Rs. 10,095.00 INR</p>
-            <div class="pc-swatches">
-              <span class="swatch" style="background:#fff;border-color:#ccc" title="White"></span>
-              <span class="swatch" style="background:#111" title="Black"></span>
-            </div>
-          </div>
-        </article>
-
-      </div>
-      <!-- Bottom controls row: progress bar left, arrows right -->
-      <div class="ps-controls-row">
-        <div class="ps-progress-wrap">
-          <div class="ps-progress" id="prog3"></div>
-        </div>
-        <div class="ps-arrows-group">
-          <button class="ps-arrow-ci ps-prev-ci" id="prev3" aria-label="Previous">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="15 18 9 12 15 6" />
-            </svg>
-          </button>
-          <button class="ps-arrow-ci ps-next-ci" id="next3" aria-label="Next">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="9 6 15 12 9 18" />
-            </svg>
-          </button>
-        </div>
-      </div>
-    </div>
   </section>
 
 
@@ -1391,13 +1418,57 @@
         <span>ORDER TOTAL</span>
         <span class="cart-total-val" id="cartTotalVal">Rs. 0.00 INR</span>
       </div>
-      <button class="btn-yellow checkout-btn" id="checkoutBtn">CHECKOUT</button>
+      <button class="btn-yellow checkout-btn" id="checkoutBtn">CHECKOUT — PLACE ORDER</button>
       <p class="cart-shipping-note">Free shipping on orders above Rs. 5,000.00 INR</p>
     </div>
   </aside>
 
   <!-- TOAST -->
   <div class="toast" id="toast" role="alert" aria-live="polite"></div>
+
+  <!-- ═══ CHECKOUT MODAL ═══ -->
+  <div id="checkoutOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:4000;backdrop-filter:blur(3px);" onclick="closeCheckoutModal(event)"></div>
+  <div id="checkoutModal" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:min(540px,95vw);max-height:90vh;overflow-y:auto;background:#fff;border-radius:16px;padding:36px 36px 32px;z-index:4001;box-shadow:0 24px 80px rgba(0,0,0,.35);font-family:'Inter',sans-serif;">
+    <button onclick="closeCheckoutModal()" style="position:absolute;top:16px;right:18px;background:none;border:none;font-size:22px;cursor:pointer;color:#888;">&times;</button>
+    <h2 style="font-family:'Montserrat',sans-serif;font-size:20px;font-weight:900;text-transform:uppercase;margin-bottom:6px;">Delivery Details</h2>
+    <p style="font-size:12px;color:#888;margin-bottom:24px;">Fill in your address and we'll get your order ready for delivery.</p>
+    <div id="coMsg" style="display:none;padding:11px 14px;border-radius:8px;font-size:13px;margin-bottom:16px;"></div>
+    <div style="display:grid;gap:14px;">
+      <div>
+        <label style="display:block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;">Full Name *</label>
+        <input id="coName" type="text" placeholder="Your full name" style="width:100%;padding:11px 13px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;font-family:inherit;outline:none;" onfocus="this.style.borderColor='#000'" onblur="this.style.borderColor='#ddd'"/>
+      </div>
+      <div>
+        <label style="display:block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;">Phone Number *</label>
+        <input id="coPhone" type="tel" placeholder="10-digit mobile number" style="width:100%;padding:11px 13px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;font-family:inherit;outline:none;" onfocus="this.style.borderColor='#000'" onblur="this.style.borderColor='#ddd'"/>
+      </div>
+      <div>
+        <label style="display:block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;">Delivery Address *</label>
+        <textarea id="coAddr" rows="3" placeholder="House/Flat No., Street, Area" style="width:100%;padding:11px 13px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;font-family:inherit;outline:none;resize:vertical;" onfocus="this.style.borderColor='#000'" onblur="this.style.borderColor='#ddd'"></textarea>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <label style="display:block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;">City *</label>
+          <input id="coCity" type="text" placeholder="City" style="width:100%;padding:11px 13px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;font-family:inherit;outline:none;" onfocus="this.style.borderColor='#000'" onblur="this.style.borderColor='#ddd'"/>
+        </div>
+        <div>
+          <label style="display:block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;">PIN Code *</label>
+          <input id="coPIN" type="text" placeholder="6-digit PIN" style="width:100%;padding:11px 13px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;font-family:inherit;outline:none;" onfocus="this.style.borderColor='#000'" onblur="this.style.borderColor='#ddd'"/>
+        </div>
+      </div>
+      <div>
+        <label style="display:block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;">Payment Method</label>
+        <select id="coPayment" style="width:100%;padding:11px 13px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;font-family:inherit;background:#fff;outline:none;cursor:pointer;">
+          <option value="cod">Cash on Delivery (COD)</option>
+          <option value="upi">UPI / GPay / PhonePe</option>
+          <option value="card">Credit / Debit Card</option>
+          <option value="netbanking">Net Banking</option>
+        </select>
+      </div>
+    </div>
+    <div id="coOrderSummary" style="margin-top:20px;background:#f8f8f8;border-radius:10px;padding:14px 16px;"></div>
+    <button id="coPlaceBtn" onclick="placeOrder()" style="margin-top:20px;width:100%;padding:14px;background:#000;color:#fff;border:none;border-radius:10px;font-family:'Montserrat',sans-serif;font-size:14px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:background .2s;" onmouseover="this.style.background='#222'" onmouseout="this.style.background='#000'">Place Order &rarr;</button>
+  </div>
 
   <script src="main.js"></script>
 </body>

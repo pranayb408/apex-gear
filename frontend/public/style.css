@@ -53,6 +53,8 @@
 html {
   scroll-behavior: smooth;
   font-size: 16px;
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 body {
@@ -61,6 +63,9 @@ body {
   font-family: var(--bf);
   line-height: 1.6;
   overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
+  position: relative;
 }
 
 img {
@@ -1397,6 +1402,66 @@ button {
 }
 
 /* ═══════════════════════════════
+  MOVE YOUR WAY — Video Banner
+═══════════════════════════════ */
+.move-banner {
+  position: relative;
+  width: 100%;
+  height: 520px;
+  max-height: 60vh;
+  overflow: hidden;
+  background: #000;
+  display: block;
+}
+
+.mb-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.mb-vid {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.mb-sound-btn {
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(0, 0, 0, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #fff;
+  border-radius: 24px;
+  font-family: var(--hf);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  user-select: none;
+}
+
+.mb-sound-btn:hover {
+  background: rgba(0, 0, 0, 0.9);
+  border-color: #fff;
+  transform: scale(1.04);
+}
+
+/* ═══════════════════════════════
   REVIEWS
 ═══════════════════════════════ */
 .reviews {
@@ -2259,6 +2324,11 @@ button {
   .lp-grid {
     grid-template-columns: 1fr 1fr;
   }
+
+  .move-banner {
+    height: 420px;
+    max-height: 50vw;
+  }
 }
 
 /* 768px — tablet portrait */
@@ -2270,7 +2340,27 @@ button {
   }
 
   .hero-media {
-    min-height: 56vw;
+    aspect-ratio: 16 / 10;
+    min-height: 280px;
+    max-height: 440px;
+  }
+
+  .move-banner {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    height: auto;
+    min-height: 220px;
+    max-height: 420px;
+  }
+
+  .ep-arrow-btn {
+    opacity: 0.95 !important;
+    transform: none !important;
+  }
+
+  .ep-sublabel {
+    opacity: 0.95 !important;
+    transform: none !important;
   }
 
   .hero-copy {
@@ -2428,7 +2518,11 @@ button {
   }
 
   .move-banner {
-    height: 320px;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    height: auto;
+    min-height: 210px;
+    max-height: 380px;
   }
 
   .lp-card {
@@ -2470,7 +2564,30 @@ button {
   }
 
   .hero-media {
-    min-height: 200px;
+    aspect-ratio: 4 / 3;
+    min-height: 260px;
+    max-height: 340px;
+  }
+
+  .move-banner {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    height: auto;
+    min-height: 195px;
+    max-height: 270px;
+  }
+
+  .mb-sound-btn {
+    bottom: 12px;
+    right: 12px;
+    padding: 6px 12px;
+    font-size: 10px;
+    gap: 6px;
+  }
+
+  #checkoutModal {
+    padding: 22px 18px 24px !important;
+    border-radius: 12px !important;
   }
 
   .hc-title {

@@ -571,8 +571,8 @@
       sessionStorage.setItem('apexAdminAuth', 'true');
       sessionStorage.setItem('apexAdminName', 'Admin');
       sessionStorage.setItem('apexSellerEmail', email);
-      showMsg('✓ Sign in successful! Redirecting to Admin Portal…', 'success');
-      setTimeout(() => { window.location.href = 'admin.html'; }, 1400);
+      showMsg('✓ Sign in successful! Redirecting to All Products…', 'success');
+      setTimeout(() => { window.location.href = 'admin.html?tab=productList'; }, 1400);
       return;
     }
 

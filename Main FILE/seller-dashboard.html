@@ -435,8 +435,25 @@
   function deleteProduct(idx) {
     if (!confirm('Remove this product?')) return;
     const prods = getMyProducts();
-    prods.splice(idx, 1);
+    const removed = prods.splice(idx, 1)[0];
     localStorage.setItem(myKey(), JSON.stringify(prods));
+
+    // Remove from master admin list and store category list if present
+    if (removed) {
+      try {
+        let master = JSON.parse(localStorage.getItem('apexAdminProducts') || '[]');
+        master = master.filter(p => p.id !== removed.id && p.name !== removed.name);
+        localStorage.setItem('apexAdminProducts', JSON.stringify(master));
+
+        if (removed.category) {
+          let catKey = 'apexProducts_' + removed.category;
+          let catList = JSON.parse(localStorage.getItem(catKey) || '[]');
+          catList = catList.filter(p => p.id !== removed.id && p.name !== removed.name);
+          localStorage.setItem(catKey, JSON.stringify(catList));
+        }
+      } catch (err) { }
+    }
+
     renderProducts();
     showToast('Product removed.', '');
   }
@@ -451,18 +468,38 @@
     if (!name || !cat || !price || !stock) {
       showAddMsg('Please fill all required fields.', 'error'); return;
     }
+    const pid = Date.now();
+    const parsedPrice = parseFloat(price) || 0;
+    const parsedOffer = parseFloat(document.getElementById('pOffer').value) || parsedPrice;
     const product = {
+      id: pid,
       name, desc: document.getElementById('pDesc').value.trim(),
       category: cat, badge: document.getElementById('pBadge').value,
-      price, offer: document.getElementById('pOffer').value, stock,
+      price: parsedPrice, offer: parsedOffer, stock,
+      inStock: true,
+      isStore: false,
+      seller: sellerEmail || 'seller',
       listedAt: new Date().toLocaleDateString('en-IN')
     };
     const prods = getMyProducts();
     prods.push(product);
     localStorage.setItem(myKey(), JSON.stringify(prods));
+
+    // Synchronize to master admin list and category live store
+    try {
+      let master = JSON.parse(localStorage.getItem('apexAdminProducts') || '[]');
+      master.push(product);
+      localStorage.setItem('apexAdminProducts', JSON.stringify(master));
+
+      let catKey = 'apexProducts_' + cat;
+      let catList = JSON.parse(localStorage.getItem(catKey) || '[]');
+      catList.push(product);
+      localStorage.setItem(catKey, JSON.stringify(catList));
+    } catch (err) { }
+
     document.getElementById('addProductForm').reset();
-    showAddMsg('✓ Product listed successfully!', 'success');
-    showToast('Product added!', 'green');
+    showAddMsg('✓ Product listed and synchronized to store!', 'success');
+    showToast('Product added and synced!', 'green');
     setTimeout(() => navigate('myProducts'), 1200);
   });
 

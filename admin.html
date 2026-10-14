@@ -1258,11 +1258,15 @@
 
     <!-- ────── PRODUCT LIST ────── -->
     <section class="ap-section" id="sec-productList">
-      <div class="sec-head">
+      <div class="sec-head" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
         <div>
           <div class="sec-title">All Products</div>
           <div class="sec-sub" id="productCountSub">0 products across all categories</div>
         </div>
+        <button class="btn btn-primary" onclick="forceSyncProducts()" style="display:inline-flex;align-items:center;gap:8px;font-size:12px;padding:9px 16px;cursor:pointer;border-radius:6px;font-weight:700;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+          Sync Store Products
+        </button>
       </div>
 
       <!-- Filter bar -->
@@ -1390,41 +1394,29 @@
 
     /* ──────────────────────────────────────────
        SEED ALL EXISTING APEX GEAR STORE PRODUCTS
-       (shoes × 12, specs × 12, cloth × 12, watch × 12)
-       Runs only once — if admin product list is empty
+       (Authentic Store Catalog across Shoes, Specs, Clothing, Watches)
     ────────────────────────────────────────── */
-    var IMG_A = 'shoes.png';
-    var IMG_B = 'shoes.png';
-    var IMG_C = 'shoes.png';
+    var STORE_VERSION = 'v5_all_sync';
 
     var STORE_PRODUCTS_BY_CAT = {
       shoes: [
-        { name: 'Nike Air IQ3408 — Sport Blue', price: 12999, offer: 12999, badge: 'NEW', img: IMG_A },
-        { name: 'Storm 415 Traction Boot', price: 17200, offer: 17200, badge: '', img: IMG_B },
-        { name: 'Sylvan Sneaker — Ranger Green', price: 15600, offer: 15600, badge: '', img: IMG_C },
-        { name: 'Foster High Top — Blacktop', price: 17100, offer: 17100, badge: '', img: IMG_A },
-        { name: 'Naito Sneaker — Black', price: 12600, offer: 10200, badge: 'SALE', img: IMG_B },
-        { name: 'Dima 3.0 — Ranger Green', price: 17600, offer: 17600, badge: '', img: IMG_C },
-        { name: 'Boyer Slip-On — Black', price: 15600, offer: 15600, badge: '', img: IMG_A },
-        { name: '415 Boot Stacked — White', price: 12600, offer: 12600, badge: '', img: IMG_B },
-        { name: 'Vegan Canvas Low — Ecru', price: 9800, offer: 9800, badge: 'NEW', img: IMG_A },
-        { name: 'Urban Bike Clipless — Ranger', price: 21400, offer: 21400, badge: '', img: IMG_C },
-        { name: 'Leather Lace-Up Boot — Brown', price: 19800, offer: 19800, badge: '', img: IMG_A },
-        { name: 'Bromley Pro Vegan — White', price: 14600, offer: 14600, badge: '', img: IMG_B },
+        { name: 'Air Jordan 1 Low', price: 8995, offer: 8995, badge: 'HOT', img: 'https://adn-static1.nykaa.com/nykdesignstudio-images/pub/media/catalog/product/4/2/42d1084Nike-FD2596-601_1.jpg?rnd=20200526195200&tr=w-720' },
+        { name: 'Air Jordan 1 Low SE', price: 11495, offer: 11495, badge: 'NEW', img: 'https://adn-static1.nykaa.com/nykdesignstudio-images/pub/media/catalog/product/7/1/71f6d8eNike-IO2047-001_1.jpg?rnd=20200526195200&tr=w-1536' },
+        { name: 'Nike Vomero 18', price: 12495, offer: 10636, badge: 'SALE', img: 'https://adn-static1.nykaa.com/nykdesignstudio-images/pub/media/catalog/product/a/d/ad22b92Nike-HM6803-111_1.jpg?rnd=20200526195200&tr=w-1536' },
+        { name: "Nike Vomero 18 (Women's)", price: 13295, offer: 13295, badge: 'NEW', img: 'https://adn-static1.nykaa.com/nykdesignstudio-images/pub/media/catalog/product/a/d/ad22b92Nike-HM6804-004_1.jpg?rnd=20200526195200&tr=w-1536' },
+        { name: "Nike Air Force 1 '07 Essential", price: 8495, offer: 8495, badge: 'HOT', img: 'https://adn-static1.nykaa.com/nykdesignstudio-images/pub/media/catalog/product/a/d/ad22b92Nike-CZ0270-102_1.jpg?rnd=20200526195200&tr=w-720' },
+        { name: 'Nike Air Force 1 Older Kids (Black/White)', price: 7295, offer: 7295, badge: 'SALE', img: 'https://adn-static1.nykaa.com/nykdesignstudio-images/pub/media/catalog/product/a/d/ad22b92Nike-IR0595-001_1.jpg?rnd=20200526195200&tr=w-1536' },
+        { name: 'Nike Air Force 1 Older Kids (Grey/Gum)', price: 7295, offer: 7295, badge: 'NEW', img: 'https://adn-static1.nykaa.com/nykdesignstudio-images/pub/media/catalog/product/a/d/ad22b92Nike-IR0595-002_1.jpg?rnd=20200526195200&tr=w-1536' },
+        { name: "Nike Air Force 1 '07 LX", price: 10795, offer: 10795, badge: 'HOT', img: 'https://adn-static1.nykaa.com/nykdesignstudio-images/pub/media/catalog/product/a/d/ad22b92Nike-FV3654-111_1.jpg?rnd=20200526195200&tr=w-1536' }
       ],
       specs: [
-        { name: 'Apex Aviator Sunglasses — Black', price: 4999, offer: 4999, badge: 'NEW', img: 'specs.png' },
-        { name: 'Retro Round Optical Frame — Tortoise', price: 3599, offer: 3599, badge: '', img: 'specs.png' },
-        { name: 'Sport Shield Glasses — Mirror Blue', price: 5499, offer: 5499, badge: '', img: 'specs.png' },
-        { name: 'Apex Classic Wayfarer — Brown', price: 3999, offer: 3599, badge: 'SALE', img: 'specs.png' },
-        { name: 'Cat Eye Frame — Rose Gold', price: 4299, offer: 4299, badge: '', img: 'specs.png' },
-        { name: 'Polarized Wrap Sunglasses — Black', price: 5999, offer: 5999, badge: '', img: 'specs.png' },
-        { name: 'Apex Square Frame — Matte Black', price: 3299, offer: 3299, badge: 'NEW', img: 'specs.png' },
-        { name: 'Half Rim Reading Glasses — Grey', price: 2599, offer: 2599, badge: '', img: 'specs.png' },
-        { name: 'Slim Titanium Frame — Silver', price: 7999, offer: 6999, badge: 'SALE', img: 'specs.png' },
-        { name: 'Oversized Shield — Gunmetal', price: 6299, offer: 6299, badge: '', img: 'specs.png' },
-        { name: 'Sporty Clip-On Frames — Blue', price: 2999, offer: 2999, badge: '', img: 'specs.png' },
-        { name: 'Apex Kids Shield — Orange', price: 1999, offer: 1999, badge: 'NEW', img: 'specs.png' },
+        { name: 'Radar® EV Path®', price: 27990, offer: 24990, badge: 'HOT', img: 'https://assets2.oakley.com/prod-onecp-record-files/pieyewear/5f6a315b-dc2b-4f2b-8e8f-b45c009b8151/0OO9208__9208G6__P21__noshad__fr.png?impolicy=PI20_Oakley_Resize&wid=640' },
+        { name: 'Portal Jacket®', price: 32990, offer: 29990, badge: 'NEW', img: 'https://assets2.oakley.com/prod-onecp-record-files/pieyewear/31338572-2505-434b-ae43-b4580184ff9e/0OO9536__953601__P21__noshad__fr.png?impolicy=PI20_Oakley_Resize&wid=640' },
+        { name: 'Custom Holbrook™ XL', price: 38990, offer: 34990, badge: 'CUSTOM', img: 'https://configure-imagecomposer.fluidretail.net/recipe/49325181/image/Front.png' },
+        { name: 'Custom Bisphaera™ Speed', price: 46990, offer: 42990, badge: 'CUSTOM', img: 'https://configure-imagecomposer.fluidretail.net/recipe/86067585/image/Front.png' },
+        { name: 'Encoder', price: 41990, offer: 38990, badge: 'POPULAR', img: 'https://assets2.oakley.com/cdn-record-files-pi/66a2552c-66f6-449a-aef8-b2f400a94bb1/901816e5-927e-4f50-bdc7-b2f400a94da4/0OO6029__602901__P21__noshad__fr.png?impolicy=PI20_Oakley_Resize&wid=640' },
+        { name: 'Suture Jacket®', price: 52990, offer: 48990, badge: 'HOT', img: 'https://assets2.oakley.com/cdn-record-files-pi/916dd32a-41ab-412e-a013-b37f012416a9/954ac66f-a67c-4d73-8f49-b37f0124183d/0OO9532__953207__P21__noshad__fr.png?impolicy=PI20_Oakley_Resize&wid=640' },
+        { name: 'Encoder Strike', price: 59990, offer: 54990, badge: 'NEW', img: 'https://assets2.oakley.com/cdn-record-files-pi/a8b8b619-04fe-4e02-8498-af25013d17e5/120b7a79-7015-4fa9-ab51-af32017e05c1/0OO9235__923502__P21__noshad__fr.png?impolicy=PI20_Oakley_Resize&wid=640' }
       ],
       cloth: [
         { name: 'Hot Wheels: Speed Demons Tee', price: 1299, offer: 1299, badge: 'HOT', img: 'https://prod-img.thesouledstore.com/public/theSoul/uploads/catalog/product/1788878349_1194964.jpg?w=768&dpr=2' },
@@ -1438,7 +1430,7 @@
         { name: 'Cotton Linen Relaxed Shirt', price: 2499, offer: 2499, badge: 'NEW', img: 'cotton-linen-shirt.png' },
         { name: 'Apex Baggy Denim Jeans', price: 3999, offer: 3999, badge: '', img: 'baggy-jeans.jpg' },
         { name: 'Cargo Trekker Pants — Olive', price: 5499, offer: 5499, badge: '', img: 'https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=800&q=80' },
-        { name: 'Spiderman Marvel Knit Beanie', price: 999, offer: 999, badge: '', img: 'spiderman-cap.jpg' },
+        { name: 'Spiderman Marvel Knit Beanie', price: 999, offer: 999, badge: '', img: 'spiderman-cap.jpg' }
       ],
       watch: [
         { name: 'Casio G-Steel GBM-2100A-2B', price: 19995, offer: 19995, badge: 'NEW', img: 'https://www.casio.com/content/dam/casio/product-info/locales/in/en/timepiece/product/watch/G/GB/gbm/gbm-2100a-2b/assets/GBM-2100A-2B.png.transform/main-visual-sp/image.png' },
@@ -1452,40 +1444,69 @@
         { name: 'Casio Baby-G Special Edition', price: 6499, offer: 6499, badge: 'NEW', img: 'gshock-pokemon.png' },
         { name: 'G-Shock Rangeman Forest Edition', price: 23999, offer: 22499, badge: 'SALE', img: 'grid-watch.png' },
         { name: 'Casio Edifice Sapphire Solar', price: 15999, offer: 15999, badge: '', img: 'https://images.unsplash.com/photo-1551816230-ef5deaed4a26?w=800&q=80' },
-        { name: 'Classic Digital A-168WA Silver', price: 3199, offer: 3199, badge: '', img: 'https://images.unsplash.com/photo-1591034284664-16e8a6b8a9a1?w=800&q=80' },
+        { name: 'Classic Digital A-168WA Silver', price: 3199, offer: 3199, badge: '', img: 'https://images.unsplash.com/photo-1591034284664-16e8a6b8a9a1?w=800&q=80' }
       ]
     };
 
-    function seedStoreProducts() {
+    function seedStoreProducts(force) {
       var existing = getProducts();
-      // Only seed if no store products exist yet
+      var currentVer = localStorage.getItem('apexAdminProducts_ver');
       var hasStore = existing.some(function (p) { return p.isStore; });
-      if (hasStore) return;
 
-      var all = [];
-      var pid = 1000;
-      ['shoes', 'specs', 'cloth', 'watch'].forEach(function (cat) {
-        STORE_PRODUCTS_BY_CAT[cat].forEach(function (p) {
-          all.push({
-            id: pid++,
-            name: p.name,
-            desc: 'Apex Gear ' + catLabel(cat) + ' — premium quality, built for performance.',
-            category: cat,
-            price: p.price,
-            offer: p.offer,
-            badge: p.badge,
-            img: p.img,
-            inStock: true,
-            isStore: true,
-            addedAt: '2026-01-01T00:00:00.000Z'
+      if (force || currentVer !== STORE_VERSION || !hasStore) {
+        var all = [];
+        var pid = 1000;
+        ['shoes', 'specs', 'cloth', 'watch'].forEach(function (cat) {
+          (STORE_PRODUCTS_BY_CAT[cat] || []).forEach(function (p) {
+            all.push({
+              id: pid++,
+              name: p.name,
+              desc: 'Apex Gear ' + catLabel(cat) + ' — premium quality, built for performance.',
+              category: cat,
+              price: p.price,
+              offer: p.offer || p.price,
+              badge: p.badge || '',
+              img: p.img,
+              inStock: true,
+              isStore: true,
+              addedAt: '2026-01-01T00:00:00.000Z'
+            });
           });
         });
-      });
 
-      // Merge with any admin-added products
-      var combined = all.concat(existing.filter(function (p) { return !p.isStore; }));
-      localStorage.setItem(STORE_KEY, JSON.stringify(combined));
-      syncAllToStore(combined);
+        // Collect any seller-added products from localStorage
+        try {
+          for (var i = 0; i < localStorage.length; i++) {
+            var k = localStorage.key(i);
+            if (k && k.indexOf('sellerProducts_') === 0) {
+              var sProds = JSON.parse(localStorage.getItem(k) || '[]');
+              sProds.forEach(function (sp) {
+                if (!sp.id) sp.id = pid++;
+                sp.isStore = false;
+                sp.inStock = sp.inStock !== false;
+                all.push(sp);
+              });
+            }
+          }
+        } catch (e) { }
+
+        // Keep existing custom admin products
+        var customAdmin = existing.filter(function (p) {
+          return !p.isStore && !all.some(function (a) { return a.id === p.id || a.name === p.name; });
+        });
+
+        var combined = all.concat(customAdmin);
+        localStorage.setItem(STORE_KEY, JSON.stringify(combined));
+        localStorage.setItem('apexAdminProducts_ver', STORE_VERSION);
+        syncAllToStore(combined);
+      }
+    }
+
+    function forceSyncProducts() {
+      seedStoreProducts(true);
+      renderProductTable();
+      updateSidebarBadges();
+      showToast('\u2713 Synchronized all products to live website!', 'green');
     }
 
     /* ──────────────────────────────────────────
@@ -1499,12 +1520,19 @@
       Object.keys(maps).forEach(function (c) {
         localStorage.setItem('apexProducts_' + c, JSON.stringify(maps[c]));
       });
+      // Align version stamps so store category pages don't wipe data
+      try {
+        localStorage.setItem('apexProducts_specs_ver', 'v4_user_oakley_specs');
+        localStorage.setItem('apexProducts_shoes_ver', 'v5_nike_exclusive');
+        localStorage.setItem('apexProducts_cloth_ver', 'v4_souledstore_user_images');
+        localStorage.setItem('apexProducts_watch_ver', 'v4_casio_user_images');
+      } catch (e) { }
     }
 
     function syncProductToStore(product, add) {
       var key = 'apexProducts_' + product.category;
       var arr = [];
-      try { arr = JSON.parse(localStorage.getItem(key)) || []; } catch { }
+      try { arr = JSON.parse(localStorage.getItem(key)) || []; } catch (e) { }
       if (add) { arr.push(product); }
       else { arr = arr.filter(function (p) { return p.id !== product.id; }); }
       localStorage.setItem(key, JSON.stringify(arr));
@@ -1843,7 +1871,16 @@
     seedStoreProducts();
     seedOrders();
     buildUploadBoxes();
+    renderProductTable();
     updateSidebarBadges();
+
+    // Direct tab routing (e.g. from seller-login.html)
+    try {
+      var urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('tab') === 'productList') {
+        navigate('productList');
+      }
+    } catch (e) { }
   </script>
 
 </body>
